@@ -1,7 +1,8 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="model.CourseDTO" %>
 <%@ page import="model.UserDTO" %>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -97,68 +98,33 @@
         </style>
     </head>
 
-    <body>
+    <tbody>
 
-        <div class="container">
-
-            <h2>Course List</h2>
-
-            <a href="welcome.jsp" class="back-btn">Back</a>
-
-            <table>
-                <thead>
+        <c:choose>
+            <c:when test="${not empty COURSE_LIST}">
+                <c:forEach var="c" items="${COURSE_LIST}">
                     <tr>
-                        <th>ID</th>
-                        <th>Topic</th>
-                        <th>Name</th>
-                        <th>Fee</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    <%
-                        UserDTO loginUser = (UserDTO) session.getAttribute("user");
-                        ArrayList<CourseDTO> list
-                                = (ArrayList<CourseDTO>) request.getAttribute("COURSE_LIST");
-
-                        if (list != null && !list.isEmpty()) {
-                            for (CourseDTO c : list) {
-                    %>
-                    <tr>
-                        <td><%= c.getCourseId()%></td>
-                        <td><%= c.getTopic()%></td>
-                        <td><%= c.getCourseName()%></td>
-                        <td class="fee"><%= String.format("%,.0f", c.getFee())%> VND</td>
+                        <td>${c.courseId}</td>
+                        <td>${c.topic}</td>
+                        <td>${c.courseName}</td>
+                        <td class="fee">
+                            <fmt:formatNumber value="${c.fee}" type="number" pattern="#,###"/> VND
+                        </td>
                         <td>
-                            <% if (loginUser.getRole() != 1) {%>
-                            <a class="register-btn"
-                               href="mainController?action=RegisterCourse&courseId=<%= c.getCourseId()%>">
-                                Register
-                            </a>
-                            <% } else { %>
-                            Admin
-                            <% } %>
+                            <input type="submit" value="Buy"/>
                         </td>
                     </tr>
-                    <%
-                        }
-                    } else {
-                    %>
-                    <tr>
-                        <td colspan="5" class="no-data">
-                            No course found
-                        </td>
-                    </tr>
-                    <%
-                        }
-                    %>
+                </c:forEach>
+            </c:when>
 
-                </tbody>
-            </table>
+            <c:otherwise>
+                <tr>
+                    <td colspan="5" class="no-data">
+                        No course found
+                    </td>
+                </tr>
+            </c:otherwise>
+        </c:choose>
 
-        </div>
-
-    </body>
+    </tbody>
 </html>

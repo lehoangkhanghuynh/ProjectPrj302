@@ -27,13 +27,13 @@ public class UserDAO {
             while (rs.next()) {
 
                 String userId = rs.getString("userId");
-                String userName = rs.getString("userName");
+                String fullname = rs.getString("fullname");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
                 byte role = rs.getByte("role");
                 boolean status = rs.getBoolean("status");
 
-                user = new UserDTO(userId, userName, email, password, role, status);
+                user = new UserDTO(userId, fullname, email, password, role, status);
             }
         } catch (Exception e) {
             e.printStackTrace();

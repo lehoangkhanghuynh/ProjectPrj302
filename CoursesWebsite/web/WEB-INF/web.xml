@@ -12,6 +12,10 @@
         <servlet-name>logoutController</servlet-name>
         <servlet-class>controller.logoutController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>paymentController</servlet-name>
+        <servlet-class>controller.paymentController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>logoutController</servlet-name>
         <url-pattern>/logoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>paymentController</servlet-name>
+        <url-pattern>/paymentController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

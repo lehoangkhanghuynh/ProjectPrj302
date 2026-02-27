@@ -35,71 +35,14 @@ public class mainController extends HttpServlet {
             url = "logoutController";
         } // ================= ADD COURSE (ADMIN) =================
         else if (action.equals("AddCourse")) {
-
-            try {
-                String courseId = request.getParameter("courseId");
-                String topic = request.getParameter("topic");
-                String courseName = request.getParameter("courseName");
-                double fee = Double.parseDouble(request.getParameter("fee"));
-
-                CourseDTO c = new CourseDTO(courseId, topic, courseName, fee, 1);
-                CourseDAO dao = new CourseDAO();
-
-                boolean check = dao.add(c);
-
-                if (check) {
-                    request.setAttribute("message", "Add success!");
-                } else {
-                    request.setAttribute("message", "Add failed!");
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                request.setAttribute("message", "Error while adding course!");
-            }
-
             url = "addCourse.jsp";
-        } // ================= REGISTER COURSE (USER) =================
-        else if (action.equals("RegisterCourse")) {
-
-            HttpSession session = request.getSession();
-            UserDTO loginUser = (UserDTO) session.getAttribute("user");
-
-            if (loginUser != null) {
-                String courseId = request.getParameter("courseId");
-                UserCourseDAO dao = new UserCourseDAO();
-                dao.registerCourse(loginUser.getUserId(), courseId);
-            }
-
+        } else if (action.equals("RegisterCourse")) {
             url = "mainController?action=ViewCourse";
-        } 
-
-        // ================= EXPLORE COURSE (ALL COURSE) =================
-        else if (action.equals("ExploreCourse")) {
-            CourseDAO dao = new CourseDAO();
-            List<CourseDTO> list = dao.getAll();
-            request.setAttribute("COURSE_LIST", list);
-            url = "listCourse.jsp";   // đổi lại chỗ này
-        } 
-
-        // ================= MY COURSE (USER REGISTERED COURSE) =================
-        else if (action.equals("MyCourse")) {
-
-            HttpSession session = request.getSession();
-            UserDTO loginUser = (UserDTO) session.getAttribute("user");
-
-            if (loginUser != null) {
-
-                CourseDAO dao = new CourseDAO();
-                ArrayList<CourseDTO> list
-                        = dao.getCoursesByUser(loginUser.getUserId());
-
-                request.setAttribute("COURSE_LIST", list);
-            }
-
+        } else if (action.equals("ExploreCourse")) {
+            url = "listCourse.jsp";
+        } else if (action.equals("MyCourse")) {
             url = "myCourse.jsp";
         }
-
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }

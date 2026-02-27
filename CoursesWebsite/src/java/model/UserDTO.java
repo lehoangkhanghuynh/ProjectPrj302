@@ -11,15 +11,15 @@ package model;
 public class UserDTO {
 
     private String userId;
-    private String userName;
+    private String fullname;
     private String Email;
     private String Password;
-    private byte Role;
-    private boolean status;
+    private byte Role; //auto 3 student
+    private boolean status; //auto 3 student
 
-    public UserDTO(String userId, String userName, String Email, String Password, byte Role, boolean status) {
+    public UserDTO(String userId, String fullname, String Email, String Password, byte Role, boolean status) {
         this.userId = userId;
-        this.userName = userName;
+        this.fullname = fullname;
         this.Email = Email;
         this.Password = Password;
         this.Role = Role;
@@ -37,12 +37,12 @@ public class UserDTO {
         this.userId = UserId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getfullname() {
+        return fullname;
     }
 
-    public void setUserName(String UserName) {
-        this.userName = UserName;
+    public void setfullname(String UserName) {
+        this.fullname = UserName;
     }
 
     public String getEmail() {
