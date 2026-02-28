@@ -26,21 +26,22 @@ public class enrollController extends HttpServlet {
         }
 
         String userId = user.getUserId();
-        int courseId = Integer.parseInt(request.getParameter("courseId"));
+        int courseId  = Integer.parseInt(request.getParameter("courseId"));
 
         EnrollDAO enrollDAO = new EnrollDAO();
-        UserDAO userDAO = new UserDAO();
+        UserDAO   userDAO   = new UserDAO();
 
         try {
-            double fee = enrollDAO.getCourseFee(courseId);
-            double balance = userDAO.getBalance(userId); // lấy balance mới nhất từ DB
+            // Lấy balance mới nhất từ DB (tránh dùng session cũ)
+            double fee     = enrollDAO.getCourseFee(courseId);
+            double balance = userDAO.getBalance(userId);
 
-            // Kiểm tra đã enroll và đã thanh toán chưa
+            // Đã enroll và đã thanh toán rồi → không làm gì thêm
             if (enrollDAO.isEnrolled(userId, courseId)) {
                 int status = enrollDAO.getEnrollStatus(userId, courseId);
                 if (status == 1) {
-                    request.setAttribute("enrollmessage", "Bạn đã đăng ký khóa học này rồi!");
-                    request.getRequestDispatcher("myCourses.jsp").forward(request, response);
+                    // Redirect về listCourse để ENROLLED_IDS được load lại
+                    response.sendRedirect("listCourse.jsp");
                     return;
                 }
             }
@@ -48,6 +49,7 @@ public class enrollController extends HttpServlet {
             // Kiểm tra số dư
             if (balance < fee) {
                 request.setAttribute("enrollmessage", "Số dư không đủ! Vui lòng nạp thêm tiền.");
+                // Forward về listCourse servlet để load lại ENROLLED_IDS
                 request.getRequestDispatcher("listCourse.jsp").forward(request, response);
                 return;
             }
@@ -57,7 +59,7 @@ public class enrollController extends HttpServlet {
                 enrollDAO.enrollCourse(userId, courseId);
             }
 
-            // Trừ tiền (dùng deductBalance — an toàn hơn vì check balance >= fee trong SQL)
+            // Trừ tiền (safe: SQL check balance >= fee)
             boolean deducted = userDAO.deductBalance(userId, fee);
             if (!deducted) {
                 request.setAttribute("enrollmessage", "Số dư không đủ! Vui lòng nạp thêm tiền.");
@@ -65,20 +67,21 @@ public class enrollController extends HttpServlet {
                 return;
             }
 
-            // Cập nhật status enroll = 1
+            // Cập nhật status = 1 (đã thanh toán)
             enrollDAO.updateStatus(userId, courseId, 1);
 
             // Cập nhật lại balance trong session
             user.setBalance(balance - fee);
             session.setAttribute("user", user);
 
-            // Chuyển sang trang khóa học của tôi
-            response.sendRedirect("myCourses");
+            // ✅ Redirect về listCourse (servlet) để ENROLLED_IDS được load lại
+            // → nút sẽ tự đổi thành "Vào học"
+            response.sendRedirect("listCourse.jsp");
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("error", "Lỗi hệ thống!");
-            request.getRequestDispatcher("error.jsp").forward(request, response);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
     }
 }

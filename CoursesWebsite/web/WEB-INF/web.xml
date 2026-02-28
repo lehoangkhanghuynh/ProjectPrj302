@@ -36,6 +36,10 @@
         <servlet-name>myCoursesController</servlet-name>
         <servlet-class>controller.myCoursesController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>lessonController</servlet-name>
+        <servlet-class>controller.lessonController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -71,6 +75,10 @@
     <servlet-mapping>
         <servlet-name>myCoursesController</servlet-name>
         <url-pattern>/myCoursesController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>lessonController</servlet-name>
+        <url-pattern>/lessonController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
