@@ -20,6 +20,10 @@
         <servlet-name>paymentController</servlet-name>
         <servlet-class>controller.paymentController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>courseController</servlet-name>
+        <servlet-class>controller.courseController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -39,6 +43,10 @@
     <servlet-mapping>
         <servlet-name>paymentController</servlet-name>
         <url-pattern>/paymentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>courseController</servlet-name>
+        <url-pattern>/courseController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
