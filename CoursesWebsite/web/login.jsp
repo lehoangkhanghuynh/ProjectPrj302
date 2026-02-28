@@ -1080,11 +1080,8 @@
                         </c:if>
                     <form action="mainController" method="POST" id="regForm">
                         <input type="hidden" name="action" value="register" />
-                        <div class="name-grid" style="margin-bottom:11px;">
-                            <div><label class="f-label">Họ</label><input type="text" class="f-input" name="firstName" placeholder="Nguyễn" required /></div>
-                            <div><label class="f-label">Tên</label><input type="text" class="f-input" name="lastName" placeholder="Văn A" required /></div>
-                        </div>
                         <div style="margin-bottom:11px;"><label class="f-label">Tên đăng nhập</label><input type="text" class="f-input" name="userName" placeholder="username" required /></div>
+                        <div style="margin-bottom:11px;"><label class="f-label">Họ & Tên</label><input type="text" class="f-input" name="fullname" placeholder="Nguyễn Văn A" required /></div>
                         <div style="margin-bottom:11px;"><label class="f-label">Email</label><input type="email" class="f-input" name="email" placeholder="email@example.com" required /></div>
                         <div style="margin-bottom:11px;">
                             <label class="f-label">Mật khẩu</label>
