@@ -204,7 +204,7 @@
 
                 <%-- BALANCE PILL - chỉ hiện khi đã đăng nhập --%>
                 <c:if test="${not empty sessionScope.user}">
-                    <a href="#" class="balance-pill">
+                    <a href="payment.jsp" class="balance-pill">
                         <i class="bi bi-wallet2"></i>
                         <span class="balance-label">Số dư</span>
                         <span class="balance-amount">${sessionScope.user.balance != null ? sessionScope.user.balance : '0'} ₫</span>

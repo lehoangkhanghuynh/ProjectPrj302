@@ -40,7 +40,7 @@ public class enrollController extends HttpServlet {
                 int status = enrollDAO.getEnrollStatus(userId, courseId);
                 if (status == 1) {
                     request.setAttribute("enrollmessage", "Bạn đã đăng ký khóa học này rồi!");
-                    request.getRequestDispatcher("listCourse.jsp").forward(request, response);
+                    request.getRequestDispatcher("myCourses.jsp").forward(request, response);
                     return;
                 }
             }
