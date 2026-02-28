@@ -30,7 +30,11 @@
                 --white:       #FFFFFF;
             }
 
-            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+            *, *::before, *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
 
             body {
                 font-family: 'DM Sans', sans-serif;
@@ -60,7 +64,9 @@
                 text-decoration: none;
                 letter-spacing: 0.3px;
             }
-            .brand span { color: var(--gold); }
+            .brand span {
+                color: var(--gold);
+            }
 
             .nav-links {
                 display: flex;
@@ -99,7 +105,9 @@
                 gap: 8px;
                 transition: background 0.15s;
             }
-            .search-bar:hover { background: rgba(255,255,255,0.15); }
+            .search-bar:hover {
+                background: rgba(255,255,255,0.15);
+            }
             .search-bar input {
                 background: none;
                 border: none;
@@ -109,8 +117,13 @@
                 font-family: 'DM Sans', sans-serif;
                 width: 180px;
             }
-            .search-bar input::placeholder { color: rgba(255,255,255,0.5); }
-            .search-bar i { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
+            .search-bar input::placeholder {
+                color: rgba(255,255,255,0.5);
+            }
+            .search-bar i {
+                color: rgba(255,255,255,0.6);
+                font-size: 0.9rem;
+            }
 
             .user-menu {
                 display: flex;
@@ -122,7 +135,9 @@
                 transition: background 0.15s;
                 border: 1px solid rgba(255,255,255,0.15);
             }
-            .user-menu:hover { background: rgba(255,255,255,0.08); }
+            .user-menu:hover {
+                background: rgba(255,255,255,0.08);
+            }
 
             .user-avatar {
                 width: 34px;
@@ -161,7 +176,9 @@
                 display: none;
                 z-index: 200;
             }
-            .dropdown-menu-custom.show { display: block; }
+            .dropdown-menu-custom.show {
+                display: block;
+            }
 
             .dropdown-menu-custom a {
                 display: flex;
@@ -184,7 +201,9 @@
                 background: var(--border);
                 margin: 6px 0;
             }
-            .dropdown-menu-custom .logout-link { color: #CC0000; }
+            .dropdown-menu-custom .logout-link {
+                color: #CC0000;
+            }
             .dropdown-menu-custom .logout-link:hover {
                 background: #FFF3F3;
                 color: #CC0000;
@@ -195,7 +214,7 @@
                 background: linear-gradient(145deg, var(--purple-deep) 0%, #3A1A7A 50%, #5B2DC5 100%);
                 padding: 88px 80px 0;
                 display: flex;
-                align-items: flex-end;
+                align-items: center;
                 gap: 64px;
                 overflow: hidden;
                 min-height: 500px;
@@ -215,12 +234,16 @@
 
             .hero-content {
                 flex: 1;
-                padding-bottom: 72px;
+                padding-bottom: 40px;
                 position: relative;
                 z-index: 1;
                 animation: fadeUp 0.6s ease both;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
             }
 
+            /* ===== HERO EYEBROW - gốc trái ===== */
             .hero-eyebrow {
                 display: inline-flex;
                 align-items: center;
@@ -235,6 +258,7 @@
                 margin-bottom: 22px;
                 letter-spacing: 1px;
                 text-transform: uppercase;
+                align-self: flex-start;
             }
 
             .welcome-badge {
@@ -249,8 +273,11 @@
                 color: rgba(255,255,255,0.9);
                 font-size: 0.9rem;
                 font-weight: 500;
+                align-self: flex-start;
             }
-            .welcome-badge strong { color: var(--gold); }
+            .welcome-badge strong {
+                color: var(--gold);
+            }
 
             .hero h1 {
                 font-family: 'Playfair Display', serif;
@@ -260,7 +287,10 @@
                 line-height: 1.15;
                 margin-bottom: 20px;
             }
-            .hero h1 em { font-style: normal; color: var(--gold); }
+            .hero h1 em {
+                font-style: normal;
+                color: var(--gold);
+            }
 
             .hero p {
                 font-size: 1.05rem;
@@ -270,7 +300,11 @@
                 margin-bottom: 36px;
             }
 
-            .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+            .hero-actions {
+                display: flex;
+                gap: 14px;
+                flex-wrap: wrap;
+            }
 
             .btn-hero-primary {
                 background: var(--gold);
@@ -313,51 +347,131 @@
                 color: #fff;
             }
 
+            /* ===== HERO RIGHT - Instructor Panel ===== */
             .hero-right {
                 flex: 0 0 360px;
-                padding-bottom: 0;
+                padding-bottom: 40px;
                 position: relative;
                 z-index: 1;
                 animation: fadeUp 0.6s 0.2s ease both;
             }
 
-            .floating-cards {
+            .instructor-panel {
                 background: rgba(255,255,255,0.06);
                 border: 1px solid rgba(255,255,255,0.12);
-                border-radius: 14px 14px 0 0;
+                border-radius: 14px;
                 padding: 20px;
                 backdrop-filter: blur(12px);
             }
 
-            .mini-card {
+            .instructor-panel-title {
+                font-size: 0.72rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 1.5px;
+                color: var(--gold);
+                margin-bottom: 14px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .instructor-card {
                 background: #fff;
                 border-radius: 10px;
-                padding: 14px 16px;
+                padding: 12px 14px;
                 margin-bottom: 10px;
                 box-shadow: 0 4px 16px rgba(0,0,0,0.12);
                 display: flex;
                 align-items: center;
-                gap: 14px;
+                gap: 12px;
+                transition: transform 0.15s;
             }
-            .mini-card:last-child { margin-bottom: 0; }
+            .instructor-card:last-child {
+                margin-bottom: 0;
+            }
+            .instructor-card:hover {
+                transform: translateX(3px);
+            }
 
-            .mini-icon {
-                width: 40px;
-                height: 40px;
-                border-radius: 8px;
+            .instructor-avatar {
+                width: 46px;
+                height: 46px;
+                min-width: 46px;
+                border-radius: 50%;
+                object-fit: cover;
+                object-position: center top;
+                flex-shrink: 0;
+                border: 2px solid var(--border);
+                display: block;
+            }
+
+            /* Fallback avatar khi không có ảnh thật */
+            .instructor-avatar-placeholder {
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                flex-shrink: 0;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.2rem;
+                font-size: 1.1rem;
+                font-weight: 700;
+                color: #fff;
+                border: 2px solid rgba(255,255,255,0.3);
+            }
+            .av1 {
+                background: linear-gradient(135deg, #6C3FC5, #9B72E8);
+            }
+            .av2 {
+                background: linear-gradient(135deg, #D4A843, #F5CC6A);
+                color: #1E0A4A;
+            }
+            .av3 {
+                background: linear-gradient(135deg, #1B5E20, #43A047);
+            }
+
+            .instructor-info {
+                flex: 1;
+                min-width: 0;
+            }
+            .instructor-info h4 {
+                font-size: 0.84rem;
+                font-weight: 700;
+                color: var(--text);
+                margin-bottom: 2px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .instructor-info .ins-subject {
+                font-size: 0.72rem;
+                color: var(--purple);
+                font-weight: 600;
+                margin-bottom: 3px;
+            }
+            .instructor-info .ins-meta {
+                font-size: 0.7rem;
+                color: var(--muted);
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .ins-stars {
+                color: var(--gold);
+                font-size: 0.68rem;
+            }
+            .ins-badge {
+                background: var(--purple-light);
+                color: var(--purple);
+                font-size: 0.6rem;
+                font-weight: 700;
+                padding: 2px 7px;
+                border-radius: 4px;
+                text-transform: uppercase;
+                letter-spacing: 0.3px;
                 flex-shrink: 0;
             }
-            .bg-pur { background: linear-gradient(135deg, #6C3FC5, #9B72E8); }
-            .bg-gld { background: linear-gradient(135deg, #D4A843, #F5CC6A); }
-            .bg-grn { background: linear-gradient(135deg, #1B5E20, #388E3C); }
-
-            .mini-info h4 { font-size: 0.82rem; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-            .mini-info p  { font-size: 0.72rem; color: var(--muted); }
-            .mini-stars   { color: var(--gold); font-size: 0.72rem; }
 
             /* ===== COURSES ===== */
             .courses {
@@ -417,13 +531,35 @@
                 align-items: center;
                 justify-content: center;
                 font-size: 3rem;
+                overflow: hidden;
+                position: relative;
             }
-            .th1 { background: linear-gradient(135deg, #1E0A4A, #6C3FC5); }
-            .th2 { background: linear-gradient(135deg, #3A1A7A, #9B72E8); }
-            .th3 { background: linear-gradient(135deg, #4E2C96, #D4A843); }
-            .th4 { background: linear-gradient(135deg, #1A0D35, #5B2DC5); }
+            .course-thumb img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+            .th1 {
+                background: linear-gradient(135deg, #1E0A4A, #6C3FC5);
+            }
+            .th2 {
+                background: linear-gradient(135deg, #3A1A7A, #9B72E8);
+            }
+            .th3 {
+                background: linear-gradient(135deg, #4E2C96, #D4A843);
+            }
+            .th4 {
+                background: linear-gradient(135deg, #1A0D35, #5B2DC5);
+            }
 
-            .course-body { padding: 16px 18px 18px; }
+            .course-body {
+                padding: 16px 18px 18px;
+            }
 
             .course-org {
                 font-size: 0.72rem;
@@ -449,9 +585,16 @@
                 font-size: 0.78rem;
             }
 
-            .course-stars { color: var(--gold); }
-            .course-score { font-weight: 700; color: var(--text); }
-            .course-count { color: var(--muted); }
+            .course-stars {
+                color: var(--gold);
+            }
+            .course-score {
+                font-weight: 700;
+                color: var(--text);
+            }
+            .course-count {
+                color: var(--muted);
+            }
 
             .course-tag {
                 display: inline-block;
@@ -485,7 +628,9 @@
                 display: block;
                 margin-bottom: 10px;
             }
-            .footer-brand-text span { color: var(--gold); }
+            .footer-brand-text span {
+                color: var(--gold);
+            }
 
             .footer-desc {
                 font-size: 0.875rem;
@@ -494,7 +639,10 @@
                 margin-bottom: 20px;
             }
 
-            .footer-social { display: flex; gap: 10px; }
+            .footer-social {
+                display: flex;
+                gap: 10px;
+            }
             .footer-social a {
                 width: 34px;
                 height: 34px;
@@ -532,7 +680,9 @@
                 margin-bottom: 10px;
                 transition: color 0.15s;
             }
-            .footer-col a:hover { color: var(--gold); }
+            .footer-col a:hover {
+                color: var(--gold);
+            }
 
             .footer-bottom {
                 border-top: 1px solid rgba(255,255,255,0.08);
@@ -546,27 +696,50 @@
 
             /* ===== ANIMATIONS ===== */
             @keyframes fadeUp {
-                from { opacity: 0; transform: translateY(28px); }
-                to   { opacity: 1; transform: translateY(0); }
+                from {
+                    opacity: 0;
+                    transform: translateY(28px);
+                }
+                to   {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
             }
 
             /* ===== RESPONSIVE ===== */
             @media (max-width: 1100px) {
-                .course-grid { grid-template-columns: repeat(2, 1fr); }
+                .course-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
             }
             @media (max-width: 900px) {
-                .hero { flex-direction: column; padding: 48px 24px 0; }
-                .hero-right { flex: none; width: 100%; }
-                .courses, footer { padding: 48px 24px; }
-                .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-                .navbar-main { padding: 0 20px; }
-                .search-bar { display: none; }
+                .hero {
+                    flex-direction: column;
+                    padding: 48px 24px 0;
+                }
+                .hero-right {
+                    flex: none;
+                    width: 100%;
+                }
+                .courses, footer {
+                    padding: 48px 24px;
+                }
+                .footer-grid {
+                    grid-template-columns: 1fr;
+                    gap: 32px;
+                }
+                .navbar-main {
+                    padding: 0 20px;
+                }
+                .search-bar {
+                    display: none;
+                }
             }
         </style>
     </head>
     <body>
         <c:if test="${empty sessionScope.user}">
-            <c:redirect url="login.jsp"/>
+            <jsp:forward page="login.jsp"/>
         </c:if>
 
         <!-- NAVBAR -->
@@ -589,12 +762,12 @@
                 </form>
 
                 <c:choose>
-                    <c:when test="${not empty user}">
+                    <c:when test="${not empty sessionScope.user}">
                         <div class="user-menu" onclick="toggleDropdown()">
                             <div class="user-avatar">
-                                ${fn:substring(user.userName, 0, 1)}
+                                ${fn:substring(user.fullname, 0, 1)}
                             </div>
-                            <span class="user-name">${user.userName}</span>
+                            <span class="user-name">${sessionScope.user.fullname}</span>
                             <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6); font-size:0.75rem;"></i>
                         </div>
                         <div class="dropdown-menu-custom" id="userDropdown">
@@ -620,13 +793,16 @@
         <!-- HERO -->
         <div class="hero">
             <div class="hero-content">
-                <c:if test="${not empty user}">
+                <c:if test="${not empty sessionScope.user}">
                     <div class="welcome-badge">
                         <i class="bi bi-hand-wave" style="color:var(--gold);"></i>
-                        Chào mừng trở lại, <strong>${user.userName}</strong>!
+                        Chào mừng trở lại, <strong>${user.fullname}</strong>!
                     </div>
                 </c:if>
+
+                <!-- Eyebrow giờ căn trái nhờ align-self: flex-start trong .hero-content flex column -->
                 <div class="hero-eyebrow">✦ Nền tảng học trực tuyến hàng đầu</div>
+
                 <h1>Chinh phục<br>tri thức, <em>định hình</em><br>tương lai</h1>
                 <p>Hàng nghìn khóa học từ các chuyên gia hàng đầu đang chờ bạn. Học bất cứ lúc nào, bất cứ nơi đâu.</p>
                 <div class="hero-actions">
@@ -639,149 +815,193 @@
                 </div>
             </div>
 
+            <!-- INSTRUCTOR PANEL (thay thế floating-cards) -->
             <div class="hero-right">
-                <div class="floating-cards">
-                    <div class="mini-card">
-                        <div class="mini-icon bg-pur">🤖</div>
-                        <div class="mini-info">
-                            <h4>Machine Learning A-Z</h4>
-                            <p><span class="mini-stars">★★★★★</span> 4.9 · 125K học viên</p>
-                        </div>
+                <div class="instructor-panel">
+                    <div class="instructor-panel-title">
+                        <i class="bi bi-mortarboard-fill"></i> Giảng viên nổi bật
                     </div>
-                    <div class="mini-card">
-                        <div class="mini-icon bg-gld">🎨</div>
-                        <div class="mini-info">
-                            <h4>UI/UX Design Masterclass</h4>
-                            <p><span class="mini-stars">★★★★★</span> 4.8 · 89K học viên</p>
+
+                    <!-- Giảng viên 1 -->
+                    <div class="instructor-card">
+                        <img class="instructor-avatar" src="${pageContext.request.contextPath}/img/instructors/gv1t.jpg" alt="Lê Hoàng Khang"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="instructor-avatar-placeholder av1" style="display:none;">LHK</div>
+                        <div class="instructor-info">
+                            <h4>Lê Hoàng Khang</h4>
+                            <div class="ins-subject">Machine Learning · AI</div>
+                            <div class="ins-meta">
+                                <span class="ins-stars">★★★★★</span>
+                                <span>4.9</span>
+                                <span>· 125K học viên</span>
+                            </div>
                         </div>
+                        <span class="ins-badge">Top GV</span>
                     </div>
-                    <div class="mini-card">
-                        <div class="mini-icon bg-grn">📊</div>
-                        <div class="mini-info">
-                            <h4>Python for Data Science</h4>
-                            <p><span class="mini-stars">★★★★½</span> 4.7 · 240K học viên</p>
+
+                    <!-- Giảng viên 2 -->
+                    <div class="instructor-card">
+                        <img class="instructor-avatar" src="${pageContext.request.contextPath}/img/instructors/gv2.jpg" alt="Trần Lê Phương Uyên"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="instructor-avatar-placeholder av1" style="display:none;">PU</div>
+                        <div class="instructor-info">
+                            <h4>Trần Lê Phương Uyên</h4>
+                            <div class="ins-subject">UI/UX Design</div>
+                            <div class="ins-meta">
+                                <span class="ins-stars">★★★★★</span>
+                                <span>4.9</span>
+                                <span>· 89K học viên</span>
+                            </div>
                         </div>
+                        <span class="ins-badge">Mới nổi</span>
+                    </div>
+
+                    <!-- Giảng viên 3 -->
+                    <div class="instructor-card">
+                        <img class="instructor-avatar" src="${pageContext.request.contextPath}/img/instructors/gv3.jpg" alt="Nguyễn Ngọc Huyền Diệu"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="instructor-avatar-placeholder av1" style="display:none;">HD</div>
+                        <div class="instructor-info">
+                            <h4>Nguyễn Ngọc Huyền Diệu</h4>
+                            <div class="ins-subject">Data Science(PY)</div>
+                            <div class="ins-meta">
+                                <span class="ins-stars">★★★★½</span>
+                                <span>4.7</span>
+                                <span>· 240K học viên</span>
+                            </div>
+                        </div>
+                        <span class="ins-badge">Bán chạy</span>
+
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- POPULAR COURSES -->
-        <section class="courses">
-            <div class="section-eyebrow">Nổi bật</div>
-            <div class="section-title">Khóa học được yêu thích nhất</div>
-            <p class="section-sub">Hàng triệu học viên đang theo học các khóa học này</p>
+    <!-- POPULAR COURSES -->
+    <section class="courses">
+        <div class="section-eyebrow">Nổi bật</div>
+        <div class="section-title">Khóa học được yêu thích nhất</div>
+        <p class="section-sub">Hàng triệu học viên đang theo học các khóa học này</p>
 
-            <div class="course-grid">
-                <a href="#" class="course-card">
-                    <div class="course-thumb th1">🤖</div>
-                    <div class="course-body">
-                        <div class="course-org">DeepLearning.AI</div>
-                        <h3>Machine Learning Specialization</h3>
-                        <div class="course-meta">
-                            <span class="course-stars">★★★★★</span>
-                            <span class="course-score">4.9</span>
-                            <span class="course-count">(125K)</span>
-                        </div>
-                        <span class="course-tag">Dành cho người mới</span>
+        <div class="course-grid">
+            <a href="#" class="course-card">
+                <div class="course-thumb th1">
+                    <img src="${pageContext.request.contextPath}/img/courses/course1t.jpg" alt="Machine Learning" onerror="this.style.display='none';">
+                </div>
+                <div class="course-body">
+                    <div class="course-org">DeepLearning.AI</div>
+                    <h3>Machine Learning Specialization</h3>
+                    <div class="course-meta">
+                        <span class="course-stars">★★★★★</span>
+                        <span class="course-score">4.9</span>
+                        <span class="course-count">(125K)</span>
                     </div>
-                </a>
-                <a href="#" class="course-card">
-                    <div class="course-thumb th2">🐍</div>
-                    <div class="course-body">
-                        <div class="course-org">Đại học Bách Khoa</div>
-                        <h3>Python cho Khoa học Dữ liệu</h3>
-                        <div class="course-meta">
-                            <span class="course-stars">★★★★★</span>
-                            <span class="course-score">4.8</span>
-                            <span class="course-count">(240K)</span>
-                        </div>
-                        <span class="course-tag">Nhiều người học nhất</span>
+                    <span class="course-tag">Dành cho người mới</span>
+                </div>
+            </a>
+            <a href="#" class="course-card">
+                <div class="course-thumb th2">
+                    <img src="${pageContext.request.contextPath}/img/courses/cours2.jpg" alt="Python Data Science" onerror="this.style.display='none';">
+                </div>
+                <div class="course-body">
+                    <div class="course-org">Đại học Bách Khoa</div>
+                    <h3>Python cho Khoa học Dữ liệu</h3>
+                    <div class="course-meta">
+                        <span class="course-stars">★★★★★</span>
+                        <span class="course-score">4.8</span>
+                        <span class="course-count">(240K)</span>
                     </div>
-                </a>
-                <a href="#" class="course-card">
-                    <div class="course-thumb th3">🎨</div>
-                    <div class="course-body">
-                        <div class="course-org">Google · UX Design</div>
-                        <h3>Google UX Design Professional</h3>
-                        <div class="course-meta">
-                            <span class="course-stars">★★★★½</span>
-                            <span class="course-score">4.7</span>
-                            <span class="course-count">(89K)</span>
-                        </div>
-                        <span class="course-tag">Chứng chỉ chuyên nghiệp</span>
+                    <span class="course-tag">Nhiều người học nhất</span>
+                </div>
+            </a>
+            <a href="#" class="course-card">
+                <div class="course-thumb th3">
+                    <img src="${pageContext.request.contextPath}/img/courses/course3.jpg" alt="UX Design" onerror="this.style.display='none';">
+                </div>
+                <div class="course-body">
+                    <div class="course-org">Google · UX Design</div>
+                    <h3>Google UX Design Professional</h3>
+                    <div class="course-meta">
+                        <span class="course-stars">★★★★½</span>
+                        <span class="course-score">4.7</span>
+                        <span class="course-count">(89K)</span>
                     </div>
-                </a>
-                <a href="#" class="course-card">
-                    <div class="course-thumb th4">📈</div>
-                    <div class="course-body">
-                        <div class="course-org">IBM · Data Science</div>
-                        <h3>IBM Data Science Professional</h3>
-                        <div class="course-meta">
-                            <span class="course-stars">★★★★★</span>
-                            <span class="course-score">4.6</span>
-                            <span class="course-count">(67K)</span>
-                        </div>
-                        <span class="course-tag">Cầu nghề cao</span>
+                    <span class="course-tag">Chứng chỉ chuyên nghiệp</span>
+                </div>
+            </a>
+            <a href="#" class="course-card">
+                <div class="course-thumb th4">
+                    <img src="${pageContext.request.contextPath}/img/courses/course4.jpg" alt="Data Science" onerror="this.style.display='none';">
+                </div>
+                <div class="course-body">
+                    <div class="course-org">IBM · Data Science</div>
+                    <h3>IBM Data Science Professional</h3>
+                    <div class="course-meta">
+                        <span class="course-stars">★★★★★</span>
+                        <span class="course-score">4.6</span>
+                        <span class="course-count">(67K)</span>
                     </div>
-                </a>
-            </div>
-        </section>
+                    <span class="course-tag">Cầu nghề cao</span>
+                </div>
+            </a>
+        </div>
+    </section>
 
-        <!-- FOOTER -->
-        <footer>
-            <div class="footer-grid">
-                <div>
-                    <span class="footer-brand-text">KKK<span>Academy</span></span>
-                    <p class="footer-desc">Nền tảng học trực tuyến hàng đầu, kết nối học viên với kiến thức và cơ hội nghề nghiệp tốt nhất.</p>
-                    <div class="footer-social">
-                        <a href="#"><i class="bi bi-facebook"></i></a>
-                        <a href="#"><i class="bi bi-youtube"></i></a>
-                        <a href="#"><i class="bi bi-linkedin"></i></a>
-                        <a href="#"><i class="bi bi-instagram"></i></a>
-                    </div>
-                </div>
-                <div class="footer-col">
-                    <h4>Công ty</h4>
-                    <a href="#">Về chúng tôi</a>
-                    <a href="#">Blog</a>
-                    <a href="#">Tuyển dụng</a>
-                    <a href="#">Báo chí</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Cộng đồng</h4>
-                    <a href="#">Học viên</a>
-                    <a href="#">Giảng viên</a>
-                    <a href="#">Đối tác</a>
-                    <a href="#">Diễn đàn</a>
-                </div>
-                <div class="footer-col">
-                    <h4>Hỗ trợ</h4>
-                    <a href="#">Trung tâm trợ giúp</a>
-                    <a href="#">Liên hệ</a>
-                    <a href="#">Điều khoản</a>
-                    <a href="#">Chính sách</a>
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <span class="footer-brand-text">KKK<span>Academy</span></span>
+                <p class="footer-desc">Nền tảng học trực tuyến hàng đầu, kết nối học viên với kiến thức và cơ hội nghề nghiệp tốt nhất.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-youtube"></i></a>
+                    <a href="#"><i class="bi bi-linkedin"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <span>© 2026 KKKAcademy. All rights reserved.</span>
-                <span>Được làm với ❤️ tại Việt Nam</span>
+            <div class="footer-col">
+                <h4>Công ty</h4>
+                <a href="#">Về chúng tôi</a>
+                <a href="#">Blog</a>
+                <a href="#">Tuyển dụng</a>
+                <a href="#">Báo chí</a>
             </div>
-        </footer>
+            <div class="footer-col">
+                <h4>Cộng đồng</h4>
+                <a href="#">Học viên</a>
+                <a href="#">Giảng viên</a>
+                <a href="#">Đối tác</a>
+                <a href="#">Diễn đàn</a>
+            </div>
+            <div class="footer-col">
+                <h4>Hỗ trợ</h4>
+                <a href="#">Trung tâm trợ giúp</a>
+                <a href="#">Liên hệ</a>
+                <a href="#">Điều khoản</a>
+                <a href="#">Chính sách</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2026 KKKAcademy. All rights reserved.</span>
+            <span>Được làm với ❤️ tại Việt Nam</span>
+        </div>
+    </footer>
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            function toggleDropdown() {
-                const dd = document.getElementById('userDropdown');
-                dd.classList.toggle('show');
-            }
-            document.addEventListener('click', function (e) {
-                const menu = document.querySelector('.user-menu');
-                const dd = document.getElementById('userDropdown');
-                if (dd && menu && !menu.contains(e.target) && !dd.contains(e.target)) {
-                    dd.classList.remove('show');
-                }
-            });
-        </script>
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+                            function toggleDropdown() {
+                                const dd = document.getElementById('userDropdown');
+                                dd.classList.toggle('show');
+                            }
+                            document.addEventListener('click', function (e) {
+                                const menu = document.querySelector('.user-menu');
+                                const dd = document.getElementById('userDropdown');
+                                if (dd && menu && !menu.contains(e.target) && !dd.contains(e.target)) {
+                                    dd.classList.remove('show');
+                                }
+                            });
+    </script>
+</body>
 </html>

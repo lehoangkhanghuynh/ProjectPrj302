@@ -34,35 +34,33 @@ public class loginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
-        String url = "";
 
-        if (session.getAttribute("user") == null) {
+        String userName = request.getParameter("userName");
+        String password = request.getParameter("password");
 
-            String userName = request.getParameter("userName");
-            String password = request.getParameter("password");
-            UserDAO udao = new UserDAO();
-            UserDTO user = udao.login(userName, password);
-            if (user != null) {
+        System.out.println("=== LOGIN ===");
+        System.out.println("userName: " + userName);
+        System.out.println("password: " + password);
 
-                if (user.isStatus()) {
-                    url = "homePage.jsp";
-                    session.setAttribute("user", user);
-                } else {
-                    url = "login.jsp";
-                    request.setAttribute("message", "banned");
-                }
+        UserDAO udao = new UserDAO();
+        UserDTO user = udao.login(userName, password);
+
+        System.out.println("user: " + user);
+
+        if (user != null) {
+            if (user.isStatus()) {
+                session.setAttribute("user", user);
+                System.out.println("Login OK → redirect homePage");
+                response.sendRedirect(request.getContextPath() + "/homePage.jsp");
+                return;
             } else {
-                url = "login.jsp";
-                request.setAttribute("message", "Account or Password is Wrong!");
-
+                request.setAttribute("message", "banned");
             }
-
-        }else{
-            response.sendRedirect("homePage.jsp");
-            return;
+        } else {
+            request.setAttribute("message", "Account or Password is Wrong!");
         }
-        RequestDispatcher rd = request.getRequestDispatcher(url);
-        rd.forward(request, response);
+
+        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

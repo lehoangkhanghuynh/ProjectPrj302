@@ -12,17 +12,17 @@ public class UserDTO {
 
     private String userId;
     private String fullname;
-    private String Email;
-    private String Password;
-    private byte Role; //auto 3 student
+    private String email;
+    private String password;
+    private byte role; //auto 3 student
     private boolean status; //auto 3 student
 
-    public UserDTO(String userId, String fullname, String Email, String Password, byte Role, boolean status) {
+    public UserDTO(String userId, String fullname, String email, String password, byte role, boolean status) {
         this.userId = userId;
         this.fullname = fullname;
-        this.Email = Email;
-        this.Password = Password;
-        this.Role = Role;
+        this.email = email;
+        this.password = password;
+        this.role = role;
         this.status = status;
     }
 
@@ -37,37 +37,38 @@ public class UserDTO {
         this.userId = UserId;
     }
 
-    public String getfullname() {
+    public String getFullname() {
         return fullname;
     }
 
-    public void setfullname(String UserName) {
-        this.fullname = UserName;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
-    public void setEmail(String Email) {
-        this.Email = Email;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
-    public void setPassword(String Password) {
-        this.Password = Password;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public byte getRole() {
-        return Role;
+        return role;
     }
 
-    public void setRole(byte Role) {
-        this.Role = Role;
+    public void setRole(byte role) {
+        this.role = role;
     }
+
 
     public boolean isStatus() {
         return status;

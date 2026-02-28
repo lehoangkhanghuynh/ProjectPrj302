@@ -19,16 +19,11 @@ public class mainController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         response.setContentType("text/html;charset=UTF-8");
 
         String action = request.getParameter("action");
         String url = "login.jsp";
-
-        if (action == null) {
-            url = "login.jsp";
-        } // ================= LOGIN =================
-        else if (action.equals("login")) {
+        if (action.equals("login")) {
             url = "loginController";
         } // ================= LOGOUT =================
         else if (action.equals("logout")) {
@@ -37,7 +32,7 @@ public class mainController extends HttpServlet {
         else if (action.equals("AddCourse")) {
             url = "addCourse.jsp";
         } else if (action.equals("RegisterCourse")) {
-            url = "mainController?action=ViewCourse";
+            url = "viewCourseController";
         } else if (action.equals("ExploreCourse")) {
             url = "listCourse.jsp";
         } else if (action.equals("MyCourse")) {

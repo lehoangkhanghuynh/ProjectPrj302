@@ -98,33 +98,33 @@
         </style>
     </head>
 
-    <tbody>
+<tbody>
 
-        <c:choose>
-            <c:when test="${not empty COURSE_LIST}">
-                <c:forEach var="c" items="${COURSE_LIST}">
-                    <tr>
-                        <td>${c.courseId}</td>
-                        <td>${c.topic}</td>
-                        <td>${c.courseName}</td>
-                        <td class="fee">
-                            <fmt:formatNumber value="${c.fee}" type="number" pattern="#,###"/> VND
-                        </td>
-                        <td>
-                            <input type="submit" value="Buy"/>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </c:when>
-
-            <c:otherwise>
+    <c:choose>
+        <c:when test="${not empty COURSE_LIST}">
+            <c:forEach var="c" items="${COURSE_LIST}">
                 <tr>
-                    <td colspan="5" class="no-data">
-                        No course found
+                    <td>${c.courseId}</td>
+                    <td>${c.topic}</td>
+                    <td>${c.courseName}</td>
+                    <td class="fee">
+                        <fmt:formatNumber value="${c.fee}" type="number" pattern="#,###"/> VND
+                    </td>
+                    <td>
+                        <input type="submit" value="Buy"/>
                     </td>
                 </tr>
-            </c:otherwise>
-        </c:choose>
+            </c:forEach>
+        </c:when>
 
-    </tbody>
+        <c:otherwise>
+            <tr>
+                <td colspan="5" class="no-data">
+                    No course found
+                </td>
+            </tr>
+        </c:otherwise>
+    </c:choose>
+
+</tbody>
 </html>

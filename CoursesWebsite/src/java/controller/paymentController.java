@@ -78,4 +78,4 @@ public class paymentController extends HttpServlet {
             response.getWriter().print("{\"status\":\"error\",\"message\":\"Server error\"}");
         }
     }
-}
+} 
