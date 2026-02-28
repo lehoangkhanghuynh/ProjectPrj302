@@ -824,7 +824,7 @@
 
                     <!-- Giảng viên 1 -->
                     <div class="instructor-card">
-                        <img class="instructor-avatar" src="${pageContext.request.contextPath}/img/instructors/gv1t.jpg" alt="Lê Hoàng Khang"
+                        <img class="instructor-avatar" src="${pageContext.request.contextPath}/img/instructors/gv1t1.jpg" alt="Lê Hoàng Khang"
                              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="instructor-avatar-placeholder av1" style="display:none;">LHK</div>
                         <div class="instructor-info">
