@@ -15,7 +15,7 @@ public class UserDTO {
     private String email;
     private String password;
     private byte role; //auto 3 student
-    private boolean status; //auto 3 student
+    private boolean status;
     private double balance;
 
     public double getBalance() {
