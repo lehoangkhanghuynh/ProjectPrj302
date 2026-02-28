@@ -1103,14 +1103,6 @@
                             </div>
                             <div id="cpwErr" style="font-size:0.68rem;color:#CC0000;margin-top:2px;"></div>
                         </div>
-                        <div style="margin-bottom:11px;">
-                            <label class="f-label">Bạn là</label>
-                            <div class="role-grid">
-                                <div class="role-opt"><input type="radio" name="role" id="ro1" value="1" checked><label for="ro1"><span class="ri">🎓</span>Học viên</label></div>
-                                <div class="role-opt"><input type="radio" name="role" id="ro2" value="2"><label for="ro2"><span class="ri">👨‍🏫</span>Giảng viên</label></div>
-                                <div class="role-opt"><input type="radio" name="role" id="ro3" value="3"><label for="ro3"><span class="ri">🏢</span>Doanh nghiệp</label></div>
-                            </div>
-                        </div>
                         <div style="margin-bottom:16px;">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="terms" required>
