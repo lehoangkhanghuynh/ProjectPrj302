@@ -870,7 +870,7 @@
                                 <span>· 240K học viên</span>
                             </div>
                         </div>
-                        <span class="ins-badge">Bán chạy</span>
+                        <span class="ins-badge">Nhu Cầu Cao</span>
 
                     </div>
                 </div>
@@ -902,7 +902,7 @@
             </a>
             <a href="#" class="course-card">
                 <div class="course-thumb th2">
-                    <img src="${pageContext.request.contextPath}/img/courses/cours2.jpg" alt="Python Data Science" onerror="this.style.display='none';">
+                    <img src="${pageContext.request.contextPath}/img/courses/course2.jpg" alt="Python Data Science" onerror="this.style.display='none';">
                 </div>
                 <div class="course-body">
                     <div class="course-org">Đại học Bách Khoa</div>
@@ -932,7 +932,7 @@
             </a>
             <a href="#" class="course-card">
                 <div class="course-thumb th4">
-                    <img src="${pageContext.request.contextPath}/img/courses/course4.jpg" alt="Data Science" onerror="this.style.display='none';">
+                    <img src="${pageContext.request.contextPath}/img/courses/course4t.jpg" alt="Data Science" onerror="this.style.display='none';">
                 </div>
                 <div class="course-body">
                     <div class="course-org">IBM · Data Science</div>
