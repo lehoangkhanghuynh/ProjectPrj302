@@ -454,11 +454,16 @@
     <div class="filter-bar">
         <span class="filter-label"><i class="bi bi-funnel"></i> Lọc:</span>
         <span class="filter-chip active" onclick="filterByTopic(this, '')">Tất cả</span>
-        <span class="filter-chip" onclick="filterByTopic(this, 'AI')">🤖 AI & ML</span>
-        <span class="filter-chip" onclick="filterByTopic(this, 'Data')">📊 Data Science</span>
-        <span class="filter-chip" onclick="filterByTopic(this, 'Design')">🎨 Design</span>
-        <span class="filter-chip" onclick="filterByTopic(this, 'Web')">💻 Web Dev</span>
-        <span class="filter-chip" onclick="filterByTopic(this, 'Business')">💼 Business</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'ai')">🤖 AI & ML</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'data')">📊 Data Science</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'web')">💻 Web Dev</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'design')">🎨 Design</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'business')">💼 Business</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'mobile')">📱 Mobile</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'cloud')">☁️ Cloud</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'security')">🔐 Security</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'language')">🌐 Ngôn ngữ</span>
+        <span class="filter-chip" onclick="filterByTopic(this, 'programming')">⌨️ Lập trình</span>
     </div>
 
     <!-- MAIN CONTENT -->
@@ -670,12 +675,53 @@
             }
         });
 
-        let currentTopic = '';
+        // Smart topic mapping: từ khóa → nhóm filter
+        const TOPIC_MAP = {
+            ai:       ['ai', 'machine learning', 'ml', 'deep learning', 'neural', 'nlp', 'computer vision',
+                       'tensorflow', 'pytorch', 'chatgpt', 'llm', 'generative', 'prompt'],
+            data:     ['data', 'python', 'pandas', 'sql', 'analytics', 'statistics', 'tableau',
+                       'power bi', 'excel', 'bi', 'hadoop', 'spark', 'etl'],
+            web:      ['web', 'html', 'css', 'javascript', 'js', 'react', 'vue', 'angular',
+                       'nodejs', 'php', 'laravel', 'django', 'flask', 'frontend', 'backend',
+                       'fullstack', 'typescript', 'next.js', 'api', 'rest', 'java'],
+            design:   ['design', 'ui', 'ux', 'figma', 'photoshop', 'illustrator', 'graphic',
+                       'adobe', 'canva', 'sketch', 'prototype', 'wireframe'],
+            mobile:   ['mobile', 'android', 'ios', 'flutter', 'react native', 'swift', 'kotlin', 'app'],
+            cloud:    ['cloud', 'aws', 'azure', 'gcp', 'google cloud', 'devops', 'docker',
+                       'kubernetes', 'ci/cd', 'linux', 'server', 'network'],
+            security: ['security', 'cybersecurity', 'hacking', 'ethical', 'pentest', 'firewall',
+                       'encryption', 'blockchain', 'crypto'],
+            language: ['english', 'tiếng anh', 'giao tiếp', 'ielts', 'toeic', 'toefl',
+                       'japanese', 'tiếng nhật', 'korean', 'tiếng hàn', 'chinese', 'tiếng trung',
+                       'french', 'tiếng pháp', 'german', 'tiếng đức', 'spanish', 'tiếng tây ban nha',
+                       'language', 'ngôn ngữ', 'communication', 'speaking', 'writing', 'grammar'],
+            programming: ['java', 'c++', 'c#', 'golang', 'go lang', 'rust', 'ruby', 'scala',
+                          'kotlin', 'swift', 'algorithm', 'data structure', 'cấu trúc dữ liệu',
+                          'lập trình', 'programming', 'oop', 'design pattern', 'clean code'],
+            business: ['business', 'marketing', 'management', 'finance', 'accounting', 'hr',
+                       'leadership', 'project management', 'scrum', 'agile', 'pmp', 'mba'],
+        };
 
-        function filterByTopic(el, topic) {
+        function getTopicGroup(rawTopic) {
+            const t = (rawTopic || '').toLowerCase();
+            for (const [group, keywords] of Object.entries(TOPIC_MAP)) {
+                if (keywords.some(kw => t.includes(kw))) return group;
+            }
+            return t; // fallback: chính tên topic
+        }
+
+        // Gán data-group cho mỗi card sau khi load
+        document.querySelectorAll('.course-card-full').forEach(card => {
+            const raw = card.dataset.topic || '';
+            card.dataset.group = getTopicGroup(raw);
+        });
+
+        let currentGroup = '';
+
+        function filterByTopic(el, group) {
             document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
-            currentTopic = topic;
+            currentGroup = group;
             applyFilters();
         }
 
@@ -686,11 +732,14 @@
             const cards = document.querySelectorAll('.course-card-full');
             let visible = 0;
             cards.forEach(card => {
-                const name = card.dataset.name?.toLowerCase() || '';
-                const topic = card.dataset.topic?.toLowerCase() || '';
+                const name  = (card.dataset.name  || '').toLowerCase();
+                const topic = (card.dataset.topic || '').toLowerCase();
+                const group = (card.dataset.group || '').toLowerCase();
+
                 const matchSearch = !search || name.includes(search) || topic.includes(search);
-                const matchTopic = !currentTopic || topic.includes(currentTopic.toLowerCase());
-                if (matchSearch && matchTopic) {
+                const matchGroup  = !currentGroup || group === currentGroup;
+
+                if (matchSearch && matchGroup) {
                     card.style.display = '';
                     visible++;
                 } else {
