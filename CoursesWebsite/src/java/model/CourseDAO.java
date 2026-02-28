@@ -26,11 +26,11 @@ public class CourseDAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                String id = rs.getString("courseId");
+                int id = rs.getInt("courseId");
                 String topic = rs.getString("topic");
                 String name = rs.getString("courseName");
                 double fee = rs.getDouble("fee");
-                int status = rs.getInt("status");
+                String status = rs.getString("status");
 
                 CourseDTO c = new CourseDTO(id, topic, name, fee, status);
                 result.add(c);
@@ -47,17 +47,17 @@ public class CourseDAO {
         ArrayList<CourseDTO> result = new ArrayList<>();
         try {
             Connection conn = DbiUtils.getConnection();
-            String sql = "SELECT * FROM Course WHERE status = 1 AND " + column + " LIKE ?";
+            String sql = "SELECT * FROM Course WHERE status = 'active' AND " + column + " LIKE ?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, "%" + value + "%");
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                String id = rs.getString("courseId");
+                int id = rs.getInt("courseId");
                 String topic = rs.getString("topic");
                 String name = rs.getString("courseName");
                 double fee = rs.getDouble("fee");
-                int status = rs.getInt("status");
+                String status = rs.getString("status");
 
                 CourseDTO c = new CourseDTO(id, topic, name, fee, status);
                 result.add(c);
@@ -92,14 +92,14 @@ public class CourseDAO {
         int result = 0;
         try {
             Connection conn = DbiUtils.getConnection();
-            String sql = "INSERT INTO Course VALUES(?,?,?,?,?,?)";
+            String sql = "INSERT INTO Course(topic, courseName, fee, status) VALUES(?,?,?,?)";
             PreparedStatement ps = conn.prepareStatement(sql);
 
-            ps.setString(1, c.getCourseId());
+            ps.setInt(1, c.getCourseId());
             ps.setString(2, c.getTopic());
             ps.setString(3, c.getCourseName());
             ps.setDouble(4, c.getFee());
-            ps.setInt(5, 1); // status mặc định active
+            ps.setString(5, "active"); // status mặc định active
 
             result = ps.executeUpdate();
 
@@ -128,8 +128,8 @@ public class CourseDAO {
             ps.setString(1, c.getTopic());
             ps.setString(2, c.getCourseName());
             ps.setDouble(3, c.getFee());
-            ps.setInt(4, c.getStatus());
-            ps.setString(5, c.getCourseId());
+            ps.setString(4, c.getStatus());
+            ps.setInt(5, c.getCourseId());
 
             result = ps.executeUpdate();
 
@@ -158,8 +158,8 @@ public class CourseDAO {
             ps.setString(1, c.getTopic());
             ps.setString(2, c.getCourseName());
             ps.setDouble(3, c.getFee());
-            ps.setInt(4, c.getStatus());
-            ps.setString(5, c.getCourseId());
+            ps.setString(4, c.getStatus());
+            ps.setInt(5, c.getCourseId());
 
             result = ps.executeUpdate();
 
@@ -216,17 +216,17 @@ public class CourseDAO {
         ArrayList<CourseDTO> list = new ArrayList<>();
         try {
             Connection conn = DbiUtils.getConnection();
-            String sql = "SELECT * FROM Course WHERE status = 1";
+            String sql = "SELECT * FROM Course WHERE status = 'active'";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 CourseDTO c = new CourseDTO(
-                        rs.getString("courseId"),
+                        rs.getInt("courseId"),
                         rs.getString("topic"),
                         rs.getString("courseName"),
                         rs.getDouble("fee"),
-                        rs.getInt("status")
+                        rs.getString("status")
                 );
                 list.add(c);
             }
@@ -247,7 +247,7 @@ public class CourseDAO {
             String sql = "SELECT c.courseId, c.topic, c.courseName, c.fee, c.status "
                     + "FROM Course c "
                     + "JOIN UserCourse uc ON c.courseId = uc.courseId "
-                    + "WHERE uc.userId = ? AND uc.status = 1";
+                    + "WHERE uc.userId = ? AND uc.status = active";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, userId);
@@ -256,11 +256,11 @@ public class CourseDAO {
 
             while (rs.next()) {
                 CourseDTO c = new CourseDTO(
-                        rs.getString("courseId"),
+                        rs.getInt("courseId"),
                         rs.getString("topic"),
                         rs.getString("courseName"),
                         rs.getDouble("fee"),
-                        rs.getInt("status")
+                        rs.getString("status")
                 );
                 list.add(c);
             }

@@ -23,21 +23,15 @@ public class mainController extends HttpServlet {
 
         String action = request.getParameter("action");
         String url = "login.jsp";
+
         if (action.equals("login")) {
             url = "loginController";
-        } // ================= LOGOUT =================
-        else if (action.equals("logout")) {
+        } else if (action.equals("logout")) {
             url = "logoutController";
-        } // ================= ADD COURSE (ADMIN) =================
-        else if (action.equals("AddCourse")) {
-            url = "addCourse.jsp";
-        } else if (action.equals("RegisterCourse")) {
-            url = "viewCourseController";
         } else if (action.equals("ExploreCourse")) {
-            url = "listCourse.jsp";
-        } else if (action.equals("MyCourse")) {
-            url = "myCourse.jsp";
+            url = "courseController";
         }
+
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);
     }
