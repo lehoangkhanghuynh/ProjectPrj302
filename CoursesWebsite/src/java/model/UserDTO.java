@@ -16,14 +16,24 @@ public class UserDTO {
     private String password;
     private byte role; //auto 3 student
     private boolean status; //auto 3 student
+    private double balance;
 
-    public UserDTO(String userId, String fullname, String email, String password, byte role, boolean status) {
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public UserDTO(String userId, String fullname, String email, String password, byte role, boolean status, double balance) {
         this.userId = userId;
         this.fullname = fullname;
         this.email = email;
         this.password = password;
         this.role = role;
         this.status = status;
+        this.balance = balance;
     }
 
     public UserDTO() {
@@ -69,7 +79,6 @@ public class UserDTO {
         this.role = role;
     }
 
-
     public boolean isStatus() {
         return status;
     }
@@ -77,6 +86,5 @@ public class UserDTO {
     public void setStatus(boolean status) {
         this.status = status;
     }
-
 
 }

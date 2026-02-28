@@ -30,6 +30,8 @@ public class mainController extends HttpServlet {
             url = "logoutController";
         } else if (action.equals("ExploreCourse")) {
             url = "courseController";
+        }else if (action.equals("enroll")){
+            url = "enrollController";
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);

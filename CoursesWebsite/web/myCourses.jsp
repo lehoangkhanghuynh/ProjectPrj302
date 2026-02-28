@@ -1,6 +1,6 @@
 <%-- 
-    Document   : courses
-    Created on : Feb 24, 2026, 12:17:59 AM
+    Document   : myCourses
+    Created on : Feb 28, 2026, 6:31:30 PM
     Author     : HOANG KHANG PC
 --%>
 
@@ -9,10 +9,9 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Khóa học</title>
+        <title>JSP Page</title>
     </head>
     <body>
-        <h1>Danh sách khóa học</h1>
-        
-    </body> 
+        <h1>My courses</h1>
+    </body>
 </html>

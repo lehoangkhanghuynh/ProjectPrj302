@@ -271,4 +271,17 @@ public class CourseDAO {
 
         return list;
     }
+
+    public double getCourseFee(int courseId) throws Exception {
+        String sql = "SELECT fee FROM Course WHERE courseId = ?";
+        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, courseId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("fee");
+            }
+        }
+        return 0;
+    }
 }

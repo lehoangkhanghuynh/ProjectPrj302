@@ -24,6 +24,18 @@
         <servlet-name>courseController</servlet-name>
         <servlet-class>controller.courseController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EnrollDAO</servlet-name>
+        <servlet-class>model.EnrollDAO</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>enrollController</servlet-name>
+        <servlet-class>controller.enrollController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>myCoursesController</servlet-name>
+        <servlet-class>controller.myCoursesController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -47,6 +59,18 @@
     <servlet-mapping>
         <servlet-name>courseController</servlet-name>
         <url-pattern>/courseController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EnrollDAO</servlet-name>
+        <url-pattern>/EnrollDAO</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>enrollController</servlet-name>
+        <url-pattern>/enrollController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>myCoursesController</servlet-name>
+        <url-pattern>/myCoursesController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
