@@ -370,7 +370,7 @@
 
             <!-- Card 2 -->
             <div class="instructor-card" data-field="web" data-name="Trần Lê Phương Uyên"
-                 data-img="img/instructors/instructor2.jpg" data-init="T" data-c1="#3A1A7A" data-c2="#9B72E8"
+                 data-img="img/instructors/gv2.jpg" data-init="T" data-c1="#3A1A7A" data-c2="#9B72E8"
                  data-bio="Chuyên gia React và Node.js với 9 năm kinh nghiệm. Lead developer tại Shopee Việt Nam."
                  data-role="Full-Stack Lead · Shopee" data-courses="12" data-students="18200" data-rating="4.8"
                  data-tags="React,Node.js,TypeScript,MongoDB"
