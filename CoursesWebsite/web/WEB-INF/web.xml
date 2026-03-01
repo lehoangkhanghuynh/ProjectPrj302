@@ -40,6 +40,10 @@
         <servlet-name>lessonController</servlet-name>
         <servlet-class>controller.lessonController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>videoUploadController</servlet-name>
+        <servlet-class>controller.videoUploadController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -79,6 +83,10 @@
     <servlet-mapping>
         <servlet-name>lessonController</servlet-name>
         <url-pattern>/lessonController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>videoUploadController</servlet-name>
+        <url-pattern>/videoUploadController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -14,7 +14,7 @@ public class LessonDAO {
     // Lấy tất cả lesson theo courseId
     public List<LessonDTO> getLessonsByCourse(int courseId) throws Exception {
         List<LessonDTO> list = new ArrayList<>();
-        String sql = "SELECT * FROM Lesson WHERE courseId = ? ORDER BY lessonId";
+        String sql = "SELECT * FROM Lessons WHERE courseId = ? ORDER BY lessonId";
         try (Connection con = DbiUtils.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, courseId);
@@ -35,7 +35,7 @@ public class LessonDAO {
 
     // Lấy 1 lesson theo lessonId
     public LessonDTO getLessonById(int lessonId) throws Exception {
-        String sql = "SELECT * FROM Lesson WHERE lessonId = ?";
+        String sql = "SELECT * FROM Lessons WHERE lessonId = ?";
         try (Connection con = DbiUtils.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, lessonId);
