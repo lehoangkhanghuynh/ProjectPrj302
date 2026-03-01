@@ -7,10 +7,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khóa học - KKKAcademy</title>
+    <title>Khóa học - DUK Academy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" type="favicon" href="img/page/favicon.jpg">
     <style>
         :root {
             --purple:      #6C3FC5;
@@ -173,7 +174,7 @@
 
     <!-- NAVBAR -->
     <nav class="navbar-main" style="position:relative;">
-        <a href="homePage.jsp" class="brand">KKK<span>Academy</span></a>
+        <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>
         <ul class="nav-links">
             <li><a href="homePage.jsp">Trang chủ</a></li>
             <li><a href="courseController?action=ExploreCourse" class="active">Khóa học</a></li>
@@ -204,9 +205,9 @@
                     </div>
                     <div class="dropdown-menu-custom" id="userDropdown">
                         <a href="#"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
-                        <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
+                        <a href="myCourses.jsp"><i class="bi bi-book"></i> Khóa học của tôi</a>
                         <a href="payment.jsp"><i class="bi bi-wallet2"></i> Nạp tiền</a>
-                        <a href="#"><i class="bi bi-award"></i> Chứng chỉ</a>
+                        <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
                         <a href="#"><i class="bi bi-gear"></i> Cài đặt</a>
                         <div class="divider-drop"></div>
                         <a href="mainController?action=logout" class="logout-link"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
@@ -274,7 +275,7 @@
                         <div class="mini-course-card">
                             <div class="mini-thumb bg1"><img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg" alt="${course.courseName}" onerror="this.style.display='none';"></div>
                             <div class="mini-info">
-                                <div class="mini-org"><i class="bi bi-building"></i> KKKAcademy</div>
+                                <div class="mini-org"><i class="bi bi-building"></i> DUK Academy</div>
                                 <div class="mini-name">${course.courseName}</div>
                                 <div class="mini-meta"><span class="mini-star">★★★★★</span><span>${course.topic}</span></div>
                             </div>
@@ -296,7 +297,7 @@
                         <div class="mini-course-card">
                             <div class="mini-thumb bg2"><img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg" alt="${course.courseName}" onerror="this.style.display='none';"></div>
                             <div class="mini-info">
-                                <div class="mini-org"><i class="bi bi-building"></i> KKKAcademy</div>
+                                <div class="mini-org"><i class="bi bi-building"></i> DUK Academy</div>
                                 <div class="mini-name">${course.courseName}</div>
                                 <div class="mini-meta"><span class="mini-star">★★★★★</span><span>${course.topic}</span></div>
                             </div>
@@ -318,7 +319,7 @@
                         <div class="mini-course-card">
                             <div class="mini-thumb bg3"><img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg" alt="${course.courseName}" onerror="this.style.display='none';"></div>
                             <div class="mini-info">
-                                <div class="mini-org"><i class="bi bi-building"></i> KKKAcademy</div>
+                                <div class="mini-org"><i class="bi bi-building"></i> DUK Academy</div>
                                 <div class="mini-name">${course.courseName}</div>
                                 <div class="mini-meta"><span class="mini-star">★★★★★</span><span>${course.topic}</span></div>
                             </div>
@@ -351,7 +352,7 @@
                                     <span class="card-topic-badge">${course.topic}</span>
                                 </div>
                                 <div class="card-body">
-                                    <div class="card-org">KKKAcademy</div>
+                                    <div class="card-org">DUK Academy</div>
                                     <div class="card-name">${course.courseName}</div>
                                     <div class="card-meta">
                                         <span class="card-stars">★★★★★</span>
@@ -430,8 +431,8 @@
     <!-- FOOTER -->
     <footer style="background: var(--purple-deep); padding: 32px 80px; margin-top: 40px;">
         <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.08); padding-top:20px;">
-            <span style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:#fff;">KKK<span style="color:var(--gold);">Academy</span></span>
-            <span style="font-size:0.78rem; color:rgba(255,255,255,0.35);">© 2026 KKKAcademy. All rights reserved.</span>
+            <span style="font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:#fff;">DUK<span style="color:var(--gold);">Academy</span></span>
+            <span style="font-size:0.78rem; color:rgba(255,255,255,0.35);">© 2026 DUK Academy. All rights reserved.</span>
         </div>
     </footer>
 

@@ -7,9 +7,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>${course.courseName} - KKKAcademy</title>
+        <title>${course.courseName} - DUK Academy</title>
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+        <link rel="icon" type="favicon" href="img/page/favicon.jpg">
+
         <style>
             :root {
                 --purple:      #7C4DFF;
@@ -33,7 +35,11 @@
                 --lesson-info-bg: #FFFFFF;
                 --video-bg:       #0F0720;
             }
-            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+            *, *::before, *::after {
+                box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
 
             body {
                 font-family: 'DM Sans', sans-serif;
@@ -66,8 +72,14 @@
                 text-decoration: none;
                 white-space: nowrap;
             }
-            .topbar-brand span { color: var(--gold); }
-            .topbar-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.18); }
+            .topbar-brand span {
+                color: var(--gold);
+            }
+            .topbar-divider {
+                width: 1px;
+                height: 24px;
+                background: rgba(255,255,255,0.18);
+            }
             .topbar-course {
                 font-size: 0.85rem;
                 font-weight: 600;
@@ -92,13 +104,27 @@
                 white-space: nowrap;
                 background: rgba(255,255,255,0.07);
             }
-            .topbar-back:hover { background: rgba(255,255,255,0.15); color: #fff; }
-            .topbar-progress { display: flex; align-items: center; gap: 10px; }
-            .progress-text { font-size: 0.75rem; color: rgba(255,255,255,0.6); white-space: nowrap; font-weight: 600; }
+            .topbar-back:hover {
+                background: rgba(255,255,255,0.15);
+                color: #fff;
+            }
+            .topbar-progress {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .progress-text {
+                font-size: 0.75rem;
+                color: rgba(255,255,255,0.6);
+                white-space: nowrap;
+                font-weight: 600;
+            }
             .progress-bar-wrap {
-                width: 130px; height: 6px;
+                width: 130px;
+                height: 6px;
                 background: rgba(255,255,255,0.12);
-                border-radius: 3px; overflow: hidden;
+                border-radius: 3px;
+                overflow: hidden;
             }
             .progress-bar-fill {
                 height: 100%;
@@ -108,7 +134,11 @@
             }
 
             /* ===== MAIN LAYOUT ===== */
-            .main-layout { display: flex; flex: 1; overflow: hidden; }
+            .main-layout {
+                display: flex;
+                flex: 1;
+                overflow: hidden;
+            }
 
             /* ===== VIDEO AREA ===== */
             .video-area {
@@ -118,23 +148,45 @@
                 overflow-y: auto;
                 background: var(--surface-main);
             }
-            .video-area::-webkit-scrollbar { width: 5px; }
-            .video-area::-webkit-scrollbar-thumb { background: #D1C4E9; border-radius: 3px; }
+            .video-area::-webkit-scrollbar {
+                width: 5px;
+            }
+            .video-area::-webkit-scrollbar-thumb {
+                background: #D1C4E9;
+                border-radius: 3px;
+            }
 
             /* VIDEO PLAYER */
-            .video-wrap { width: 100%; background: #000; position: relative; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
+            .video-wrap {
+                width: 100%;
+                background: #000;
+                position: relative;
+                box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+            }
             .video-wrap iframe, .video-wrap video {
-                width: 100%; aspect-ratio: 16/9;
-                display: block; border: none;
+                width: 100%;
+                aspect-ratio: 16/9;
+                display: block;
+                border: none;
             }
             .no-video {
-                width: 100%; aspect-ratio: 16/9;
+                width: 100%;
+                aspect-ratio: 16/9;
                 background: linear-gradient(135deg, #1E0A4A, #3A1A7A);
-                display: flex; flex-direction: column;
-                align-items: center; justify-content: center; gap: 12px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
             }
-            .no-video i { font-size: 3rem; color: rgba(255,255,255,0.2); }
-            .no-video span { font-size: 0.9rem; color: rgba(255,255,255,0.3); }
+            .no-video i {
+                font-size: 3rem;
+                color: rgba(255,255,255,0.2);
+            }
+            .no-video span {
+                font-size: 0.9rem;
+                color: rgba(255,255,255,0.3);
+            }
 
             /* LESSON INFO */
             .lesson-info {
@@ -150,12 +202,15 @@
                 letter-spacing: 2.5px;
                 color: var(--purple);
                 margin-bottom: 8px;
-                display: flex; align-items: center; gap: 6px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
             }
             .lesson-number::before {
                 content: '';
                 display: inline-block;
-                width: 18px; height: 2px;
+                width: 18px;
+                height: 2px;
                 background: var(--purple);
                 border-radius: 1px;
             }
@@ -167,14 +222,23 @@
                 margin-bottom: 14px;
                 line-height: 1.3;
             }
-            .lesson-meta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+            .lesson-meta {
+                display: flex;
+                align-items: center;
+                gap: 18px;
+                flex-wrap: wrap;
+            }
             .lesson-meta-item {
-                display: flex; align-items: center; gap: 6px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
                 font-size: 0.8rem;
                 color: var(--muted);
                 font-weight: 500;
             }
-            .lesson-meta-item i { color: var(--purple); }
+            .lesson-meta-item i {
+                color: var(--purple);
+            }
 
             /* CONTENT AREA */
             .content-area {
@@ -188,7 +252,9 @@
                 letter-spacing: 2.5px;
                 color: var(--purple-dark);
                 margin-bottom: 14px;
-                display: flex; align-items: center; gap: 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
             }
             .content-box {
                 background: #fff;
@@ -200,7 +266,11 @@
                 color: #3D2B6B;
                 box-shadow: 0 2px 12px rgba(124,77,255,0.05);
             }
-            .content-empty { color: #B0A0D0; font-style: italic; font-size: 0.875rem; }
+            .content-empty {
+                color: #B0A0D0;
+                font-style: italic;
+                font-size: 0.875rem;
+            }
 
             /* UPLOAD PANEL */
             .upload-panel {
@@ -217,38 +287,87 @@
                 letter-spacing: 2.5px;
                 color: #B8860B;
                 margin-bottom: 14px;
-                display: flex; align-items: center; gap: 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
             }
-            .upload-form { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-            .upload-file-wrap { position: relative; flex: 1; min-width: 200px; }
+            .upload-form {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                flex-wrap: wrap;
+            }
+            .upload-file-wrap {
+                position: relative;
+                flex: 1;
+                min-width: 200px;
+            }
             .upload-file-wrap input[type="file"] {
-                position: absolute; inset: 0; opacity: 0;
-                cursor: pointer; width: 100%;
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                cursor: pointer;
+                width: 100%;
             }
             .upload-file-btn {
-                display: flex; align-items: center; gap: 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
                 background: rgba(255,179,0,0.08);
                 border: 1px solid rgba(255,179,0,0.3);
-                border-radius: 8px; padding: 9px 16px;
-                font-size: 0.82rem; color: #7A6000;
-                cursor: pointer; white-space: nowrap;
-                overflow: hidden; text-overflow: ellipsis; width: 100%;
+                border-radius: 8px;
+                padding: 9px 16px;
+                font-size: 0.82rem;
+                color: #7A6000;
+                cursor: pointer;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 100%;
             }
             .upload-submit {
-                display: flex; align-items: center; gap: 6px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
                 background: linear-gradient(135deg, var(--gold), #E6A200);
                 color: #2D1B00;
-                border: none; border-radius: 8px; padding: 9px 22px;
-                font-size: 0.82rem; font-weight: 700;
-                cursor: pointer; font-family: 'DM Sans', sans-serif;
-                transition: all 0.15s; white-space: nowrap;
+                border: none;
+                border-radius: 8px;
+                padding: 9px 22px;
+                font-size: 0.82rem;
+                font-weight: 700;
+                cursor: pointer;
+                font-family: 'DM Sans', sans-serif;
+                transition: all 0.15s;
+                white-space: nowrap;
                 box-shadow: 0 3px 10px rgba(255,179,0,0.3);
             }
-            .upload-submit:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(255,179,0,0.45); }
-            .upload-progress { display: none; margin-top: 10px; }
-            .upload-bar { height: 4px; background: rgba(0,0,0,0.08); border-radius: 2px; overflow: hidden; }
-            .upload-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--purple-mid), var(--gold)); border-radius: 2px; transition: width 0.2s; }
-            .upload-status { font-size: 0.75rem; color: #8B7000; margin-top: 6px; }
+            .upload-submit:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 5px 16px rgba(255,179,0,0.45);
+            }
+            .upload-progress {
+                display: none;
+                margin-top: 10px;
+            }
+            .upload-bar {
+                height: 4px;
+                background: rgba(0,0,0,0.08);
+                border-radius: 2px;
+                overflow: hidden;
+            }
+            .upload-bar-fill {
+                height: 100%;
+                width: 0;
+                background: linear-gradient(90deg, var(--purple-mid), var(--gold));
+                border-radius: 2px;
+                transition: width 0.2s;
+            }
+            .upload-status {
+                font-size: 0.75rem;
+                color: #8B7000;
+                margin-top: 6px;
+            }
 
             /* ALERT */
             .alert {
@@ -257,10 +376,20 @@
                 border-radius: 10px;
                 font-size: 0.83rem;
                 font-weight: 600;
-                display: flex; align-items: center; gap: 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
-            .alert-success { background: #F0FFF4; border: 1px solid #6EE7B7; color: #065F46; }
-            .alert-error   { background: #FFF5F5; border: 1px solid #FCA5A5; color: #991B1B; }
+            .alert-success {
+                background: #F0FFF4;
+                border: 1px solid #6EE7B7;
+                color: #065F46;
+            }
+            .alert-error   {
+                background: #FFF5F5;
+                border: 1px solid #FCA5A5;
+                color: #991B1B;
+            }
 
             /* ===== NAV BUTTONS ===== */
             .lesson-nav {
@@ -273,13 +402,20 @@
 
             /* Previous button */
             .btn-nav {
-                display: flex; align-items: center; gap: 8px;
-                padding: 12px 24px; border-radius: 12px;
-                font-size: 0.88rem; font-weight: 700;
-                text-decoration: none; transition: all 0.18s;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 12px 24px;
+                border-radius: 12px;
+                font-size: 0.88rem;
+                font-weight: 700;
+                text-decoration: none;
+                transition: all 0.18s;
                 font-family: 'DM Sans', sans-serif;
-                border: none; cursor: pointer;
-                position: relative; overflow: hidden;
+                border: none;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
             }
             .btn-prev {
                 background: #fff;
@@ -315,17 +451,26 @@
                 transform: translateY(-2px);
                 box-shadow: 0 8px 28px rgba(124,77,255,0.55);
             }
-            .btn-next:hover::before { opacity: 1; }
+            .btn-next:hover::before {
+                opacity: 1;
+            }
 
             /* ✅ COMPLETE button — the star of the show */
             .btn-complete {
-                display: flex; align-items: center; gap: 10px;
-                padding: 13px 28px; border-radius: 12px;
-                font-size: 0.92rem; font-weight: 700;
-                text-decoration: none; transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 13px 28px;
+                border-radius: 12px;
+                font-size: 0.92rem;
+                font-weight: 700;
+                text-decoration: none;
+                transition: all 0.2s;
                 font-family: 'DM Sans', sans-serif;
-                border: none; cursor: pointer;
-                position: relative; overflow: hidden;
+                border: none;
+                cursor: pointer;
+                position: relative;
+                overflow: hidden;
 
                 background: linear-gradient(135deg, #FFB300 0%, #FF6F00 100%);
                 color: #fff;
@@ -333,8 +478,12 @@
                 animation: pulseGlow 2.4s ease-in-out infinite;
             }
             @keyframes pulseGlow {
-                0%, 100% { box-shadow: 0 5px 22px rgba(255,111,0,0.45); }
-                50%       { box-shadow: 0 8px 32px rgba(255,111,0,0.7), 0 0 0 4px rgba(255,179,0,0.18); }
+                0%, 100% {
+                    box-shadow: 0 5px 22px rgba(255,111,0,0.45);
+                }
+                50%       {
+                    box-shadow: 0 8px 32px rgba(255,111,0,0.7), 0 0 0 4px rgba(255,179,0,0.18);
+                }
             }
             .btn-complete::before {
                 content: '';
@@ -344,116 +493,231 @@
                 opacity: 0;
                 transition: opacity 0.2s;
             }
-            .btn-complete:hover { transform: translateY(-3px); }
-            .btn-complete:hover::before { opacity: 1; }
+            .btn-complete:hover {
+                transform: translateY(-3px);
+            }
+            .btn-complete:hover::before {
+                opacity: 1;
+            }
             .btn-complete .complete-star {
                 font-size: 1.1rem;
                 animation: spin 3s linear infinite;
             }
             @keyframes spin {
-                0%   { transform: rotate(0deg) scale(1); }
-                50%  { transform: rotate(180deg) scale(1.2); }
-                100% { transform: rotate(360deg) scale(1); }
+                0%   {
+                    transform: rotate(0deg) scale(1);
+                }
+                50%  {
+                    transform: rotate(180deg) scale(1.2);
+                }
+                100% {
+                    transform: rotate(360deg) scale(1);
+                }
             }
 
-            .btn-nav.disabled { opacity: 0.35; pointer-events: none; }
+            .btn-nav.disabled {
+                opacity: 0.35;
+                pointer-events: none;
+            }
 
             /* Spacer */
-            .nav-spacer { flex: 1; }
+            .nav-spacer {
+                flex: 1;
+            }
 
             /* ===== COMMENTS ===== */
-            .comments-section { padding: 0 36px 48px; background: var(--surface-main); }
+            .comments-section {
+                padding: 0 36px 48px;
+                background: var(--surface-main);
+            }
             .comments-header {
-                display: flex; align-items: center;
+                display: flex;
+                align-items: center;
                 justify-content: space-between;
-                margin-bottom: 20px; padding-top: 8px;
+                margin-bottom: 20px;
+                padding-top: 8px;
             }
             .comments-title {
-                font-size: 0.7rem; font-weight: 700;
-                text-transform: uppercase; letter-spacing: 2.5px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 2.5px;
                 color: var(--purple-dark);
-                display: flex; align-items: center; gap: 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
             }
             .comments-count {
-                font-size: 0.78rem; color: var(--muted);
+                font-size: 0.78rem;
+                color: var(--muted);
                 background: #EDE7FF;
-                padding: 3px 12px; border-radius: 20px;
+                padding: 3px 12px;
+                border-radius: 20px;
                 font-weight: 600;
             }
             .comment-form-wrap {
                 background: #fff;
                 border: 1px solid #EDE7FF;
                 border-radius: 14px;
-                padding: 20px; margin-bottom: 20px;
+                padding: 20px;
+                margin-bottom: 20px;
                 box-shadow: 0 2px 10px rgba(124,77,255,0.05);
             }
-            .comment-form-row { display: flex; gap: 12px; align-items: flex-start; }
+            .comment-form-row {
+                display: flex;
+                gap: 12px;
+                align-items: flex-start;
+            }
             .comment-avatar {
-                width: 38px; height: 38px; border-radius: 50%;
+                width: 38px;
+                height: 38px;
+                border-radius: 50%;
                 background: linear-gradient(135deg, var(--purple), var(--purple-mid));
-                display: flex; align-items: center; justify-content: center;
-                font-size: 0.85rem; font-weight: 700; color: #fff; flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.85rem;
+                font-weight: 700;
+                color: #fff;
+                flex-shrink: 0;
                 box-shadow: 0 2px 8px rgba(124,77,255,0.3);
             }
-            .comment-input-wrap { flex: 1; }
+            .comment-input-wrap {
+                flex: 1;
+            }
             .comment-textarea {
                 width: 100%;
                 background: #F7F4FF;
                 border: 1.5px solid #D1C4E9;
-                border-radius: 10px; padding: 12px 16px;
-                font-size: 0.88rem; color: #1A0A3A;
+                border-radius: 10px;
+                padding: 12px 16px;
+                font-size: 0.88rem;
+                color: #1A0A3A;
                 font-family: 'DM Sans', sans-serif;
-                resize: vertical; min-height: 80px;
-                outline: none; transition: border-color 0.15s;
+                resize: vertical;
+                min-height: 80px;
+                outline: none;
+                transition: border-color 0.15s;
             }
-            .comment-textarea:focus { border-color: var(--purple); background: #fff; }
-            .comment-textarea::placeholder { color: #B0A0D0; }
-            .comment-form-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
+            .comment-textarea:focus {
+                border-color: var(--purple);
+                background: #fff;
+            }
+            .comment-textarea::placeholder {
+                color: #B0A0D0;
+            }
+            .comment-form-actions {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 10px;
+            }
             .btn-comment-submit {
-                display: flex; align-items: center; gap: 6px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
                 background: linear-gradient(135deg, var(--purple), var(--purple-dark));
-                color: #fff; border: none; border-radius: 8px;
-                padding: 9px 20px; font-size: 0.82rem; font-weight: 700;
-                cursor: pointer; font-family: 'DM Sans', sans-serif;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 9px 20px;
+                font-size: 0.82rem;
+                font-weight: 700;
+                cursor: pointer;
+                font-family: 'DM Sans', sans-serif;
                 transition: all 0.15s;
                 box-shadow: 0 3px 10px rgba(124,77,255,0.3);
             }
-            .btn-comment-submit:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(124,77,255,0.45); }
+            .btn-comment-submit:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 5px 16px rgba(124,77,255,0.45);
+            }
 
-            .comment-list { display: flex; flex-direction: column; gap: 10px; }
+            .comment-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
             .comment-card {
-                display: flex; gap: 12px;
+                display: flex;
+                gap: 12px;
                 background: #fff;
                 border: 1px solid #EDE7FF;
-                border-radius: 12px; padding: 16px;
+                border-radius: 12px;
+                padding: 16px;
                 transition: all 0.15s;
                 box-shadow: 0 1px 6px rgba(124,77,255,0.04);
             }
-            .comment-card:hover { border-color: #C5B8F0; box-shadow: 0 3px 14px rgba(124,77,255,0.08); }
-            .comment-body { flex: 1; min-width: 0; }
-            .comment-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-            .comment-name { font-size: 0.82rem; font-weight: 700; color: #2D1B6B; }
-            .comment-time { font-size: 0.72rem; color: #B0A0D0; }
-            .comment-text { font-size: 0.875rem; line-height: 1.7; color: #3D2B6B; word-break: break-word; }
-            .btn-delete-comment {
-                background: none; border: none; cursor: pointer;
-                color: #C5B8F0; font-size: 0.78rem;
-                padding: 4px 8px; border-radius: 6px;
-                transition: all 0.15s;
-                display: flex; align-items: center; gap: 4px;
-                white-space: nowrap; font-family: 'DM Sans', sans-serif;
+            .comment-card:hover {
+                border-color: #C5B8F0;
+                box-shadow: 0 3px 14px rgba(124,77,255,0.08);
             }
-            .btn-delete-comment:hover { color: #E53935; background: #FFF5F5; }
-            .no-comments { text-align: center; padding: 40px 20px; }
-            .no-comments i { font-size: 2.2rem; color: #D1C4E9; display: block; margin-bottom: 10px; }
-            .no-comments p { font-size: 0.83rem; color: #B0A0D0; }
+            .comment-body {
+                flex: 1;
+                min-width: 0;
+            }
+            .comment-meta {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 8px;
+            }
+            .comment-name {
+                font-size: 0.82rem;
+                font-weight: 700;
+                color: #2D1B6B;
+            }
+            .comment-time {
+                font-size: 0.72rem;
+                color: #B0A0D0;
+            }
+            .comment-text {
+                font-size: 0.875rem;
+                line-height: 1.7;
+                color: #3D2B6B;
+                word-break: break-word;
+            }
+            .btn-delete-comment {
+                background: none;
+                border: none;
+                cursor: pointer;
+                color: #C5B8F0;
+                font-size: 0.78rem;
+                padding: 4px 8px;
+                border-radius: 6px;
+                transition: all 0.15s;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                white-space: nowrap;
+                font-family: 'DM Sans', sans-serif;
+            }
+            .btn-delete-comment:hover {
+                color: #E53935;
+                background: #FFF5F5;
+            }
+            .no-comments {
+                text-align: center;
+                padding: 40px 20px;
+            }
+            .no-comments i {
+                font-size: 2.2rem;
+                color: #D1C4E9;
+                display: block;
+                margin-bottom: 10px;
+            }
+            .no-comments p {
+                font-size: 0.83rem;
+                color: #B0A0D0;
+            }
 
             /* ===== SIDEBAR ===== */
             .sidebar {
-                width: var(--sidebar-w); flex-shrink: 0;
+                width: var(--sidebar-w);
+                flex-shrink: 0;
                 background: var(--surface-sidebar);
                 border-left: 1px solid #EDE7FF;
-                display: flex; flex-direction: column;
+                display: flex;
+                flex-direction: column;
                 overflow: hidden;
                 box-shadow: -4px 0 20px rgba(124,77,255,0.06);
             }
@@ -464,22 +728,46 @@
                 background: #fff;
             }
             .sidebar-title {
-                font-size: 0.7rem; font-weight: 700;
-                text-transform: uppercase; letter-spacing: 2.5px;
-                color: var(--purple); margin-bottom: 4px;
+                font-size: 0.7rem;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 2.5px;
+                color: var(--purple);
+                margin-bottom: 4px;
             }
-            .sidebar-count { font-size: 0.88rem; font-weight: 600; color: #2D1B6B; }
-            .lesson-list { overflow-y: auto; flex: 1; padding: 10px; }
-            .lesson-list::-webkit-scrollbar { width: 4px; }
-            .lesson-list::-webkit-scrollbar-thumb { background: #D1C4E9; border-radius: 2px; }
+            .sidebar-count {
+                font-size: 0.88rem;
+                font-weight: 600;
+                color: #2D1B6B;
+            }
+            .lesson-list {
+                overflow-y: auto;
+                flex: 1;
+                padding: 10px;
+            }
+            .lesson-list::-webkit-scrollbar {
+                width: 4px;
+            }
+            .lesson-list::-webkit-scrollbar-thumb {
+                background: #D1C4E9;
+                border-radius: 2px;
+            }
             .lesson-item {
-                display: flex; align-items: flex-start; gap: 12px;
-                padding: 12px 14px; border-radius: 10px;
-                text-decoration: none; color: #5E4B8B;
-                transition: all 0.15s; margin-bottom: 4px;
+                display: flex;
+                align-items: flex-start;
+                gap: 12px;
+                padding: 12px 14px;
+                border-radius: 10px;
+                text-decoration: none;
+                color: #5E4B8B;
+                transition: all 0.15s;
+                margin-bottom: 4px;
                 border: 1px solid transparent;
             }
-            .lesson-item:hover { background: #EDE7FF; color: #2D1B6B; }
+            .lesson-item:hover {
+                background: #EDE7FF;
+                color: #2D1B6B;
+            }
             .lesson-item.active {
                 background: linear-gradient(135deg, #EDE7FF, #E8E0FF);
                 border-color: #B39DDB;
@@ -487,42 +775,92 @@
                 box-shadow: 0 2px 10px rgba(124,77,255,0.1);
             }
             .lesson-num {
-                width: 28px; height: 28px; border-radius: 50%;
+                width: 28px;
+                height: 28px;
+                border-radius: 50%;
                 background: #EDE7FF;
-                display: flex; align-items: center; justify-content: center;
-                font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.72rem;
+                font-weight: 700;
+                flex-shrink: 0;
                 color: var(--purple);
             }
-            .lesson-item.active .lesson-num { background: var(--purple); color: #fff; }
-            .lesson-item-info { flex: 1; min-width: 0; }
+            .lesson-item.active .lesson-num {
+                background: var(--purple);
+                color: #fff;
+            }
+            .lesson-item-info {
+                flex: 1;
+                min-width: 0;
+            }
             .lesson-item-title {
-                font-size: 0.82rem; font-weight: 600; line-height: 1.4;
-                margin-bottom: 4px; white-space: nowrap;
-                overflow: hidden; text-overflow: ellipsis;
+                font-size: 0.82rem;
+                font-weight: 600;
+                line-height: 1.4;
+                margin-bottom: 4px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
             .lesson-item-dur {
-                font-size: 0.7rem; color: #B0A0D0;
-                display: flex; align-items: center; gap: 4px;
+                font-size: 0.7rem;
+                color: #B0A0D0;
+                display: flex;
+                align-items: center;
+                gap: 4px;
             }
-            .lesson-item.active .lesson-item-dur { color: #7C4DFF; }
+            .lesson-item.active .lesson-item-dur {
+                color: #7C4DFF;
+            }
             .lesson-play-icon {
-                color: var(--purple); font-size: 0.8rem;
-                flex-shrink: 0; margin-top: 6px;
-                opacity: 0; transition: opacity 0.15s;
+                color: var(--purple);
+                font-size: 0.8rem;
+                flex-shrink: 0;
+                margin-top: 6px;
+                opacity: 0;
+                transition: opacity 0.15s;
             }
-            .lesson-item:hover .lesson-play-icon, .lesson-item.active .lesson-play-icon { opacity: 1; }
-            .no-lesson { text-align: center; padding: 48px 20px; }
-            .no-lesson i { font-size: 2.5rem; color: #D1C4E9; margin-bottom: 12px; display: block; }
-            .no-lesson p { font-size: 0.85rem; color: #B0A0D0; }
+            .lesson-item:hover .lesson-play-icon, .lesson-item.active .lesson-play-icon {
+                opacity: 1;
+            }
+            .no-lesson {
+                text-align: center;
+                padding: 48px 20px;
+            }
+            .no-lesson i {
+                font-size: 2.5rem;
+                color: #D1C4E9;
+                margin-bottom: 12px;
+                display: block;
+            }
+            .no-lesson p {
+                font-size: 0.85rem;
+                color: #B0A0D0;
+            }
 
             @media (max-width: 768px) {
-                .main-layout { flex-direction: column; }
-                .sidebar { width: 100%; height: 280px; border-left: none; border-top: 1px solid #EDE7FF; }
-                .lesson-info, .content-area, .lesson-nav, .comments-section, .upload-panel, .alert {
-                    padding-left: 20px; padding-right: 20px;
+                .main-layout {
+                    flex-direction: column;
                 }
-                .topbar-progress { display: none; }
-                .upload-form { flex-direction: column; align-items: stretch; }
+                .sidebar {
+                    width: 100%;
+                    height: 280px;
+                    border-left: none;
+                    border-top: 1px solid #EDE7FF;
+                }
+                .lesson-info, .content-area, .lesson-nav, .comments-section, .upload-panel, .alert {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+                .topbar-progress {
+                    display: none;
+                }
+                .upload-form {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
             }
         </style>
     </head>
@@ -530,7 +868,7 @@
 
         <!-- TOPBAR -->
         <div class="topbar">
-            <a href="courseController?action=ExploreCourse" class="topbar-brand">KKK<span>Academy</span></a>
+            <a href="courseController?action=ExploreCourse" class="topbar-brand">DUK<span>Academy</span></a>
             <div class="topbar-divider"></div>
             <span class="topbar-course">${course.courseName}</span>
 
@@ -823,18 +1161,23 @@
             // ── Video Player ─────────────────────────────────────────────
             (function () {
                 var container = document.getElementById('videoContainer');
-                if (!container) return;
+                if (!container)
+                    return;
                 var videoUrl = container.getAttribute('data-video');
                 var ctx = container.getAttribute('data-ctx');
-                if (!videoUrl) return;
+                if (!videoUrl)
+                    return;
 
                 function getYouTubeId(url) {
                     var m = url.match(/[?&]v=([^&#]+)/);
-                    if (m) return m[1];
+                    if (m)
+                        return m[1];
                     m = url.match(/youtu\.be\/([^?&#]+)/);
-                    if (m) return m[1];
+                    if (m)
+                        return m[1];
                     m = url.match(/youtube\.com\/embed\/([^?&#]+)/);
-                    if (m) return m[1];
+                    if (m)
+                        return m[1];
                     return null;
                 }
 
@@ -842,12 +1185,12 @@
                 var ytId = getYouTubeId(videoUrl);
                 if (ytId) {
                     html = '<iframe src="https://www.youtube.com/embed/' + ytId +
-                           '?rel=0&modestbranding=1" style="width:100%;aspect-ratio:16/9;border:none;display:block;" ' +
-                           'allowfullscreen allow="autoplay; encrypted-media"></iframe>';
+                            '?rel=0&modestbranding=1" style="width:100%;aspect-ratio:16/9;border:none;display:block;" ' +
+                            'allowfullscreen allow="autoplay; encrypted-media"></iframe>';
                 } else {
                     var src = videoUrl.startsWith('http') ? videoUrl : ctx + '/' + videoUrl;
                     html = '<video controls style="width:100%;aspect-ratio:16/9;background:#000;display:block;">' +
-                           '<source src="' + src + '">Trình duyệt không hỗ trợ video.</video>';
+                            '<source src="' + src + '">Trình duyệt không hỗ trợ video.</video>';
                 }
                 container.innerHTML = html;
             })();
@@ -856,21 +1199,26 @@
             (function () {
                 var items = document.querySelectorAll('.lesson-item');
                 var total = items.length;
-                if (!total) return;
+                if (!total)
+                    return;
 
                 var currentIdx = 0;
                 items.forEach(function (item, i) {
-                    if (item.classList.contains('active')) currentIdx = i;
+                    if (item.classList.contains('active'))
+                        currentIdx = i;
                 });
 
                 var pct = Math.round(((currentIdx + 1) / total) * 100);
                 var fill = document.getElementById('progressFill');
                 var txt = document.getElementById('progressText');
-                if (fill) fill.style.width = pct + '%';
-                if (txt) txt.textContent = 'Bài ' + (currentIdx + 1) + ' / ' + total;
+                if (fill)
+                    fill.style.width = pct + '%';
+                if (txt)
+                    txt.textContent = 'Bài ' + (currentIdx + 1) + ' / ' + total;
 
                 var activeItem = document.querySelector('.lesson-item.active');
-                if (activeItem) activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                if (activeItem)
+                    activeItem.scrollIntoView({block: 'center', behavior: 'smooth'});
             })();
 
             // ── Upload UX ────────────────────────────────────────────────
@@ -885,7 +1233,8 @@
 
             function startUpload() {
                 var fileInput = document.getElementById('videoFile');
-                if (!fileInput.files || fileInput.files.length === 0) return;
+                if (!fileInput.files || fileInput.files.length === 0)
+                    return;
 
                 var progress = document.getElementById('uploadProgress');
                 var barFill = document.getElementById('uploadBarFill');
@@ -895,7 +1244,8 @@
                 var pct = 0;
                 var interval = setInterval(function () {
                     pct += Math.random() * 8;
-                    if (pct > 90) pct = 90;
+                    if (pct > 90)
+                        pct = 90;
                     barFill.style.width = pct + '%';
                     status.textContent = 'Đang upload... ' + Math.round(pct) + '%';
                 }, 300);
