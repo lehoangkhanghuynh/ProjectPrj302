@@ -222,7 +222,7 @@
                         </div>
                         <div class="dropdown-menu-custom" id="userDropdown">
                             <a href="myCourses"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
-                            <a href="mainController?action=MyCourse"><i class="bi bi-book"></i> Khóa học của tôi</a>
+                            <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
                             <a href="#"><i class="bi bi-award"></i> Chứng chỉ</a>
                             <a href="#"><i class="bi bi-gear"></i> Cài đặt</a>
                             <div class="divider-drop"></div>
@@ -254,7 +254,7 @@
                     <a href="mainController?action=ExploreCourse" class="btn-hero-primary">
                         <i class="bi bi-play-fill"></i> Khám phá khóa học
                     </a>
-                    <a href="mainController?action=MyCourse" class="btn-hero-secondary">
+                    <a href="myCourses" class="btn-hero-secondary">
                         <i class="bi bi-book"></i> Khóa học của tôi
                     </a>
                 </div>
