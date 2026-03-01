@@ -48,6 +48,14 @@
         <servlet-name>registerController</servlet-name>
         <servlet-class>controller.registerController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updateUserController</servlet-name>
+        <servlet-class>controller.updateUserController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>updatePasswordController</servlet-name>
+        <servlet-class>controller.updatePasswordController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -95,6 +103,14 @@
     <servlet-mapping>
         <servlet-name>registerController</servlet-name>
         <url-pattern>/registerController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateUserController</servlet-name>
+        <url-pattern>/updateUserController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updatePasswordController</servlet-name>
+        <url-pattern>/updatePasswordController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

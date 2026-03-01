@@ -765,7 +765,7 @@
                             <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6); font-size:0.75rem;"></i>
                         </div>
                         <div class="dropdown-menu-custom" id="userDropdown">
-                            <a href="myCourses"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
+                            <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
                             <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
                             <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
                             <a href="#"><i class="bi bi-gear"></i> Cài đặt</a>

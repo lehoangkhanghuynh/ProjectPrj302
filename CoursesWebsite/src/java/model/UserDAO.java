@@ -125,4 +125,34 @@ public class UserDAO {
             return ps.executeUpdate() > 0;
         }
     }
+
+    public boolean updateUser(String userId, String fullname, String email) throws Exception {
+        String sql = "UPDATE Users SET fullname=?, email=? WHERE userId=?";
+        int result = 0;
+        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, fullname);
+            ps.setString(2, email);
+            ps.setString(3, userId);
+            result = ps.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result > 0;
+    }
+
+    public boolean updatePassWord(String userId, String newPassword, String oldPassword) throws Exception {
+        String sql = "UPDATE Users SET password=? WHERE userId=? AND password=?";
+        int result = 0;
+        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newPassword);
+            ps.setString(2, userId);
+            ps.setString(3, oldPassword); // thêm tham số mật khẩu cũ
+            result = ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result > 0;
+    }
 }

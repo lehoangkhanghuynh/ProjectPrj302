@@ -35,6 +35,10 @@ public class mainController extends HttpServlet {
             url = "enrollController";
         } else if ("register".equals(action)) {
             url = "registerController";
+        }else if  (action.equals("updateUser")){
+            url = "updateUserController";
+        }else if (action.equals("updatePassword")){
+            url = "updatePasswordController";
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);
