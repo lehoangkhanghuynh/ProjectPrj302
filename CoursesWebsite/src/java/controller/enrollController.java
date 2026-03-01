@@ -74,9 +74,9 @@ public class enrollController extends HttpServlet {
             user.setBalance(balance - fee);
             session.setAttribute("user", user);
 
-            // ✅ Redirect về listCourse (servlet) để ENROLLED_IDS được load lại
+            // Redirect về listCourse (servlet) để ENROLLED_IDS được load lại
             // → nút sẽ tự đổi thành "Vào học"
-            response.sendRedirect("listCourse.jsp");
+            response.sendRedirect("lesson.jsp");
 
         } catch (Exception e) {
             e.printStackTrace();

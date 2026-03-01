@@ -177,7 +177,7 @@
         <ul class="nav-links">
             <li><a href="homePage.jsp">Trang chủ</a></li>
             <li><a href="courseController?action=ExploreCourse" class="active">Khóa học</a></li>
-            <li><a href="#">Giảng viên</a></li>
+            <li><a href="instructors.jsp">Giảng viên</a></li>
             <li><a href="#">Về chúng tôi</a></li>
         </ul>
         <div class="nav-right">
@@ -381,7 +381,7 @@
                                                 <span class="card-price ${course.fee == 0 ? 'free' : ''}">
                                                     <c:choose>
                                                         <c:when test="${course.fee == 0}">Miễn phí</c:when>
-                                                        <c:otherwise><fmt:formatNumber value="${course.fee}" type="number"/> ₫</c:otherwise>
+                                                        <c:otherwise><fmt:formatNumber value="${course.fee}" type="number"/> VND</c:otherwise>
                                                     </c:choose>
                                                 </span>
                                             </c:otherwise>
