@@ -12,27 +12,33 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
         <style>
             :root {
-                --purple:      #6C3FC5;
-                --purple-dark: #4E2C96;
-                --purple-deep: #1E0A4A;
-                --purple-light:#F3EEFF;
-                --purple-mid:  #9B72E8;
-                --gold:        #D4A843;
+                --purple:      #7C4DFF;
+                --purple-dark: #5E35B1;
+                --purple-deep: #1A0A3A;
+                --purple-light:#EDE7FF;
+                --purple-mid:  #B39DDB;
+                --gold:        #FFB300;
+                --gold-light:  #FFD54F;
                 --text:        #1A1A2E;
                 --muted:       #6B6B8A;
                 --border:      #E2D9F3;
-                --bg:          #F4F0FC;
-                --sidebar-w:   320px;
+                --bg:          #F5F0FF;
+                --sidebar-w:   340px;
+
+                /* Bright theme surfaces */
+                --surface-main:   #F7F4FF;
+                --surface-card:   #FFFFFF;
+                --surface-sidebar: #FDFBFF;
+                --topbar-bg:      #2D1B6B;
+                --lesson-info-bg: #FFFFFF;
+                --video-bg:       #0F0720;
             }
-            *, *::before, *::after {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
+            *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
             body {
                 font-family: 'DM Sans', sans-serif;
                 color: var(--text);
-                background: #0F0720;
+                background: var(--surface-main);
                 height: 100vh;
                 display: flex;
                 flex-direction: column;
@@ -41,7 +47,7 @@
 
             /* ===== TOPBAR ===== */
             .topbar {
-                background: var(--purple-deep);
+                background: var(--topbar-bg);
                 height: 58px;
                 display: flex;
                 align-items: center;
@@ -50,6 +56,7 @@
                 border-bottom: 1px solid rgba(255,255,255,0.08);
                 flex-shrink: 0;
                 z-index: 50;
+                box-shadow: 0 2px 16px rgba(45,27,107,0.35);
             }
             .topbar-brand {
                 font-family: 'Playfair Display', serif;
@@ -59,18 +66,12 @@
                 text-decoration: none;
                 white-space: nowrap;
             }
-            .topbar-brand span {
-                color: var(--gold);
-            }
-            .topbar-divider {
-                width: 1px;
-                height: 24px;
-                background: rgba(255,255,255,0.15);
-            }
+            .topbar-brand span { color: var(--gold); }
+            .topbar-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.18); }
             .topbar-course {
                 font-size: 0.85rem;
                 font-weight: 600;
-                color: rgba(255,255,255,0.75);
+                color: rgba(255,255,255,0.85);
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -80,50 +81,34 @@
                 display: flex;
                 align-items: center;
                 gap: 6px;
-                color: rgba(255,255,255,0.6);
+                color: rgba(255,255,255,0.75);
                 text-decoration: none;
                 font-size: 0.82rem;
-                font-weight: 500;
-                padding: 6px 12px;
-                border-radius: 7px;
-                border: 1px solid rgba(255,255,255,0.12);
+                font-weight: 600;
+                padding: 6px 14px;
+                border-radius: 8px;
+                border: 1px solid rgba(255,255,255,0.2);
                 transition: all 0.15s;
                 white-space: nowrap;
+                background: rgba(255,255,255,0.07);
             }
-            .topbar-back:hover {
-                background: rgba(255,255,255,0.08);
-                color: #fff;
-            }
-            .topbar-progress {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            .progress-text {
-                font-size: 0.75rem;
-                color: rgba(255,255,255,0.5);
-                white-space: nowrap;
-            }
+            .topbar-back:hover { background: rgba(255,255,255,0.15); color: #fff; }
+            .topbar-progress { display: flex; align-items: center; gap: 10px; }
+            .progress-text { font-size: 0.75rem; color: rgba(255,255,255,0.6); white-space: nowrap; font-weight: 600; }
             .progress-bar-wrap {
-                width: 120px;
-                height: 5px;
-                background: rgba(255,255,255,0.1);
-                border-radius: 3px;
-                overflow: hidden;
+                width: 130px; height: 6px;
+                background: rgba(255,255,255,0.12);
+                border-radius: 3px; overflow: hidden;
             }
             .progress-bar-fill {
                 height: 100%;
-                background: linear-gradient(90deg, var(--purple-mid), var(--gold));
+                background: linear-gradient(90deg, #B39DDB, var(--gold));
                 border-radius: 3px;
                 transition: width 0.4s ease;
             }
 
             /* ===== MAIN LAYOUT ===== */
-            .main-layout {
-                display: flex;
-                flex: 1;
-                overflow: hidden;
-            }
+            .main-layout { display: flex; flex: 1; overflow: hidden; }
 
             /* ===== VIDEO AREA ===== */
             .video-area {
@@ -131,212 +116,139 @@
                 display: flex;
                 flex-direction: column;
                 overflow-y: auto;
-                background: #0F0720;
+                background: var(--surface-main);
             }
-            .video-area::-webkit-scrollbar {
-                width: 4px;
-            }
-            .video-area::-webkit-scrollbar-thumb {
-                background: rgba(255,255,255,0.1);
-                border-radius: 2px;
-            }
+            .video-area::-webkit-scrollbar { width: 5px; }
+            .video-area::-webkit-scrollbar-thumb { background: #D1C4E9; border-radius: 3px; }
 
             /* VIDEO PLAYER */
-            .video-wrap {
-                width: 100%;
-                background: #000;
-                position: relative;
-            }
+            .video-wrap { width: 100%; background: #000; position: relative; box-shadow: 0 4px 24px rgba(0,0,0,0.25); }
             .video-wrap iframe, .video-wrap video {
-                width: 100%;
-                aspect-ratio: 16/9;
-                display: block;
-                border: none;
+                width: 100%; aspect-ratio: 16/9;
+                display: block; border: none;
             }
             .no-video {
-                width: 100%;
-                aspect-ratio: 16/9;
+                width: 100%; aspect-ratio: 16/9;
                 background: linear-gradient(135deg, #1E0A4A, #3A1A7A);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                gap: 12px;
+                display: flex; flex-direction: column;
+                align-items: center; justify-content: center; gap: 12px;
             }
-            .no-video i {
-                font-size: 3rem;
-                color: rgba(255,255,255,0.2);
-            }
-            .no-video span {
-                font-size: 0.9rem;
-                color: rgba(255,255,255,0.3);
-            }
+            .no-video i { font-size: 3rem; color: rgba(255,255,255,0.2); }
+            .no-video span { font-size: 0.9rem; color: rgba(255,255,255,0.3); }
 
             /* LESSON INFO */
             .lesson-info {
                 padding: 28px 36px;
-                background: #160930;
-                border-bottom: 1px solid rgba(255,255,255,0.06);
+                background: var(--lesson-info-bg);
+                border-bottom: 1px solid #EDE7FF;
+                box-shadow: 0 2px 12px rgba(124,77,255,0.06);
             }
             .lesson-number {
-                font-size: 0.72rem;
+                font-size: 0.7rem;
                 font-weight: 700;
                 text-transform: uppercase;
-                letter-spacing: 2px;
-                color: var(--purple-mid);
+                letter-spacing: 2.5px;
+                color: var(--purple);
                 margin-bottom: 8px;
+                display: flex; align-items: center; gap: 6px;
+            }
+            .lesson-number::before {
+                content: '';
+                display: inline-block;
+                width: 18px; height: 2px;
+                background: var(--purple);
+                border-radius: 1px;
             }
             .lesson-title {
                 font-family: 'Playfair Display', serif;
-                font-size: 1.6rem;
+                font-size: 1.65rem;
                 font-weight: 700;
-                color: #fff;
-                margin-bottom: 12px;
+                color: #1A0A3A;
+                margin-bottom: 14px;
                 line-height: 1.3;
             }
-            .lesson-meta {
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                flex-wrap: wrap;
-            }
+            .lesson-meta { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
             .lesson-meta-item {
-                display: flex;
-                align-items: center;
-                gap: 6px;
+                display: flex; align-items: center; gap: 6px;
                 font-size: 0.8rem;
-                color: rgba(255,255,255,0.45);
+                color: var(--muted);
+                font-weight: 500;
             }
-            .lesson-meta-item i {
-                color: var(--purple-mid);
-            }
+            .lesson-meta-item i { color: var(--purple); }
 
             /* CONTENT AREA */
             .content-area {
                 padding: 28px 36px 0;
-                background: #0F0720;
+                background: var(--surface-main);
             }
             .content-label {
-                font-size: 0.72rem;
+                font-size: 0.7rem;
                 font-weight: 700;
                 text-transform: uppercase;
-                letter-spacing: 2px;
-                color: var(--gold);
+                letter-spacing: 2.5px;
+                color: var(--purple-dark);
                 margin-bottom: 14px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
+                display: flex; align-items: center; gap: 8px;
             }
             .content-box {
-                background: rgba(255,255,255,0.04);
-                border: 1px solid rgba(255,255,255,0.08);
+                background: #fff;
+                border: 1px solid #EDE7FF;
                 border-radius: 14px;
                 padding: 24px;
                 font-size: 0.9rem;
-                line-height: 1.8;
-                color: rgba(255,255,255,0.7);
+                line-height: 1.85;
+                color: #3D2B6B;
+                box-shadow: 0 2px 12px rgba(124,77,255,0.05);
             }
-            .content-empty {
-                color: rgba(255,255,255,0.25);
-                font-style: italic;
-                font-size: 0.875rem;
-            }
+            .content-empty { color: #B0A0D0; font-style: italic; font-size: 0.875rem; }
 
             /* UPLOAD PANEL */
             .upload-panel {
                 margin: 24px 36px 0;
-                background: rgba(212,168,67,0.06);
-                border: 1px dashed rgba(212,168,67,0.3);
+                background: #FFFBEF;
+                border: 1px dashed #FFB300;
                 border-radius: 14px;
                 padding: 20px 24px;
             }
             .upload-label {
-                font-size: 0.72rem;
+                font-size: 0.7rem;
                 font-weight: 700;
                 text-transform: uppercase;
-                letter-spacing: 2px;
-                color: var(--gold);
+                letter-spacing: 2.5px;
+                color: #B8860B;
                 margin-bottom: 14px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
+                display: flex; align-items: center; gap: 8px;
             }
-            .upload-form {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                flex-wrap: wrap;
-            }
-            .upload-file-wrap {
-                position: relative;
-                flex: 1;
-                min-width: 200px;
-            }
+            .upload-form { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+            .upload-file-wrap { position: relative; flex: 1; min-width: 200px; }
             .upload-file-wrap input[type="file"] {
-                position: absolute;
-                inset: 0;
-                opacity: 0;
-                cursor: pointer;
-                width: 100%;
+                position: absolute; inset: 0; opacity: 0;
+                cursor: pointer; width: 100%;
             }
             .upload-file-btn {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                background: rgba(255,255,255,0.06);
-                border: 1px solid rgba(255,255,255,0.12);
-                border-radius: 8px;
-                padding: 9px 16px;
-                font-size: 0.82rem;
-                color: rgba(255,255,255,0.55);
-                cursor: pointer;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                width: 100%;
+                display: flex; align-items: center; gap: 8px;
+                background: rgba(255,179,0,0.08);
+                border: 1px solid rgba(255,179,0,0.3);
+                border-radius: 8px; padding: 9px 16px;
+                font-size: 0.82rem; color: #7A6000;
+                cursor: pointer; white-space: nowrap;
+                overflow: hidden; text-overflow: ellipsis; width: 100%;
             }
             .upload-submit {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                background: linear-gradient(135deg, var(--gold), #B8892D);
-                color: #1A1A2E;
-                border: none;
-                border-radius: 8px;
-                padding: 9px 20px;
-                font-size: 0.82rem;
-                font-weight: 700;
-                cursor: pointer;
-                font-family: 'DM Sans', sans-serif;
-                transition: all 0.15s;
-                white-space: nowrap;
+                display: flex; align-items: center; gap: 6px;
+                background: linear-gradient(135deg, var(--gold), #E6A200);
+                color: #2D1B00;
+                border: none; border-radius: 8px; padding: 9px 22px;
+                font-size: 0.82rem; font-weight: 700;
+                cursor: pointer; font-family: 'DM Sans', sans-serif;
+                transition: all 0.15s; white-space: nowrap;
+                box-shadow: 0 3px 10px rgba(255,179,0,0.3);
             }
-            .upload-submit:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 4px 14px rgba(212,168,67,0.35);
-            }
-            .upload-progress {
-                display: none;
-                margin-top: 10px;
-            }
-            .upload-bar {
-                height: 4px;
-                background: rgba(255,255,255,0.08);
-                border-radius: 2px;
-                overflow: hidden;
-            }
-            .upload-bar-fill {
-                height: 100%;
-                width: 0;
-                background: linear-gradient(90deg, var(--purple-mid), var(--gold));
-                border-radius: 2px;
-                transition: width 0.2s;
-            }
-            .upload-status {
-                font-size: 0.75rem;
-                color: rgba(255,255,255,0.4);
-                margin-top: 6px;
-            }
+            .upload-submit:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(255,179,0,0.45); }
+            .upload-progress { display: none; margin-top: 10px; }
+            .upload-bar { height: 4px; background: rgba(0,0,0,0.08); border-radius: 2px; overflow: hidden; }
+            .upload-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--purple-mid), var(--gold)); border-radius: 2px; transition: width 0.2s; }
+            .upload-status { font-size: 0.75rem; color: #8B7000; margin-top: 6px; }
 
             /* ALERT */
             .alert {
@@ -344,400 +256,273 @@
                 padding: 12px 18px;
                 border-radius: 10px;
                 font-size: 0.83rem;
-                font-weight: 500;
-                display: flex;
-                align-items: center;
-                gap: 10px;
+                font-weight: 600;
+                display: flex; align-items: center; gap: 10px;
             }
-            .alert-success {
-                background: rgba(34,197,94,0.12);
-                border: 1px solid rgba(34,197,94,0.25);
-                color: #4ade80;
-            }
-            .alert-error   {
-                background: rgba(239,68,68,0.12);
-                border: 1px solid rgba(239,68,68,0.25);
-                color: #f87171;
-            }
+            .alert-success { background: #F0FFF4; border: 1px solid #6EE7B7; color: #065F46; }
+            .alert-error   { background: #FFF5F5; border: 1px solid #FCA5A5; color: #991B1B; }
 
-            /* NAV BUTTONS */
+            /* ===== NAV BUTTONS ===== */
             .lesson-nav {
                 display: flex;
-                gap: 12px;
+                gap: 14px;
                 padding: 24px 36px 32px;
-                background: #0F0720;
-            }
-            .btn-nav {
-                display: flex;
+                background: var(--surface-main);
                 align-items: center;
-                gap: 8px;
-                padding: 11px 22px;
-                border-radius: 10px;
-                font-size: 0.85rem;
-                font-weight: 700;
-                text-decoration: none;
-                transition: all 0.15s;
+            }
+
+            /* Previous button */
+            .btn-nav {
+                display: flex; align-items: center; gap: 8px;
+                padding: 12px 24px; border-radius: 12px;
+                font-size: 0.88rem; font-weight: 700;
+                text-decoration: none; transition: all 0.18s;
                 font-family: 'DM Sans', sans-serif;
-                border: none;
-                cursor: pointer;
+                border: none; cursor: pointer;
+                position: relative; overflow: hidden;
             }
             .btn-prev {
-                background: rgba(255,255,255,0.06);
-                color: rgba(255,255,255,0.6);
-                border: 1px solid rgba(255,255,255,0.1);
+                background: #fff;
+                color: var(--purple-dark);
+                border: 2px solid #D1C4E9;
+                box-shadow: 0 2px 8px rgba(124,77,255,0.08);
             }
             .btn-prev:hover {
-                background: rgba(255,255,255,0.1);
-                color: #fff;
+                background: #EDE7FF;
+                border-color: var(--purple);
+                color: var(--purple);
+                box-shadow: 0 4px 16px rgba(124,77,255,0.15);
+                transform: translateY(-1px);
             }
+
+            /* Next lesson button */
             .btn-next {
-                background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+                background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%);
                 color: #fff;
-                box-shadow: 0 4px 16px rgba(108,63,197,0.35);
+                box-shadow: 0 4px 20px rgba(124,77,255,0.4);
+                padding: 13px 28px;
+                font-size: 0.92rem;
+            }
+            .btn-next::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+                opacity: 0;
+                transition: opacity 0.18s;
             }
             .btn-next:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 6px 20px rgba(108,63,197,0.5);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 28px rgba(124,77,255,0.55);
             }
-            .btn-nav.disabled {
-                opacity: 0.3;
-                pointer-events: none;
+            .btn-next:hover::before { opacity: 1; }
+
+            /* ✅ COMPLETE button — the star of the show */
+            .btn-complete {
+                display: flex; align-items: center; gap: 10px;
+                padding: 13px 28px; border-radius: 12px;
+                font-size: 0.92rem; font-weight: 700;
+                text-decoration: none; transition: all 0.2s;
+                font-family: 'DM Sans', sans-serif;
+                border: none; cursor: pointer;
+                position: relative; overflow: hidden;
+
+                background: linear-gradient(135deg, #FFB300 0%, #FF6F00 100%);
+                color: #fff;
+                box-shadow: 0 5px 22px rgba(255,111,0,0.45);
+                animation: pulseGlow 2.4s ease-in-out infinite;
             }
+            @keyframes pulseGlow {
+                0%, 100% { box-shadow: 0 5px 22px rgba(255,111,0,0.45); }
+                50%       { box-shadow: 0 8px 32px rgba(255,111,0,0.7), 0 0 0 4px rgba(255,179,0,0.18); }
+            }
+            .btn-complete::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+            .btn-complete:hover { transform: translateY(-3px); }
+            .btn-complete:hover::before { opacity: 1; }
+            .btn-complete .complete-star {
+                font-size: 1.1rem;
+                animation: spin 3s linear infinite;
+            }
+            @keyframes spin {
+                0%   { transform: rotate(0deg) scale(1); }
+                50%  { transform: rotate(180deg) scale(1.2); }
+                100% { transform: rotate(360deg) scale(1); }
+            }
+
+            .btn-nav.disabled { opacity: 0.35; pointer-events: none; }
+
+            /* Spacer */
+            .nav-spacer { flex: 1; }
 
             /* ===== COMMENTS ===== */
-            .comments-section {
-                padding: 0 36px 48px;
-                background: #0F0720;
-            }
-            .comments-section:target-within {
-                scroll-margin-top: 20px;
-            }
-
+            .comments-section { padding: 0 36px 48px; background: var(--surface-main); }
             .comments-header {
-                display: flex;
-                align-items: center;
+                display: flex; align-items: center;
                 justify-content: space-between;
-                margin-bottom: 20px;
-                padding-top: 8px;
+                margin-bottom: 20px; padding-top: 8px;
             }
             .comments-title {
-                font-size: 0.72rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                color: var(--gold);
-                display: flex;
-                align-items: center;
-                gap: 8px;
+                font-size: 0.7rem; font-weight: 700;
+                text-transform: uppercase; letter-spacing: 2.5px;
+                color: var(--purple-dark);
+                display: flex; align-items: center; gap: 8px;
             }
             .comments-count {
-                font-size: 0.78rem;
-                color: rgba(255,255,255,0.3);
-                background: rgba(255,255,255,0.06);
-                padding: 3px 10px;
-                border-radius: 20px;
+                font-size: 0.78rem; color: var(--muted);
+                background: #EDE7FF;
+                padding: 3px 12px; border-radius: 20px;
+                font-weight: 600;
             }
-
-            /* Comment Form */
             .comment-form-wrap {
-                background: rgba(255,255,255,0.04);
-                border: 1px solid rgba(255,255,255,0.08);
+                background: #fff;
+                border: 1px solid #EDE7FF;
                 border-radius: 14px;
-                padding: 20px;
-                margin-bottom: 20px;
+                padding: 20px; margin-bottom: 20px;
+                box-shadow: 0 2px 10px rgba(124,77,255,0.05);
             }
-            .comment-form-row {
-                display: flex;
-                gap: 12px;
-                align-items: flex-start;
-            }
+            .comment-form-row { display: flex; gap: 12px; align-items: flex-start; }
             .comment-avatar {
-                width: 38px;
-                height: 38px;
-                border-radius: 50%;
+                width: 38px; height: 38px; border-radius: 50%;
                 background: linear-gradient(135deg, var(--purple), var(--purple-mid));
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.85rem;
-                font-weight: 700;
-                color: #fff;
-                flex-shrink: 0;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 0.85rem; font-weight: 700; color: #fff; flex-shrink: 0;
+                box-shadow: 0 2px 8px rgba(124,77,255,0.3);
             }
-            .comment-input-wrap {
-                flex: 1;
-            }
+            .comment-input-wrap { flex: 1; }
             .comment-textarea {
                 width: 100%;
-                background: rgba(255,255,255,0.05);
-                border: 1px solid rgba(255,255,255,0.1);
-                border-radius: 10px;
-                padding: 12px 16px;
-                font-size: 0.88rem;
-                color: #fff;
+                background: #F7F4FF;
+                border: 1.5px solid #D1C4E9;
+                border-radius: 10px; padding: 12px 16px;
+                font-size: 0.88rem; color: #1A0A3A;
                 font-family: 'DM Sans', sans-serif;
-                resize: vertical;
-                min-height: 80px;
-                outline: none;
-                transition: border-color 0.15s;
+                resize: vertical; min-height: 80px;
+                outline: none; transition: border-color 0.15s;
             }
-            .comment-textarea:focus {
-                border-color: rgba(108,63,197,0.5);
-            }
-            .comment-textarea::placeholder {
-                color: rgba(255,255,255,0.25);
-            }
-            .comment-form-actions {
-                display: flex;
-                justify-content: flex-end;
-                margin-top: 10px;
-            }
+            .comment-textarea:focus { border-color: var(--purple); background: #fff; }
+            .comment-textarea::placeholder { color: #B0A0D0; }
+            .comment-form-actions { display: flex; justify-content: flex-end; margin-top: 10px; }
             .btn-comment-submit {
-                display: flex;
-                align-items: center;
-                gap: 6px;
+                display: flex; align-items: center; gap: 6px;
                 background: linear-gradient(135deg, var(--purple), var(--purple-dark));
-                color: #fff;
-                border: none;
-                border-radius: 8px;
-                padding: 9px 20px;
-                font-size: 0.82rem;
-                font-weight: 700;
-                cursor: pointer;
-                font-family: 'DM Sans', sans-serif;
+                color: #fff; border: none; border-radius: 8px;
+                padding: 9px 20px; font-size: 0.82rem; font-weight: 700;
+                cursor: pointer; font-family: 'DM Sans', sans-serif;
                 transition: all 0.15s;
+                box-shadow: 0 3px 10px rgba(124,77,255,0.3);
             }
-            .btn-comment-submit:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 4px 14px rgba(108,63,197,0.4);
-            }
+            .btn-comment-submit:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(124,77,255,0.45); }
 
-            /* Comment List */
-            .comment-list {
-                display: flex;
-                flex-direction: column;
-                gap: 14px;
-            }
+            .comment-list { display: flex; flex-direction: column; gap: 10px; }
             .comment-card {
-                display: flex;
-                gap: 12px;
-                background: rgba(255,255,255,0.03);
-                border: 1px solid rgba(255,255,255,0.06);
-                border-radius: 12px;
-                padding: 16px;
-                transition: border-color 0.15s;
-            }
-            .comment-card:hover {
-                border-color: rgba(255,255,255,0.1);
-            }
-            .comment-body {
-                flex: 1;
-                min-width: 0;
-            }
-            .comment-meta {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 8px;
-            }
-            .comment-name {
-                font-size: 0.82rem;
-                font-weight: 700;
-                color: rgba(255,255,255,0.85);
-            }
-            .comment-time {
-                font-size: 0.72rem;
-                color: rgba(255,255,255,0.25);
-            }
-            .comment-text {
-                font-size: 0.875rem;
-                line-height: 1.7;
-                color: rgba(255,255,255,0.65);
-                word-break: break-word;
-            }
-            .btn-delete-comment {
-                background: none;
-                border: none;
-                cursor: pointer;
-                color: rgba(255,255,255,0.2);
-                font-size: 0.78rem;
-                padding: 4px 8px;
-                border-radius: 6px;
+                display: flex; gap: 12px;
+                background: #fff;
+                border: 1px solid #EDE7FF;
+                border-radius: 12px; padding: 16px;
                 transition: all 0.15s;
-                display: flex;
-                align-items: center;
-                gap: 4px;
-                white-space: nowrap;
-                font-family: 'DM Sans', sans-serif;
+                box-shadow: 0 1px 6px rgba(124,77,255,0.04);
             }
-            .btn-delete-comment:hover {
-                color: #f87171;
-                background: rgba(239,68,68,0.1);
+            .comment-card:hover { border-color: #C5B8F0; box-shadow: 0 3px 14px rgba(124,77,255,0.08); }
+            .comment-body { flex: 1; min-width: 0; }
+            .comment-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+            .comment-name { font-size: 0.82rem; font-weight: 700; color: #2D1B6B; }
+            .comment-time { font-size: 0.72rem; color: #B0A0D0; }
+            .comment-text { font-size: 0.875rem; line-height: 1.7; color: #3D2B6B; word-break: break-word; }
+            .btn-delete-comment {
+                background: none; border: none; cursor: pointer;
+                color: #C5B8F0; font-size: 0.78rem;
+                padding: 4px 8px; border-radius: 6px;
+                transition: all 0.15s;
+                display: flex; align-items: center; gap: 4px;
+                white-space: nowrap; font-family: 'DM Sans', sans-serif;
             }
-
-            .no-comments {
-                text-align: center;
-                padding: 40px 20px;
-            }
-            .no-comments i {
-                font-size: 2.2rem;
-                color: rgba(255,255,255,0.08);
-                display: block;
-                margin-bottom: 10px;
-            }
-            .no-comments p {
-                font-size: 0.83rem;
-                color: rgba(255,255,255,0.2);
-            }
+            .btn-delete-comment:hover { color: #E53935; background: #FFF5F5; }
+            .no-comments { text-align: center; padding: 40px 20px; }
+            .no-comments i { font-size: 2.2rem; color: #D1C4E9; display: block; margin-bottom: 10px; }
+            .no-comments p { font-size: 0.83rem; color: #B0A0D0; }
 
             /* ===== SIDEBAR ===== */
             .sidebar {
-                width: var(--sidebar-w);
-                flex-shrink: 0;
-                background: #160930;
-                border-left: 1px solid rgba(255,255,255,0.07);
-                display: flex;
-                flex-direction: column;
+                width: var(--sidebar-w); flex-shrink: 0;
+                background: var(--surface-sidebar);
+                border-left: 1px solid #EDE7FF;
+                display: flex; flex-direction: column;
                 overflow: hidden;
+                box-shadow: -4px 0 20px rgba(124,77,255,0.06);
             }
             .sidebar-header {
                 padding: 18px 20px;
-                border-bottom: 1px solid rgba(255,255,255,0.07);
+                border-bottom: 1px solid #EDE7FF;
                 flex-shrink: 0;
+                background: #fff;
             }
             .sidebar-title {
-                font-size: 0.72rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                color: rgba(255,255,255,0.4);
-                margin-bottom: 6px;
+                font-size: 0.7rem; font-weight: 700;
+                text-transform: uppercase; letter-spacing: 2.5px;
+                color: var(--purple); margin-bottom: 4px;
             }
-            .sidebar-count {
-                font-size: 0.85rem;
-                font-weight: 600;
-                color: rgba(255,255,255,0.7);
-            }
-            .lesson-list {
-                overflow-y: auto;
-                flex: 1;
-                padding: 10px;
-            }
-            .lesson-list::-webkit-scrollbar {
-                width: 4px;
-            }
-            .lesson-list::-webkit-scrollbar-thumb {
-                background: rgba(255,255,255,0.1);
-                border-radius: 2px;
-            }
+            .sidebar-count { font-size: 0.88rem; font-weight: 600; color: #2D1B6B; }
+            .lesson-list { overflow-y: auto; flex: 1; padding: 10px; }
+            .lesson-list::-webkit-scrollbar { width: 4px; }
+            .lesson-list::-webkit-scrollbar-thumb { background: #D1C4E9; border-radius: 2px; }
             .lesson-item {
-                display: flex;
-                align-items: flex-start;
-                gap: 12px;
-                padding: 12px 14px;
-                border-radius: 10px;
-                text-decoration: none;
-                color: rgba(255,255,255,0.55);
-                transition: all 0.15s;
-                margin-bottom: 4px;
+                display: flex; align-items: flex-start; gap: 12px;
+                padding: 12px 14px; border-radius: 10px;
+                text-decoration: none; color: #5E4B8B;
+                transition: all 0.15s; margin-bottom: 4px;
                 border: 1px solid transparent;
             }
-            .lesson-item:hover {
-                background: rgba(255,255,255,0.05);
-                color: rgba(255,255,255,0.85);
-            }
+            .lesson-item:hover { background: #EDE7FF; color: #2D1B6B; }
             .lesson-item.active {
-                background: rgba(108,63,197,0.2);
-                border-color: rgba(108,63,197,0.4);
-                color: #fff;
+                background: linear-gradient(135deg, #EDE7FF, #E8E0FF);
+                border-color: #B39DDB;
+                color: #2D1B6B;
+                box-shadow: 0 2px 10px rgba(124,77,255,0.1);
             }
             .lesson-num {
-                width: 28px;
-                height: 28px;
-                border-radius: 50%;
-                background: rgba(255,255,255,0.07);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.72rem;
-                font-weight: 700;
-                flex-shrink: 0;
-                color: rgba(255,255,255,0.4);
+                width: 28px; height: 28px; border-radius: 50%;
+                background: #EDE7FF;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
+                color: var(--purple);
             }
-            .lesson-item.active .lesson-num {
-                background: var(--purple);
-                color: #fff;
-            }
-            .lesson-item-info {
-                flex: 1;
-                min-width: 0;
-            }
+            .lesson-item.active .lesson-num { background: var(--purple); color: #fff; }
+            .lesson-item-info { flex: 1; min-width: 0; }
             .lesson-item-title {
-                font-size: 0.82rem;
-                font-weight: 600;
-                line-height: 1.4;
-                margin-bottom: 4px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                font-size: 0.82rem; font-weight: 600; line-height: 1.4;
+                margin-bottom: 4px; white-space: nowrap;
+                overflow: hidden; text-overflow: ellipsis;
             }
             .lesson-item-dur {
-                font-size: 0.7rem;
-                color: rgba(255,255,255,0.3);
-                display: flex;
-                align-items: center;
-                gap: 4px;
+                font-size: 0.7rem; color: #B0A0D0;
+                display: flex; align-items: center; gap: 4px;
             }
-            .lesson-item.active .lesson-item-dur {
-                color: rgba(255,255,255,0.5);
-            }
+            .lesson-item.active .lesson-item-dur { color: #7C4DFF; }
             .lesson-play-icon {
-                color: var(--purple-mid);
-                font-size: 0.75rem;
-                flex-shrink: 0;
-                margin-top: 6px;
-                opacity: 0;
-                transition: opacity 0.15s;
+                color: var(--purple); font-size: 0.8rem;
+                flex-shrink: 0; margin-top: 6px;
+                opacity: 0; transition: opacity 0.15s;
             }
-            .lesson-item:hover .lesson-play-icon, .lesson-item.active .lesson-play-icon {
-                opacity: 1;
-            }
-            .no-lesson {
-                text-align: center;
-                padding: 48px 20px;
-            }
-            .no-lesson i {
-                font-size: 2.5rem;
-                color: rgba(255,255,255,0.1);
-                margin-bottom: 12px;
-                display: block;
-            }
-            .no-lesson p {
-                font-size: 0.85rem;
-                color: rgba(255,255,255,0.25);
-            }
+            .lesson-item:hover .lesson-play-icon, .lesson-item.active .lesson-play-icon { opacity: 1; }
+            .no-lesson { text-align: center; padding: 48px 20px; }
+            .no-lesson i { font-size: 2.5rem; color: #D1C4E9; margin-bottom: 12px; display: block; }
+            .no-lesson p { font-size: 0.85rem; color: #B0A0D0; }
 
             @media (max-width: 768px) {
-                .main-layout {
-                    flex-direction: column;
-                }
-                .sidebar {
-                    width: 100%;
-                    height: 280px;
-                    border-left: none;
-                    border-top: 1px solid rgba(255,255,255,0.07);
-                }
+                .main-layout { flex-direction: column; }
+                .sidebar { width: 100%; height: 280px; border-left: none; border-top: 1px solid #EDE7FF; }
                 .lesson-info, .content-area, .lesson-nav, .comments-section, .upload-panel, .alert {
-                    padding-left: 20px;
-                    padding-right: 20px;
+                    padding-left: 20px; padding-right: 20px;
                 }
-                .topbar-progress {
-                    display: none;
-                }
-                .upload-form {
-                    flex-direction: column;
-                    align-items: stretch;
-                }
+                .topbar-progress { display: none; }
+                .upload-form { flex-direction: column; align-items: stretch; }
             }
         </style>
     </head>
@@ -827,8 +612,7 @@
                         <c:remove var="uploadError" scope="session"/>
                     </c:if>
 
-                    <!-- UPLOAD VIDEO PANEL (có thể ẩn nếu chỉ admin/instructor xem) -->
-                    <!-- Chỉ Admin (1) và Instructor (2) mới thấy upload panel -->
+                    <!-- UPLOAD VIDEO PANEL -->
                     <c:if test="${sessionScope.user.role == 1 || sessionScope.user.role == 2}">
                         <div class="upload-panel">
                             <div class="upload-label"><i class="bi bi-cloud-upload-fill"></i> Upload Video cho bài này</div>
@@ -868,7 +652,7 @@
                         </div>
                     </div>
 
-                    <!-- PREV / NEXT -->
+                    <!-- ===== PREV / NEXT / COMPLETE ===== -->
                     <div class="lesson-nav">
                         <c:set var="prevLesson" value="${null}"/>
                         <c:set var="nextLesson" value="${null}"/>
@@ -881,6 +665,7 @@
                             </c:choose>
                         </c:forEach>
 
+                        <!-- Nút Bài trước -->
                         <c:choose>
                             <c:when test="${not empty prevLesson}">
                                 <a href="lesson?courseId=${courseId}&lessonId=${prevLesson.lessonId}" class="btn-nav btn-prev">
@@ -892,16 +677,23 @@
                             </c:otherwise>
                         </c:choose>
 
+                        <div class="nav-spacer"></div>
+
+                        <!-- Nút Bài tiếp / Hoàn thành -->
                         <c:choose>
                             <c:when test="${not empty nextLesson}">
+                                <!-- Còn bài tiếp theo -->
                                 <a href="lesson?courseId=${courseId}&lessonId=${nextLesson.lessonId}" class="btn-nav btn-next">
-                                    Bài tiếp <i class="bi bi-arrow-right"></i>
+                                    Bài tiếp theo <i class="bi bi-arrow-right"></i>
                                 </a>
                             </c:when>
                             <c:otherwise>
-                                <span class="btn-nav btn-next" style="opacity:0.6; cursor:default;">
-                                    <i class="bi bi-check-circle-fill"></i> Hoàn thành khóa học
-                                </span>
+                                <!-- Đây là bài cuối → Hoàn thành khóa học → về listCourse -->
+                                <a href="courseController?action=ExploreCourse" class="btn-complete">
+                                    <span class="complete-star"><i class="bi bi-star-fill"></i></span>
+                                    Hoàn thành khóa học!
+                                    <i class="bi bi-trophy-fill"></i>
+                                </a>
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -912,12 +704,9 @@
                             <div class="comments-title">
                                 <i class="bi bi-chat-dots-fill"></i> Bình luận
                             </div>
-                            <span class="comments-count">
-                                ${fn:length(comments)} bình luận
-                            </span>
+                            <span class="comments-count">${fn:length(comments)} bình luận</span>
                         </div>
 
-                        <!-- Form gửi comment -->
                         <div class="comment-form-wrap">
                             <div class="comment-form-row">
                                 <div class="comment-avatar">
@@ -941,7 +730,6 @@
                             </div>
                         </div>
 
-                        <!-- Danh sách comment -->
                         <div class="comment-list">
                             <c:choose>
                                 <c:when test="${not empty comments}">
@@ -959,7 +747,6 @@
                                                 </div>
                                                 <div class="comment-text">${cm.content}</div>
                                             </div>
-                                            <!-- Nút xóa: chỉ hiển thị nếu là chủ comment -->
                                             <c:if test="${cm.userId == sessionScope.user.userId}">
                                                 <form method="POST" action="lesson" style="align-self:flex-start;">
                                                     <input type="hidden" name="action"    value="deleteComment">
@@ -988,19 +775,18 @@
 
                 <c:if test="${empty currentLesson}">
                     <div class="no-lesson" style="padding:60px 36px;">
-                        <i class="bi bi-collection-play" style="font-size:3rem; color:rgba(255,255,255,0.1); display:block; margin-bottom:16px;"></i>
-                        <p style="color:rgba(255,255,255,0.3);">Khóa học này chưa có bài học nào.</p>
+                        <i class="bi bi-collection-play" style="font-size:3rem; color:#D1C4E9; display:block; margin-bottom:16px;"></i>
+                        <p style="color:#B0A0D0;">Khóa học này chưa có bài học nào.</p>
                     </div>
                 </c:if>
             </div>
 
-            <!-- SIDEBAR - DANH SÁCH BÀI HỌC -->
+            <!-- SIDEBAR -->
             <div class="sidebar">
                 <div class="sidebar-header">
                     <div class="sidebar-title">Nội dung khóa học</div>
                     <div class="sidebar-count">${fn:length(lessons)} bài học</div>
                 </div>
-
                 <div class="lesson-list">
                     <c:choose>
                         <c:when test="${not empty lessons}">
@@ -1034,27 +820,21 @@
         </div>
 
         <script>
-            // ── Video Player ──────────────────────────────────────────────
+            // ── Video Player ─────────────────────────────────────────────
             (function () {
                 var container = document.getElementById('videoContainer');
-                if (!container)
-                    return;
-
+                if (!container) return;
                 var videoUrl = container.getAttribute('data-video');
                 var ctx = container.getAttribute('data-ctx');
-                if (!videoUrl)
-                    return;
+                if (!videoUrl) return;
 
                 function getYouTubeId(url) {
                     var m = url.match(/[?&]v=([^&#]+)/);
-                    if (m)
-                        return m[1];
+                    if (m) return m[1];
                     m = url.match(/youtu\.be\/([^?&#]+)/);
-                    if (m)
-                        return m[1];
+                    if (m) return m[1];
                     m = url.match(/youtube\.com\/embed\/([^?&#]+)/);
-                    if (m)
-                        return m[1];
+                    if (m) return m[1];
                     return null;
                 }
 
@@ -1062,45 +842,38 @@
                 var ytId = getYouTubeId(videoUrl);
                 if (ytId) {
                     html = '<iframe src="https://www.youtube.com/embed/' + ytId +
-                            '?rel=0&modestbranding=1" style="width:100%;aspect-ratio:16/9;border:none;display:block;" ' +
-                            'allowfullscreen allow="autoplay; encrypted-media"></iframe>';
+                           '?rel=0&modestbranding=1" style="width:100%;aspect-ratio:16/9;border:none;display:block;" ' +
+                           'allowfullscreen allow="autoplay; encrypted-media"></iframe>';
                 } else {
                     var src = videoUrl.startsWith('http') ? videoUrl : ctx + '/' + videoUrl;
                     html = '<video controls style="width:100%;aspect-ratio:16/9;background:#000;display:block;">' +
-                            '<source src="' + src + '">' +
-                            'Trình duyệt không hỗ trợ video.' +
-                            '</video>';
+                           '<source src="' + src + '">Trình duyệt không hỗ trợ video.</video>';
                 }
                 container.innerHTML = html;
             })();
 
-            // ── Progress Bar ──────────────────────────────────────────────
+            // ── Progress Bar ─────────────────────────────────────────────
             (function () {
                 var items = document.querySelectorAll('.lesson-item');
                 var total = items.length;
-                if (!total)
-                    return;
+                if (!total) return;
 
                 var currentIdx = 0;
                 items.forEach(function (item, i) {
-                    if (item.classList.contains('active'))
-                        currentIdx = i;
+                    if (item.classList.contains('active')) currentIdx = i;
                 });
 
                 var pct = Math.round(((currentIdx + 1) / total) * 100);
                 var fill = document.getElementById('progressFill');
                 var txt = document.getElementById('progressText');
-                if (fill)
-                    fill.style.width = pct + '%';
-                if (txt)
-                    txt.textContent = 'Bài ' + (currentIdx + 1) + ' / ' + total;
+                if (fill) fill.style.width = pct + '%';
+                if (txt) txt.textContent = 'Bài ' + (currentIdx + 1) + ' / ' + total;
 
                 var activeItem = document.querySelector('.lesson-item.active');
-                if (activeItem)
-                    activeItem.scrollIntoView({block: 'center', behavior: 'smooth'});
+                if (activeItem) activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
             })();
 
-            // ── Upload UX ─────────────────────────────────────────────────
+            // ── Upload UX ────────────────────────────────────────────────
             function onFileChange(input) {
                 var label = document.getElementById('fileLabelText');
                 if (input.files && input.files[0]) {
@@ -1112,26 +885,21 @@
 
             function startUpload() {
                 var fileInput = document.getElementById('videoFile');
-                if (!fileInput.files || fileInput.files.length === 0)
-                    return;
+                if (!fileInput.files || fileInput.files.length === 0) return;
 
                 var progress = document.getElementById('uploadProgress');
                 var barFill = document.getElementById('uploadBarFill');
                 var status = document.getElementById('uploadStatus');
-
                 progress.style.display = 'block';
 
-                // Fake progress animation (real progress would need XHR)
                 var pct = 0;
                 var interval = setInterval(function () {
                     pct += Math.random() * 8;
-                    if (pct > 90)
-                        pct = 90;
+                    if (pct > 90) pct = 90;
                     barFill.style.width = pct + '%';
                     status.textContent = 'Đang upload... ' + Math.round(pct) + '%';
                 }, 300);
 
-                // Khi form submit xong (trang reload) interval sẽ bị clear tự động
                 document.getElementById('uploadForm').addEventListener('submit', function () {
                     clearInterval(interval);
                     barFill.style.width = '100%';
