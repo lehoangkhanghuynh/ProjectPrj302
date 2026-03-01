@@ -1076,8 +1076,13 @@
                 <!-- REGISTER -->
                 <div class="form-panel" id="panelReg">
                     <c:if test="${not empty registerMessage}">
-                        <div class="alert-err"><i class="bi bi-exclamation-circle-fill"></i>${registerMessage}</div>
-                        </c:if>
+                        <div class="${isSuccess ? 'alert-success' : 'alert-err'}" 
+                             style="padding: 12px; margin-bottom: 15px; border-radius: 8px; font-size: 0.85rem; border: 1px solid;
+                             ${isSuccess ? 'background-color: #d4edda; color: #155724; border-color: #c3e6cb;' : 'background-color: #f8d7da; color: #721c24; border-color: #f5c6cb;'}">
+                            <i class="bi ${isSuccess ? 'bi-check-circle-fill' : 'bi-exclamation-circle-fill'}"></i> 
+                            ${registerMessage}
+                        </div>
+                    </c:if>
                     <form action="mainController" method="POST" id="regForm">
                         <input type="hidden" name="action" value="register" />
                         <div style="margin-bottom:11px;"><label class="f-label">Tên đăng nhập</label><input type="text" class="f-input" name="userName" placeholder="username" required /></div>
@@ -1116,6 +1121,23 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script>
+                                    window.onload = function () {
+                                        // 1. Kiểm tra nếu có tin nhắn từ hệ thống đăng ký
+            <c:if test="${not empty registerMessage}">
+                                        // Mở Modal Overlay
+                                        document.getElementById('modalOverlay').classList.add('show');
+                                        document.body.style.overflow = 'hidden';
+                                        // Chuyển sang tab Register
+                                        switchTab('register');
+            </c:if>
+
+                                        // 2. Kiểm tra nếu có tin nhắn từ hệ thống đăng nhập (nếu bạn có biến 'message')
+            <c:if test="${not empty message}">
+                                        document.getElementById('modalOverlay').classList.add('show');
+                                        document.body.style.overflow = 'hidden';
+                                        switchTab('login');
+            </c:if>
+                                    };
                                     function openModal(tab) {
                                         document.getElementById('modalOverlay').classList.add('show');
                                         document.body.style.overflow = 'hidden';

@@ -42,6 +42,55 @@ public class UserDAO {
         return user;
     }
 
+    public boolean checkEmailExist(String email) throws Exception {
+
+        String sql = "SELECT email "
+                + "FROM Users "
+                + "WHERE email = ?";
+
+        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+        }
+    }
+
+    public boolean checkUsernameExist(String userName) throws Exception {
+
+        String sql = "SELECT userId "
+                + "FROM Users "
+                + "WHERE userId = ?";
+
+        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
+
+            return rs.next();
+        }
+    }
+
+    public boolean insertUser(UserDTO u) throws Exception {
+
+        String sql = "INSERT INTO Users(userId, fullname, email, password, role, status, balance) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, u.getUserId());
+            ps.setString(2, u.getFullname());
+            ps.setString(3, u.getEmail());
+            ps.setString(4, u.getPassword());
+            ps.setByte(5, u.getRole());
+            ps.setBoolean(6, u.isStatus());
+            ps.setDouble(7, u.getBalance());
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+
     public UserDTO login(String userName, String password) {
 
         UserDTO user = searchById(userName);

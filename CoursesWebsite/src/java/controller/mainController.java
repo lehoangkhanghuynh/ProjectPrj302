@@ -20,7 +20,8 @@ public class mainController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         String url = "login.jsp";
 
@@ -30,8 +31,10 @@ public class mainController extends HttpServlet {
             url = "logoutController";
         } else if (action.equals("ExploreCourse")) {
             url = "courseController";
-        }else if (action.equals("enroll")){
+        } else if (action.equals("enroll")) {
             url = "enrollController";
+        } else if ("register".equals(action)) {
+            url = "registerController";
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);
