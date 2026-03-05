@@ -17,7 +17,7 @@ public class UserDAO {
 
     public UserDTO searchById(String Id) {
         UserDTO user = null;
-        String sql = "SELECT * FROM dbo.Users WHERE userId = ?";
+        String sql = "SELECT * FROM Users WHERE userId = ?";
         try {
             Connection conn = DbiUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
