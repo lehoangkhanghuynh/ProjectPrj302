@@ -539,6 +539,7 @@
                 <li><a href="homePage.jsp">Trang chủ</a></li>
                 <li><a href="courseController?action=ExploreCourse">Khóa học</a></li>
                 <li><a href="myCourses" class="active">Khóa học của tôi</a></li>
+                <li><a href="dating.jsp">study and date</a></li>
             </ul>
             <div class="nav-right">
                 <c:if test="${not empty sessionScope.user}">

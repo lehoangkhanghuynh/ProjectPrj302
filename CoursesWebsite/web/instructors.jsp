@@ -997,6 +997,7 @@
                 <li><a href="courseController?action=ExploreCourse">Khóa học</a></li>
                 <li><a href="instructors.jsp" class="active">Giảng viên</a></li>
                 <li><a href="#">Về chúng tôi</a></li>
+                <li><a href="dating.jsp">study and date</a></li>
             </ul>
             <div class="nav-right">
                 <a href="courseController?action=ExploreCourse" class="nav-cta">

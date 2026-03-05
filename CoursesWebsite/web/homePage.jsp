@@ -724,7 +724,7 @@
     </head>
     <body>
         <c:if test="${empty sessionScope.user}">
-            <jsp:forward page="login.jsp"/>
+            <c:redirect url="login.jsp"/>
         </c:if>
 
         <!-- NAVBAR -->
@@ -736,6 +736,7 @@
                 <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
                 <li><a href="instructors.jsp">Giảng viên</a></li>
                 <li><a href="#">Về chúng tôi</a></li>
+                <li><a href="dating.jsp">study and date</a></li>
             </ul>
 
             <div class="nav-right">

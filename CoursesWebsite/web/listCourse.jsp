@@ -180,6 +180,7 @@
             <li><a href="courseController?action=ExploreCourse" class="active">Khóa học</a></li>
             <li><a href="instructors.jsp">Giảng viên</a></li>
             <li><a href="#">Về chúng tôi</a></li>
+            <li><a href="dating.jsp">study and date</a></li>
         </ul>
         <div class="nav-right">
             <div class="search-bar">
@@ -204,8 +205,8 @@
                         <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6); font-size:0.75rem;"></i>
                     </div>
                     <div class="dropdown-menu-custom" id="userDropdown">
-                        <a href="#"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
-                        <a href="myCourses.jsp"><i class="bi bi-book"></i> Khóa học của tôi</a>
+                        <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
+                        <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
                         <a href="payment.jsp"><i class="bi bi-wallet2"></i> Nạp tiền</a>
                         <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
                         <a href="#"><i class="bi bi-gear"></i> Cài đặt</a>
