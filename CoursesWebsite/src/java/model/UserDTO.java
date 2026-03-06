@@ -17,7 +17,8 @@ public class UserDTO {
     private byte role; //auto 3 student
     private boolean status;
     private double balance;
-
+    private int age;
+    private String location, sex, marital_status;
     public double getBalance() {
         return balance;
     }
