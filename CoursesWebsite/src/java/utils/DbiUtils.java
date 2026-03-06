@@ -1,29 +1,40 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+/**
+ *
+ * @author HOANG KHANG PC
+ */
 public class DbiUtils {
 
-    private static final String DB_URL
-            = "jdbc:postgresql://dpg-d6kroankijhs73fq558g-a.oregon-postgres.render.com:5432/dpg_cour_render_com?sslmode=require";
+    private static final String DB_NAME = "CoursesWebsite";
+    private static final String DB_USER_NAME = "sa";
+    private static final String DB_PASSWORD = "12345";
 
-    private static final String DB_USER = "dpg_cour_render_com_user";
-    private static final String DB_PASSWORD = "MBWlTqxIGqdbOGYFCyoQ89oZqESY2ZiH";
-
-    public static Connection getConnection() throws Exception {
-
-        Class.forName("org.postgresql.Driver");
-
-        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+    public static Connection getConnection() throws ClassNotFoundException, SQLException {
+        Connection conn = null;
+        Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=" + DB_NAME;
+        conn = DriverManager.getConnection(url, DB_USER_NAME, DB_PASSWORD);
+        return conn;
     }
-
+    
     public static void main(String[] args) {
         try {
-            Connection conn = getConnection();
-            System.out.println(conn);
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(getConnection());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DbiUtils.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(DbiUtils.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
