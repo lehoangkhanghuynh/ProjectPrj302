@@ -374,7 +374,7 @@
 
                                         <%-- Hiển thị giá hoặc "Đã thanh toán" --%>
                                         <c:choose>
-                                            <c:when test="${isEnrolled}">
+                                            <c:when test="${isEnrolled }">
                                                 <span class="card-price enrolled-label">
                                                     <i class="bi bi-check2-circle"></i> Đã thanh toán
                                                 </span>
