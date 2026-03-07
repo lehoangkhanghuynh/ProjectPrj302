@@ -1071,7 +1071,7 @@
                                     </c:choose>
                                 </c:if>
                             </c:otherwise>
-                        </c:choose>
+                        </c:choose>89
                     </div>
 
                     <%-- Banner chứng chỉ nếu đã hoàn thành --%>
