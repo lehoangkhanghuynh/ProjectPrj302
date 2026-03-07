@@ -31,7 +31,7 @@ public class registerController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // 1. Lấy dữ liệu từ form
-         request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         String userName = request.getParameter("userName");
         String fullName = request.getParameter("fullname");
@@ -55,7 +55,7 @@ public class registerController extends HttpServlet {
                 msg = "Email này đã được sử dụng!";
             } else {
                 // 3. Nếu OK -> Insert
-                UserDTO user = new UserDTO(userName, fullName, email, password, (byte) 3, true, 0);
+                UserDTO user = new UserDTO(userName, fullName, email, password, (byte) 3, true, 0, 0, "", "", "");
                 if (dao.insertUser(user)) {
                     msg = "Đăng ký thành công! Giờ bạn có thể đăng nhập.";
                     isSuccess = true;

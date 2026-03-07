@@ -56,6 +56,10 @@
         <servlet-name>updatePasswordController</servlet-name>
         <servlet-class>controller.updatePasswordController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>adminController</servlet-name>
+        <servlet-class>controller.adminController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>updatePasswordController</servlet-name>
         <url-pattern>/updatePasswordController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminController</servlet-name>
+        <url-pattern>/adminController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

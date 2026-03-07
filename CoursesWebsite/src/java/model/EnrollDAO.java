@@ -17,10 +17,8 @@ public class EnrollDAO {
     public boolean isEnrolled(String userId, int courseId) throws Exception {
         String sql = "SELECT 1 FROM Enroll WHERE userId=? AND courseId=?";
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setString(1, userId);
             ps.setInt(2, courseId);
-
             ResultSet rs = ps.executeQuery();
             return rs.next();
         }
@@ -30,10 +28,8 @@ public class EnrollDAO {
     public boolean enrollCourse(String userId, int courseId) throws Exception {
         String sql = "INSERT INTO Enroll(userId, courseId, status) VALUES (?, ?, 0)";
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setString(1, userId);
             ps.setInt(2, courseId);
-
             return ps.executeUpdate() > 0;
         }
     }
@@ -42,11 +38,9 @@ public class EnrollDAO {
     public boolean updateStatus(String userId, int courseId, int status) throws Exception {
         String sql = "UPDATE Enroll SET status=? WHERE userId=? AND courseId=?";
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setInt(1, status);
             ps.setString(2, userId);
             ps.setInt(3, courseId);
-
             return ps.executeUpdate() > 0;
         }
     }
@@ -55,12 +49,9 @@ public class EnrollDAO {
     public List<CourseDTO> getMyCourses(String userId) throws Exception {
         List<CourseDTO> list = new ArrayList<>();
         String sql = "SELECT c.* FROM Course c JOIN Enroll e ON c.courseId = e.courseId WHERE e.userId=? AND e.status=1";
-
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setString(1, userId);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 CourseDTO c = new CourseDTO();
                 c.setCourseId(rs.getInt("courseId"));
@@ -78,10 +69,8 @@ public class EnrollDAO {
     public int getEnrollStatus(String userId, int courseId) throws Exception {
         String sql = "SELECT status FROM Enroll WHERE userId=? AND courseId=?";
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setString(1, userId);
             ps.setInt(2, courseId);
-
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt("status");
@@ -90,10 +79,10 @@ public class EnrollDAO {
         return -1;
     }
 
+    // 6. Lấy course fee
     public double getCourseFee(int courseId) throws Exception {
         String sql = "SELECT fee FROM Course WHERE courseId=?";
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-
             ps.setInt(1, courseId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -102,8 +91,8 @@ public class EnrollDAO {
         }
         return 0;
     }
-    // Lấy tất cả courseId mà user đã enroll (status=1) — dùng để check trên JSP
 
+    // 7. Lấy tất cả courseId mà user đã enroll (status=1)
     public List<Integer> getEnrolledCourseIds(String userId) throws Exception {
         List<Integer> list = new ArrayList<>();
         String sql = "SELECT courseId FROM Enroll WHERE userId=? AND status=1";
@@ -116,4 +105,81 @@ public class EnrollDAO {
         }
         return list;
     }
+
+    // ── LESSON PROGRESS ──────────────────────────────────────────────
+    // 8. Lấy danh sách lessonId đã hoàn thành từ bảng LessonProgress
+    public List<Integer> getCompletedLessons(String userId, int courseId) throws Exception {
+        List<Integer> list = new ArrayList<>();
+        String sql = "SELECT lessonId FROM LessonProgress WHERE userId=? AND courseId=? AND status=1";
+        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, userId);
+            ps.setInt(2, courseId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getInt("lessonId"));
+            }
+        }
+        return list;
+    }
+
+    public boolean updateStatusDone(String userId, int courseId) {
+        String sql = "UPDATE Enroll SET status = 2 WHERE userId = ? AND courseId = ?";
+
+        try {
+            Connection conn = DbiUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, userId);
+            ps.setInt(2, courseId);
+
+            int rows = ps.executeUpdate();
+            return rows > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public List<EnrollDTO> getAllEnrollments() {
+
+        List<EnrollDTO> list = new ArrayList<>();
+
+        String sql = "SELECT "
+                + "e.userId, "
+                + "u.fullname, "
+                + "c.courseId, "
+                + "c.courseName, "
+                + "c.fee, "
+                + "e.enrollDate, "
+                + "e.status "
+                + "FROM Enroll e "
+                + "JOIN Users u ON e.userId = u.userId "
+                + "JOIN Course c ON e.courseId = c.courseId "
+                + "ORDER BY e.enrollDate DESC";
+
+        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                EnrollDTO e = new EnrollDTO(
+                        rs.getString("userId"),
+                        rs.getString("fullname"),
+                        rs.getInt("courseId"),
+                        rs.getString("courseName"),
+                        rs.getInt("fee"),
+                        rs.getTimestamp("enrollDate"),
+                        rs.getInt("status")
+                );
+
+                list.add(e);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
 }

@@ -9,14 +9,14 @@ import utils.DbiUtils;
 
 public class LessonDAO {
 
-    public LessonDAO() {}
+    public LessonDAO() {
+    }
 
     // Lấy tất cả lesson theo courseId
     public List<LessonDTO> getLessonsByCourse(int courseId) throws Exception {
         List<LessonDTO> list = new ArrayList<>();
         String sql = "SELECT * FROM Lessons WHERE courseId = ? ORDER BY lessonId";
-        try (Connection con = DbiUtils.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, courseId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -36,8 +36,7 @@ public class LessonDAO {
     // Lấy 1 lesson theo lessonId
     public LessonDTO getLessonById(int lessonId) throws Exception {
         String sql = "SELECT * FROM Lessons WHERE lessonId = ?";
-        try (Connection con = DbiUtils.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, lessonId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -53,4 +52,18 @@ public class LessonDAO {
         }
         return null;
     }
+
+    public int countByCourse(int courseId) throws Exception {
+        String sql = "SELECT COUNT(*) FROM Lessons WHERE courseId=?";
+        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, courseId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+        return 0;
+    }
+
+
 }

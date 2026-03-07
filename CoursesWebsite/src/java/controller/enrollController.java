@@ -1,5 +1,4 @@
 package controller;
-
 import model.EnrollDAO;
 import model.UserDAO;
 import model.UserDTO;
@@ -17,6 +16,7 @@ public class enrollController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         UserDTO user = (UserDTO) session.getAttribute("user");
 
@@ -36,11 +36,10 @@ public class enrollController extends HttpServlet {
             double fee     = enrollDAO.getCourseFee(courseId);
             double balance = userDAO.getBalance(userId);
 
-            // Đã enroll và đã thanh toán rồi → không làm gì thêm
+            // Đã enroll và đã thanh toán (status=1) hoặc hoàn thành (status=2) → không làm gì thêm
             if (enrollDAO.isEnrolled(userId, courseId)) {
                 int status = enrollDAO.getEnrollStatus(userId, courseId);
-                if (status == 1) {
-                    // Redirect về listCourse để ENROLLED_IDS được load lại
+                if (status >= 1) {
                     response.sendRedirect("listCourse.jsp");
                     return;
                 }
@@ -49,7 +48,6 @@ public class enrollController extends HttpServlet {
             // Kiểm tra số dư
             if (balance < fee) {
                 request.setAttribute("enrollmessage", "Số dư không đủ! Vui lòng nạp thêm tiền.");
-                // Forward về listCourse servlet để load lại ENROLLED_IDS
                 request.getRequestDispatcher("listCourse.jsp").forward(request, response);
                 return;
             }
@@ -74,8 +72,7 @@ public class enrollController extends HttpServlet {
             user.setBalance(balance - fee);
             session.setAttribute("user", user);
 
-            // Redirect về listCourse (servlet) để ENROLLED_IDS được load lại
-            // → nút sẽ tự đổi thành "Vào học"
+            // Redirect về lesson sau khi thanh toán thành công
             response.sendRedirect("lesson.jsp");
 
         } catch (Exception e) {

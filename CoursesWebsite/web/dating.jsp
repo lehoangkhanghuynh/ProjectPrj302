@@ -17,22 +17,21 @@
         </c:if>
 
         <c:if test="${not empty sessionScope.user}">
-            <form action="mainController" method="POST">
-                <h2>Thông Tin Của Bạn<h2><!-- gioi thieu thong tin user -->
-                        ${user.fullname} <br />
-                        ${user.email} <br /> <!--thêm thông tin tuoi,... -->
-                        ${user.age} <br /> <!-- int 255 -->
-                        ${user.location} <br /> <!-- nvarchar(50) -->
-                        ${user.sex} <br /> <!-- nvarchar(10) -->
-                        <c:choose>
-                            <c:when test="${user.age >= 16}">
-                                <input type="submit" value="hẹn hò nhưng không yêu" />
-                            </c:when>
-                            <c:otherwise>
-                                <span style=" color: red">Bạn chưa đủ tuổi cố gắng ăn mau chống lớn đi nhé</span>
-                            </c:otherwise>
-                        </c:choose>
-                        </form>
-                    </c:if>
-                    </body>
-                    </html>
+            <h2>Thông Tin Của Bạn<h2><!-- gioi thieu thong tin user -->
+                    ${sessionScope.user.fullname} <br />
+                    ${sessionScope.user.email} <br /> <!--thêm thông tin tuoi,... -->
+                    ${sessionScope.user.age} <br /> <!-- int 255 -->
+                    ${sessionScope.user.location} <br /> <!-- nvarchar(50) -->
+                    ${sessionScope.user.sex} <br /> <!-- nvarchar(10) -->
+                    ${sessionScope.user.material_status} <br/>
+                    <c:choose>
+                        <c:when test="${user.age >= 16}">
+                            <input type="submit" value="hẹn hò nhưng không yêu" />
+                        </c:when>
+                        <c:otherwise>
+                            <span style=" color: red">Bạn chưa đủ tuổi cố gắng ăn mau chống lớn đi nhé</span>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
+ </body>
+</html>

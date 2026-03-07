@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 import utils.DbiUtils;
 
 public class CourseDAO {
@@ -32,7 +33,7 @@ public class CourseDAO {
                 double fee = rs.getDouble("fee");
                 String status = rs.getString("status");
 
-                CourseDTO c = new CourseDTO(id, topic, name, fee, status);
+                CourseDTO c = new CourseDTO(id, topic, name, fee, status, 0);
                 result.add(c);
             }
 
@@ -59,7 +60,7 @@ public class CourseDAO {
                 double fee = rs.getDouble("fee");
                 String status = rs.getString("status");
 
-                CourseDTO c = new CourseDTO(id, topic, name, fee, status);
+                CourseDTO c = new CourseDTO(id, topic, name, fee, status,0);
                 result.add(c);
             }
 
@@ -226,7 +227,8 @@ public class CourseDAO {
                         rs.getString("topic"),
                         rs.getString("courseName"),
                         rs.getDouble("fee"),
-                        rs.getString("status")
+                        rs.getString("status"),
+                        0
                 );
                 list.add(c);
             }
@@ -260,7 +262,8 @@ public class CourseDAO {
                         rs.getString("topic"),
                         rs.getString("courseName"),
                         rs.getDouble("fee"),
-                        rs.getString("status")
+                        rs.getString("status"),
+                        0
                 );
                 list.add(c);
             }
@@ -283,5 +286,45 @@ public class CourseDAO {
             }
         }
         return 0;
+    }
+
+    public List<CourseDTO> getCoursesWithStudents() {
+
+        List<CourseDTO> list = new ArrayList<>();
+
+        try {
+
+            Connection conn = DbiUtils.getConnection();
+
+            String sql
+                    = "SELECT c.courseId,c.topic,c.courseName,c.fee,c.status, "
+                    + "COUNT(e.userId) AS totalStudents "
+                    + "FROM Course c "
+                    + "LEFT JOIN Enroll e ON c.courseId = e.courseId "
+                    + "GROUP BY c.courseId,c.topic,c.courseName,c.fee,c.status";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                CourseDTO c = new CourseDTO(
+                        rs.getInt("courseId"),
+                        rs.getString("topic"),
+                        rs.getString("courseName"),
+                        rs.getDouble("fee"),
+                        rs.getString("status"),
+                        rs.getInt("totalStudents")
+                );
+
+                list.add(c);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
     }
 }

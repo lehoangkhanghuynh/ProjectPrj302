@@ -39,7 +39,16 @@ public class mainController extends HttpServlet {
             url = "updateUserController";
         }else if (action.equals("updatePassword")){
             url = "updatePasswordController";
-        }
+        }else if (action.equals("manageUsers")
+                || action.equals("blockUser")
+                || action.equals("unblockUser")
+                || action.equals("manageCourses")
+                || action.equals("viewPayments")) {
+
+            url = "adminController";
+
+        } 
+
 
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);

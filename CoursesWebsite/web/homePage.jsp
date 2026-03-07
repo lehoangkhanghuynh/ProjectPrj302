@@ -737,15 +737,19 @@
                 <li><a href="instructors.jsp">Giảng viên</a></li>
                 <li><a href="#">Về chúng tôi</a></li>
                 <li><a href="dating.jsp">study and date</a></li>
-            </ul>
+                    <c:if test="${sessionScope.user.role == 1}">
+                        <c:if test="${sessionScope.user != null && sessionScope.user.role == 1}">
+                        <li><a href="administrator.jsp">Administrator Manager</a></li>
+                        </c:if>                </c:if>
+                </ul>
 
-            <div class="nav-right">
-                <form action="search.jsp" method="GET">
-                    <div class="search-bar">
-                        <i class="bi bi-search"></i>
-                        <input type="text" name="q" placeholder="Tìm khóa học..." />
-                    </div>
-                </form>
+                <div class="nav-right">
+                    <form action="search.jsp" method="GET">
+                        <div class="search-bar">
+                            <i class="bi bi-search"></i>
+                            <input type="text" name="q" placeholder="Tìm khóa học..." />
+                        </div>
+                    </form>
 
                 <%-- BALANCE PILL - chỉ hiện khi đã đăng nhập --%>
                 <c:if test="${not empty sessionScope.user}">

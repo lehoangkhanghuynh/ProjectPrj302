@@ -48,19 +48,29 @@ public class loginController extends HttpServlet {
         System.out.println("user: " + user);
 
         if (user != null) {
-            if (user.isStatus()) {
-                session.setAttribute("user", user);
-                System.out.println("Login OK → redirect homePage");
-                response.sendRedirect(request.getContextPath() + "/homePage.jsp");
+
+            // kiểm tra account lock
+            if (!user.isStatus()) {
+                request.setAttribute("message", "Account is locked!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
-            } else {
-                request.setAttribute("message", "banned");
             }
+
+            session.setAttribute("user", user);
+
+            // phân quyền
+            if (user.getRole() == 1) {
+                response.sendRedirect("homePage.jsp");
+            } else if (user.getRole() == 2) {
+                response.sendRedirect("instructor.jsp");
+            } else if (user.getRole() == 3) {
+                response.sendRedirect("homePage.jsp");
+            }
+
         } else {
             request.setAttribute("message", "Account or Password is Wrong!");
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
-
-        request.getRequestDispatcher("login.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

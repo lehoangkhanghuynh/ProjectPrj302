@@ -23,6 +23,38 @@ public class UserDTO {
         return balance;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getMarital_status() {
+        return marital_status;
+    }
+
+    public void setMarital_status(String marital_status) {
+        this.marital_status = marital_status;
+    }
+
     public void setBalance(double balance) {
         this.balance = balance;
     }
@@ -35,6 +67,20 @@ public class UserDTO {
         this.role = role;
         this.status = status;
         this.balance = balance;
+    }
+
+    public UserDTO(String userId, String fullname, String email, String password, byte role, boolean status, double balance, int age, String location, String sex, String marital_status) {
+        this.userId = userId;
+        this.fullname = fullname;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.status = status;
+        this.balance = balance;
+        this.age = age;
+        this.location = location;
+        this.sex = sex;
+        this.marital_status = marital_status;
     }
 
     public UserDTO() {

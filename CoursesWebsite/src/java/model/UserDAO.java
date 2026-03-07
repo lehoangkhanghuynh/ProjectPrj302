@@ -7,6 +7,9 @@ package model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import utils.DbiUtils;
 
 /**
@@ -17,25 +20,30 @@ public class UserDAO {
 
     public UserDTO searchById(String Id) {
         UserDTO user = null;
-        String sql = "SELECT * FROM Users WHERE userId = ?";
+        String sql = "SELECT * FROM dbo.Users WHERE userId = ?";
         try {
             Connection conn = DbiUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, Id);
             ResultSet rs = ps.executeQuery();
 
-            while (rs.next()) {
+            if (rs.next()) {
 
-                String userId = rs.getString("userId");
-                String fullname = rs.getString("fullname");
-                String email = rs.getString("email");
-                String password = rs.getString("password");
-                byte role = rs.getByte("role");
-                boolean status = rs.getBoolean("status");
-                double balance = rs.getDouble("balance");
-
-                user = new UserDTO(userId, fullname, email, password, role, status, balance);
+                user = new UserDTO(
+                        rs.getString("userId"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getByte("role"),
+                        rs.getBoolean("status"),
+                        rs.getDouble("balance"),
+                        rs.getInt("age"),
+                        rs.getString("location"),
+                        rs.getString("sex"),
+                        rs.getString("marital_status")
+                );
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,8 +82,7 @@ public class UserDAO {
 
     public boolean insertUser(UserDTO u) throws Exception {
 
-        String sql = "INSERT INTO Users(userId, fullname, email, password, role, status, balance) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Users VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -86,6 +93,10 @@ public class UserDAO {
             ps.setByte(5, u.getRole());
             ps.setBoolean(6, u.isStatus());
             ps.setDouble(7, u.getBalance());
+            ps.setInt(8, u.getAge());
+            ps.setString(9, u.getLocation());
+            ps.setString(10, u.getSex());
+            ps.setString(11, u.getMarital_status());
 
             return ps.executeUpdate() > 0;
         }
@@ -93,29 +104,63 @@ public class UserDAO {
 
     public UserDTO login(String userName, String password) {
 
-        UserDTO user = searchById(userName);
-        if (user != null && user.getPassword().equals(password)) {
-            return user;
-        }
-        return null;
+        UserDTO user = null;
 
+        String sql = "SELECT * FROM Users WHERE userId=? AND password=?";
+
+        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userName);
+            ps.setString(2, password);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                user = new UserDTO(
+                        rs.getString("userId"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getByte("role"),
+                        rs.getBoolean("status"),
+                        rs.getDouble("balance"),
+                        rs.getInt("age"),
+                        rs.getString("location"),
+                        rs.getString("sex"),
+                        rs.getString("marital_status")
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return user;
     }
 
     public double getBalance(String userId) throws Exception {
+
         String sql = "SELECT balance FROM Users WHERE userId=?";
+
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, userId);
+
             ResultSet rs = ps.executeQuery();
+
             if (rs.next()) {
                 return rs.getDouble("balance");
             }
         }
+
         return 0;
     }
 
     public boolean deductBalance(String userId, double amount) throws Exception {
+
         String sql = "UPDATE Users SET balance = balance - ? WHERE userId=? AND balance >= ?";
+
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setDouble(1, amount);
@@ -126,13 +171,86 @@ public class UserDAO {
         }
     }
 
-    public boolean updateUser(String userId, String fullname, String email) throws Exception {
-        String sql = "UPDATE Users SET fullname=?, email=? WHERE userId=?";
+    public List<UserDTO> getAllUsers() {
+
+        List<UserDTO> list = new ArrayList<>();
+
+        String sql = "SELECT * FROM Users";
+
+        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                UserDTO user = new UserDTO(
+                        rs.getString("userId"),
+                        rs.getString("fullname"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getByte("role"),
+                        rs.getBoolean("status"),
+                        rs.getDouble("balance"),
+                        rs.getInt("age"),
+                        rs.getString("location"),
+                        rs.getString("sex"),
+                        rs.getString("marital_status")
+                );
+
+                list.add(user);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public boolean blockUser(String userId) {
+
+        String sql = "UPDATE Users SET status = 0 WHERE userId = ?";
+
+        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean unblockUser(String userId) {
+
+        String sql = "UPDATE Users SET status = 1 WHERE userId = ?";
+
+        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, userId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean updateUser(String userId, String fullname, String email, int age, String location, String sex, String marital_status) throws Exception {
+        String sql = "UPDATE Users SET fullname=?, email=?, age=?, location= ?, sex = ?, marital_status = ? WHERE userId=?";
         int result = 0;
         try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, fullname);
             ps.setString(2, email);
-            ps.setString(3, userId);
+            ps.setInt(3, age);
+            ps.setString(4, location);
+            ps.setString(5, sex);
+            ps.setString(6, marital_status);
+
+            ps.setString(7, userId);
             result = ps.executeUpdate();
 
         } catch (Exception e) {
@@ -155,4 +273,6 @@ public class UserDAO {
         }
         return result > 0;
     }
+
+    
 }

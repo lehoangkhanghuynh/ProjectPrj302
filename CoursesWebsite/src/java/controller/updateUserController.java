@@ -35,23 +35,32 @@ public class updateUserController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+
         String userId = request.getParameter("userId");
         String fullname = request.getParameter("fullname");
         String email = request.getParameter("email");
+        String age = request.getParameter("age");
+        String location = request.getParameter("location");
+        String sex = request.getParameter("sex");
+        String maritalStatus = request.getParameter("maritalStatus"); // khớp với name= trong JSP
 
         UserDAO udao = new UserDAO();
         try {
-            boolean result = udao.updateUser(userId, fullname, email);
+            int ages = Integer.parseInt(age);
+            boolean result = udao.updateUser(userId, fullname, email, ages, location, sex, maritalStatus);
             if (result) {
-                // Sửa: thống nhất tên attribute là "user" (chữ thường)
                 UserDTO user = (UserDTO) session.getAttribute("user");
                 if (user != null) {
                     user.setFullname(fullname);
                     user.setEmail(email);
+                    user.setAge(ages);
+                    user.setLocation(location);
+                    user.setSex(sex);
+                    user.setMarital_status(maritalStatus);
                 }
-                request.setAttribute("MSG", "Update thành công!");
+                request.setAttribute("MSG", "Cập nhật thành công!");
             } else {
-                request.setAttribute("ERROR", "Update thất bại!");
+                request.setAttribute("ERROR", "Cập nhật thất bại!");
             }
         } catch (Exception e) {
             e.printStackTrace();

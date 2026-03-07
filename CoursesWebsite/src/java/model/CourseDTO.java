@@ -9,21 +9,32 @@ package model;
  * @author dell
  */
 public class CourseDTO {
+
     private int courseId;
     private String topic;
     private String courseName;
     private double fee;
     private String status;
+    private int totalStudents;
 
     public CourseDTO() {
     }
 
-    public CourseDTO(int courseId, String topic, String courseName, double fee, String status ) {
+    public CourseDTO(int courseId, String topic, String courseName, double fee, String status, int totalStudents) {
         this.courseId = courseId;
         this.topic = topic;
         this.courseName = courseName;
         this.fee = fee;
         this.status = status;
+        this.totalStudents = totalStudents;
+    }
+
+    public int getTotalStudents() {
+        return totalStudents;
+    }
+
+    public void setTotalStudents(int totalStudents) {
+        this.totalStudents = totalStudents;
     }
 
     public int getCourseId() {
