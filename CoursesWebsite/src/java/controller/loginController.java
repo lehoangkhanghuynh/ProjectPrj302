@@ -38,14 +38,8 @@ public class loginController extends HttpServlet {
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
 
-        System.out.println("=== LOGIN ===");
-        System.out.println("userName: " + userName);
-        System.out.println("password: " + password);
-
         UserDAO udao = new UserDAO();
         UserDTO user = udao.login(userName, password);
-
-        System.out.println("user: " + user);
 
         if (user != null) {
 
