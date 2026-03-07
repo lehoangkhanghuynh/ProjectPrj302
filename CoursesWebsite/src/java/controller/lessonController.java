@@ -45,9 +45,9 @@ public class lessonController extends HttpServlet {
 
         if ("addComment".equals(action)) {
             try {
-                int    lessonId = Integer.parseInt(request.getParameter("lessonId"));
-                int    courseId = Integer.parseInt(request.getParameter("courseId"));
-                String content  = request.getParameter("commentContent");
+                int lessonId = Integer.parseInt(request.getParameter("lessonId"));
+                int courseId = Integer.parseInt(request.getParameter("courseId"));
+                String content = request.getParameter("commentContent");
                 if (content != null && !content.trim().isEmpty()) {
                     CommentDAO dao = new CommentDAO();
                     dao.addComment(lessonId, user.getUserId(), content.trim());
@@ -61,8 +61,8 @@ public class lessonController extends HttpServlet {
         } else if ("deleteComment".equals(action)) {
             try {
                 int commentId = Integer.parseInt(request.getParameter("commentId"));
-                int lessonId  = Integer.parseInt(request.getParameter("lessonId"));
-                int courseId  = Integer.parseInt(request.getParameter("courseId"));
+                int lessonId = Integer.parseInt(request.getParameter("lessonId"));
+                int courseId = Integer.parseInt(request.getParameter("courseId"));
                 CommentDAO dao = new CommentDAO();
                 dao.deleteComment(commentId, user.getUserId());
                 response.sendRedirect("lesson?courseId=" + courseId + "&lessonId=" + lessonId + "#comments");
@@ -122,7 +122,7 @@ public class lessonController extends HttpServlet {
             CourseDAO courseDAO = new CourseDAO();
 
             List<LessonDTO> lessons = lessonDAO.getLessonsByCourse(courseId);
-            CourseDTO course        = courseDAO.searchByID(String.valueOf(courseId));
+            CourseDTO course = courseDAO.searchByID(String.valueOf(courseId));
 
             LessonDTO currentLesson = null;
             String lessonIdParam = request.getParameter("lessonId");
@@ -138,18 +138,21 @@ public class lessonController extends HttpServlet {
                 comments = commentDAO.getCommentsByLesson(currentLesson.getLessonId());
             }
 
+            EnrollDAO Edao = new EnrollDAO();
+            int status = Edao.getEnrollStatus(user.getUserId(), courseId);
+
             // Kiểm tra khóa học đã hoàn thành chưa (status=2)
             boolean courseCompleted = false;
-            if (user.getRole() != 1 && user.getRole() != 2) {
+            if (user.getRole() != 1) {
                 EnrollDAO enrollDAO = new EnrollDAO();
                 courseCompleted = enrollDAO.updateStatusDone(user.getUserId(), courseId);
             }
-
-            request.setAttribute("courseId",        courseId);
-            request.setAttribute("course",          course);
-            request.setAttribute("lessons",         lessons);
-            request.setAttribute("currentLesson",   currentLesson);
-            request.setAttribute("comments",        comments);
+            request.setAttribute("status", status);
+            request.setAttribute("courseId", courseId);
+            request.setAttribute("course", course);
+            request.setAttribute("lessons", lessons);
+            request.setAttribute("currentLesson", currentLesson);
+            request.setAttribute("comments", comments);
             request.setAttribute("courseCompleted", courseCompleted);
 
             request.getRequestDispatcher("lesson.jsp").forward(request, response);
@@ -165,5 +168,7 @@ public class lessonController extends HttpServlet {
     }
 
     @Override
-    public String getServletInfo() { return "Lesson Controller"; }
+    public String getServletInfo() {
+        return "Lesson Controller";
+    }
 }

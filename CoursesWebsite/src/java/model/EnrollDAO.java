@@ -95,28 +95,12 @@ public class EnrollDAO {
     // 7. Lấy tất cả courseId mà user đã enroll (status=1)
     public List<Integer> getEnrolledCourseIds(String userId) throws Exception {
         List<Integer> list = new ArrayList<>();
-        String sql = "SELECT courseId FROM Enroll WHERE userId=? AND status=1";
+        String sql = "SELECT courseId FROM Enroll WHERE userId=? AND status=1 OR status=2";
         try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 list.add(rs.getInt("courseId"));
-            }
-        }
-        return list;
-    }
-
-    // ── LESSON PROGRESS ──────────────────────────────────────────────
-    // 8. Lấy danh sách lessonId đã hoàn thành từ bảng LessonProgress
-    public List<Integer> getCompletedLessons(String userId, int courseId) throws Exception {
-        List<Integer> list = new ArrayList<>();
-        String sql = "SELECT lessonId FROM LessonProgress WHERE userId=? AND courseId=? AND status=1";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setString(1, userId);
-            ps.setInt(2, courseId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                list.add(rs.getInt("lessonId"));
             }
         }
         return list;
@@ -181,5 +165,6 @@ public class EnrollDAO {
 
         return list;
     }
+    
 
 }
