@@ -60,6 +60,10 @@
         <servlet-name>adminController</servlet-name>
         <servlet-class>controller.adminController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>wishlistController</servlet-name>
+        <servlet-class>controller.wishlistController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -119,6 +123,10 @@
     <servlet-mapping>
         <servlet-name>adminController</servlet-name>
         <url-pattern>/adminController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>wishlistController</servlet-name>
+        <url-pattern>/wishlistController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

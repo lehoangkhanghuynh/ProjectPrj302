@@ -741,15 +741,21 @@
                         <c:if test="${sessionScope.user != null && sessionScope.user.role == 1}">
                         <li><a href="administrator.jsp">Administrator Manager</a></li>
                         </c:if>                </c:if>
-                </ul>
 
-                <div class="nav-right">
-                    <form action="search.jsp" method="GET">
-                        <div class="search-bar">
-                            <i class="bi bi-search"></i>
-                            <input type="text" name="q" placeholder="Tìm khóa học..." />
-                        </div>
-                    </form>
+                <c:if test="${sessionScope.user.role == 3}">
+                    <li>
+                        <a href="wishlistController?action=view&userId=${sessionScope.user.userId}">Wishlist</a>
+                    </li>
+                </c:if>
+            </ul>
+
+            <div class="nav-right">
+                <form action="search.jsp" method="GET">
+                    <div class="search-bar">
+                        <i class="bi bi-search"></i>
+                        <input type="text" name="q" placeholder="Tìm khóa học..." />
+                    </div>
+                </form>
 
                 <%-- BALANCE PILL - chỉ hiện khi đã đăng nhập --%>
                 <c:if test="${not empty sessionScope.user}">
