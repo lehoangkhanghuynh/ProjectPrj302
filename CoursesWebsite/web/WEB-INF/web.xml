@@ -68,6 +68,10 @@
         <servlet-name>courseCompleteController</servlet-name>
         <servlet-class>controller.courseCompleteController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>certificateController</servlet-name>
+        <servlet-class>controller.certificateController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -131,6 +135,10 @@
     <servlet-mapping>
         <servlet-name>courseCompleteController</servlet-name>
         <url-pattern>/courseCompleteController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>certificateController</servlet-name>
+        <url-pattern>/certificateController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
