@@ -1,5 +1,4 @@
 package controller;
-
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.*;
@@ -17,10 +16,8 @@ public class courseController extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         CourseDAO dao = new CourseDAO();
-
         try {
             if (action == null || action.equals("ExploreCourse")) {
-                // Load danh sách khóa học
                 List<CourseDTO> list = dao.getAll();
                 request.setAttribute("COURSE_LIST", list);
 
@@ -28,10 +25,13 @@ public class courseController extends HttpServlet {
                 UserDTO user = (UserDTO) session.getAttribute("user");
                 if (user != null) {
                     EnrollDAO enrollDAO = new EnrollDAO();
+                    // IDs đã đăng ký (status=1 hoặc 2)
                     List<Integer> enrolledIds = enrollDAO.getEnrolledCourseIds(user.getUserId());
                     request.setAttribute("ENROLLED_IDS", enrolledIds);
+                    // IDs đã hoàn thành (status=2)
+                    List<Integer> completedIds = enrollDAO.getCompletedCourseIds(user.getUserId());
+                    request.setAttribute("COMPLETED_IDS", completedIds);
                 }
-
                 request.getRequestDispatcher("listCourse.jsp").forward(request, response);
             }
         } catch (Exception e) {
@@ -42,13 +42,9 @@ public class courseController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+            throws ServletException, IOException { processRequest(request, response); }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        processRequest(request, response);
-    }
+            throws ServletException, IOException { processRequest(request, response); }
 }

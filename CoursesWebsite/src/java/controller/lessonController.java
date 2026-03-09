@@ -61,8 +61,8 @@ public class lessonController extends HttpServlet {
         } else if ("deleteComment".equals(action)) {
             try {
                 int commentId = Integer.parseInt(request.getParameter("commentId"));
-                int lessonId = Integer.parseInt(request.getParameter("lessonId"));
-                int courseId = Integer.parseInt(request.getParameter("courseId"));
+                int lessonId  = Integer.parseInt(request.getParameter("lessonId"));
+                int courseId  = Integer.parseInt(request.getParameter("courseId"));
                 CommentDAO dao = new CommentDAO();
                 dao.deleteComment(commentId, user.getUserId());
                 response.sendRedirect("lesson?courseId=" + courseId + "&lessonId=" + lessonId + "#comments");
@@ -72,16 +72,16 @@ public class lessonController extends HttpServlet {
             }
 
         } else if ("finishCourse".equals(action)) {
-            // Bấm Hoàn thành khóa học → set Enroll.status = 2
-            response.setContentType("application/json; charset=UTF-8");
+            // Bấm "Hoàn thành khóa học" → set Enroll.status = 2 rồi redirect về lesson
             try {
                 int courseId = Integer.parseInt(request.getParameter("courseId"));
                 EnrollDAO enrollDAO = new EnrollDAO();
                 enrollDAO.updateStatusDone(user.getUserId(), courseId);
-                response.getWriter().write("{\"ok\":true}");
+                // Redirect về trang lesson để reload với status=2
+                response.sendRedirect("courseComplete?courseId=" + courseId);
             } catch (Exception e) {
                 e.printStackTrace();
-                response.getWriter().write("{\"ok\":false,\"error\":\"" + e.getMessage() + "\"}");
+                response.sendRedirect("courseController?action=ExploreCourse");
             }
 
         } else {
@@ -109,10 +109,13 @@ public class lessonController extends HttpServlet {
 
             int courseId = Integer.parseInt(courseIdParam);
 
+            // Kiểm tra quyền truy cập (bỏ qua nếu là admin/instructor)
+            EnrollDAO enrollDAO = new EnrollDAO();
+            int status = -1;
             if (user.getRole() != 1 && user.getRole() != 2) {
-                EnrollDAO enrollDAO = new EnrollDAO();
-                int enrollStatus = enrollDAO.getEnrollStatus(user.getUserId(), courseId);
-                if (enrollStatus < 1) {
+                status = enrollDAO.getEnrollStatus(user.getUserId(), courseId);
+                if (status < 1) {
+                    // Chưa đăng ký hoặc chưa thanh toán → không cho vào
                     response.sendRedirect("courseController?action=ExploreCourse");
                     return;
                 }
@@ -121,9 +124,10 @@ public class lessonController extends HttpServlet {
             LessonDAO lessonDAO = new LessonDAO();
             CourseDAO courseDAO = new CourseDAO();
 
-            List<LessonDTO> lessons = lessonDAO.getLessonsByCourse(courseId);
-            CourseDTO course = courseDAO.searchByID(String.valueOf(courseId));
+            List<LessonDTO> lessons   = lessonDAO.getLessonsByCourse(courseId);
+            CourseDTO course          = courseDAO.searchByID(String.valueOf(courseId));
 
+            // Xác định bài học hiện tại
             LessonDTO currentLesson = null;
             String lessonIdParam = request.getParameter("lessonId");
             if (lessonIdParam != null && !lessonIdParam.trim().isEmpty()) {
@@ -132,28 +136,21 @@ public class lessonController extends HttpServlet {
                 currentLesson = lessons.get(0);
             }
 
+            // Load comments
             List<CommentDTO> comments = null;
             if (currentLesson != null) {
                 CommentDAO commentDAO = new CommentDAO();
                 comments = commentDAO.getCommentsByLesson(currentLesson.getLessonId());
             }
 
-            EnrollDAO Edao = new EnrollDAO();
-            int status = Edao.getEnrollStatus(user.getUserId(), courseId);
-
-            // Kiểm tra khóa học đã hoàn thành chưa (status=2)
-            boolean courseCompleted = false;
-            if (user.getRole() != 1) {
-                EnrollDAO enrollDAO = new EnrollDAO();
-                courseCompleted = enrollDAO.updateStatusDone(user.getUserId(), courseId);
-            }
-            request.setAttribute("status", status);
-            request.setAttribute("courseId", courseId);
-            request.setAttribute("course", course);
-            request.setAttribute("lessons", lessons);
+            // Truyền status vào JSP để hiển thị đúng nút
+            // status: 1 = đang học, 2 = đã hoàn thành
+            request.setAttribute("status",        status);
+            request.setAttribute("courseId",      courseId);
+            request.setAttribute("course",        course);
+            request.setAttribute("lessons",       lessons);
             request.setAttribute("currentLesson", currentLesson);
-            request.setAttribute("comments", comments);
-            request.setAttribute("courseCompleted", courseCompleted);
+            request.setAttribute("comments",      comments);
 
             request.getRequestDispatcher("lesson.jsp").forward(request, response);
 

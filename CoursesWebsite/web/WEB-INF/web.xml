@@ -64,6 +64,10 @@
         <servlet-name>wishlistController</servlet-name>
         <servlet-class>controller.wishlistController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>courseCompleteController</servlet-name>
+        <servlet-class>controller.courseCompleteController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -127,6 +131,10 @@
     <servlet-mapping>
         <servlet-name>wishlistController</servlet-name>
         <url-pattern>/wishlistController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>courseCompleteController</servlet-name>
+        <url-pattern>/courseCompleteController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

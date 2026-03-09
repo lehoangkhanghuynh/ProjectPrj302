@@ -110,10 +110,14 @@
         .course-grid-full { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
         .course-card-full { background: #fff; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; color: var(--text); transition: box-shadow 0.2s, transform 0.2s; display: flex; flex-direction: column; }
         .course-card-full:hover { box-shadow: 0 12px 36px rgba(108,63,197,0.15); transform: translateY(-4px); }
+        /* Completed card có viền vàng */
+        .course-card-full.completed { border-color: #FFD54F; }
         .card-thumb { height: 150px; overflow: hidden; position: relative; background: linear-gradient(135deg, var(--purple-deep), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 3rem; }
         .card-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; position: absolute; top: 0; left: 0; }
         .card-thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(30,10,74,0.5) 0%, transparent 60%); }
         .card-topic-badge { position: absolute; top: 10px; left: 10px; background: rgba(255,255,255,0.92); color: var(--purple); font-size: 0.62rem; font-weight: 700; padding: 3px 9px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        /* Badge hoàn thành trên thumbnail */
+        .card-completed-overlay { position: absolute; top: 10px; right: 10px; background: linear-gradient(135deg, #FFB300, #FF8F00); color: #fff; font-size: 0.62rem; font-weight: 700; padding: 3px 9px; border-radius: 4px; display: flex; align-items: center; gap: 4px; }
         .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
         .card-org { font-size: 0.68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
         .card-name { font-size: 0.88rem; font-weight: 700; line-height: 1.4; color: var(--text); margin-bottom: 10px; flex: 1; }
@@ -124,10 +128,13 @@
         .card-price.free { color: #2E7D32; }
         .card-enroll-btn { background: var(--purple); color: #fff; border: none; padding: 7px 16px; border-radius: 7px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s; font-family: 'DM Sans', sans-serif; }
         .card-enroll-btn:hover { background: var(--purple-dark); transform: translateY(-1px); }
-        .card-enrolled-badge { display: inline-flex; align-items: center; gap: 5px; background: #E8F5E9; color: #2E7D32; font-size: 0.75rem; font-weight: 700; padding: 7px 12px; border-radius: 7px; border: 1px solid #C8E6C9; }
         .card-study-btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #2E7D32, #388E3C); color: #fff; font-size: 0.78rem; font-weight: 700; padding: 7px 16px; border-radius: 7px; text-decoration: none; transition: all 0.15s; }
         .card-study-btn:hover { background: linear-gradient(135deg, #1B5E20, #2E7D32); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(46,125,50,0.35); color: #fff; }
+        /* Nút học lại - màu vàng */
+        .card-replay-btn { display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #F59E0B, #D97706); color: #fff; font-size: 0.78rem; font-weight: 700; padding: 7px 16px; border-radius: 7px; text-decoration: none; transition: all 0.15s; }
+        .card-replay-btn:hover { background: linear-gradient(135deg, #D97706, #B45309); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(245,158,11,0.4); color: #fff; }
         .card-price.enrolled-label { font-size: 0.72rem; font-weight: 700; color: #2E7D32; background: #E8F5E9; padding: 4px 10px; border-radius: 20px; border: 1px solid #C8E6C9; }
+        .card-price.completed-label { font-size: 0.72rem; font-weight: 700; color: #B8860B; background: #FFF9C4; padding: 4px 10px; border-radius: 20px; border: 1px solid #FFD54F; }
         .card-login-link { font-size: 0.78rem; font-weight: 600; color: var(--purple); text-decoration: none; }
         .card-login-link:hover { text-decoration: underline; }
         .empty-state { text-align: center; padding: 80px 20px; grid-column: 1 / -1; }
@@ -141,7 +148,7 @@
         .bg5 { background: linear-gradient(135deg, #0D47A1, #1565C0); }
         .bg6 { background: linear-gradient(135deg, #1B5E20, #388E3C); }
 
-        /* ===== MODAL XÁC NHẬN ===== */
+        /* MODAL */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,5,30,0.65); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
         .modal-overlay.show { display: flex; }
         .modal-box { background: #fff; border-radius: 20px; padding: 36px; width: 440px; max-width: 95vw; box-shadow: 0 24px 64px rgba(108,63,197,0.3); animation: modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1); }
@@ -188,13 +195,10 @@
                 <input type="text" placeholder="Tìm khóa học..." id="searchInput" oninput="filterCourses()">
             </div>
             <c:if test="${not empty sessionScope.user}">
-                <%-- Bấm vào số dư → đến trang nạp tiền --%>
                 <a href="payment.jsp" class="balance-pill">
                     <i class="bi bi-wallet2"></i>
                     <span class="balance-label">Số dư</span>
-                    <span class="balance-amount">
-                        <fmt:formatNumber value="${sessionScope.user.balance}" type="number"/> ₫
-                    </span>
+                    <span class="balance-amount"><fmt:formatNumber value="${sessionScope.user.balance}" type="number"/> ₫</span>
                 </a>
             </c:if>
             <c:choose>
@@ -283,11 +287,6 @@
                             <div class="mini-price"><c:choose><c:when test="${course.fee == 0}">Miễn phí</c:when><c:otherwise><fmt:formatNumber value="${course.fee}" type="number"/> ₫</c:otherwise></c:choose></div>
                         </div>
                     </c:forEach>
-                    <c:if test="${empty COURSE_LIST}">
-                        <div class="mini-course-card"><div class="mini-thumb bg1">🤖</div><div class="mini-info"><div class="mini-org">DeepLearning.AI</div><div class="mini-name">Machine Learning Specialization</div><div class="mini-meta"><span class="mini-star">★★★★★</span><span>AI · ML</span></div></div><div class="mini-price">1.200.000 ₫</div></div>
-                        <div class="mini-course-card"><div class="mini-thumb bg2">🐍</div><div class="mini-info"><div class="mini-org">ĐH Bách Khoa</div><div class="mini-name">Python cho Khoa học Dữ liệu</div><div class="mini-meta"><span class="mini-star">★★★★★</span><span>Data Science</span></div></div><div class="mini-price">980.000 ₫</div></div>
-                        <div class="mini-course-card"><div class="mini-thumb bg3">🎨</div><div class="mini-info"><div class="mini-org">Google</div><div class="mini-name">Google UX Design</div><div class="mini-meta"><span class="mini-star">★★★★½</span><span>Design</span></div></div><div class="mini-price">850.000 ₫</div></div>
-                    </c:if>
                 </div>
                 <div class="trending-col">
                     <div class="trending-col-header">
@@ -305,11 +304,6 @@
                             <div class="mini-price"><c:choose><c:when test="${course.fee == 0}">Miễn phí</c:when><c:otherwise><fmt:formatNumber value="${course.fee}" type="number"/> ₫</c:otherwise></c:choose></div>
                         </div>
                     </c:forEach>
-                    <c:if test="${empty COURSE_LIST}">
-                        <div class="mini-course-card"><div class="mini-thumb bg4">📈</div><div class="mini-info"><div class="mini-org">IBM</div><div class="mini-name">IBM Data Science Professional</div><div class="mini-meta"><span class="mini-star">★★★★★</span><span>Data Science</span></div></div><div class="mini-price">1.500.000 ₫</div></div>
-                        <div class="mini-course-card"><div class="mini-thumb bg5">💻</div><div class="mini-info"><div class="mini-org">Meta</div><div class="mini-name">React Native Development</div><div class="mini-meta"><span class="mini-star">★★★★½</span><span>Web Dev</span></div></div><div class="mini-price">1.100.000 ₫</div></div>
-                        <div class="mini-course-card"><div class="mini-thumb bg6">🌿</div><div class="mini-info"><div class="mini-org">Google</div><div class="mini-name">Google Cloud Fundamentals</div><div class="mini-meta"><span class="mini-star">★★★★★</span><span>Cloud</span></div></div><div class="mini-price">Miễn phí</div></div>
-                    </c:if>
                 </div>
                 <div class="trending-col">
                     <div class="trending-col-header">
@@ -327,11 +321,6 @@
                             <div class="mini-price"><c:choose><c:when test="${course.fee == 0}">Miễn phí</c:when><c:otherwise><fmt:formatNumber value="${course.fee}" type="number"/> ₫</c:otherwise></c:choose></div>
                         </div>
                     </c:forEach>
-                    <c:if test="${empty COURSE_LIST}">
-                        <div class="mini-course-card"><div class="mini-thumb bg1">🧠</div><div class="mini-info"><div class="mini-org">OpenAI</div><div class="mini-name">ChatGPT & Prompt Engineering</div><div class="mini-meta"><span class="mini-star">★★★★★</span><span>AI</span></div></div><div class="mini-price">750.000 ₫</div></div>
-                        <div class="mini-course-card"><div class="mini-thumb bg2">🔬</div><div class="mini-info"><div class="mini-org">DeepMind</div><div class="mini-name">Deep Learning với TensorFlow</div><div class="mini-meta"><span class="mini-star">★★★★½</span><span>AI · ML</span></div></div><div class="mini-price">1.300.000 ₫</div></div>
-                        <div class="mini-course-card"><div class="mini-thumb bg6">📷</div><div class="mini-info"><div class="mini-org">Stanford</div><div class="mini-name">Computer Vision Fundamentals</div><div class="mini-meta"><span class="mini-star">★★★★★</span><span>AI</span></div></div><div class="mini-price">Miễn phí</div></div>
-                    </c:if>
                 </div>
             </div>
         </div>
@@ -346,11 +335,36 @@
                 <c:choose>
                     <c:when test="${not empty COURSE_LIST}">
                         <c:forEach var="course" items="${COURSE_LIST}" varStatus="st">
-                            <div class="course-card-full" data-topic="${course.topic}" data-name="${course.courseName}">
+
+                            <%-- Kiểm tra enrolled và completed --%>
+                            <c:set var="isEnrolled"  value="false"/>
+                            <c:set var="isCompleted" value="false"/>
+                            <c:if test="${not empty sessionScope.user}">
+                                <c:forEach var="eid" items="${ENROLLED_IDS}">
+                                    <c:if test="${eid == course.courseId}">
+                                        <c:set var="isEnrolled" value="true"/>
+                                    </c:if>
+                                </c:forEach>
+                                <c:forEach var="cid" items="${COMPLETED_IDS}">
+                                    <c:if test="${cid == course.courseId}">
+                                        <c:set var="isCompleted" value="true"/>
+                                    </c:if>
+                                </c:forEach>
+                            </c:if>
+
+                            <div class="course-card-full ${isCompleted ? 'completed' : ''}"
+                                 data-topic="${course.topic}" data-name="${course.courseName}">
                                 <div class="card-thumb bg${(st.index % 6) + 1}">
-                                    <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg" alt="${course.courseName}" onerror="this.style.display='none';">
+                                    <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg"
+                                         alt="${course.courseName}" onerror="this.style.display='none';">
                                     <div class="card-thumb-overlay"></div>
                                     <span class="card-topic-badge">${course.topic}</span>
+                                    <%-- Badge hoàn thành trên thumbnail --%>
+                                    <c:if test="${isCompleted}">
+                                        <span class="card-completed-overlay">
+                                            <i class="bi bi-trophy-fill"></i> Hoàn thành
+                                        </span>
+                                    </c:if>
                                 </div>
                                 <div class="card-body">
                                     <div class="card-org">DUK Academy</div>
@@ -362,21 +376,17 @@
                                         <span><i class="bi bi-people"></i> 1.2K học viên</span>
                                     </div>
                                     <div class="card-footer-row">
-                                        <%-- Tính isEnrolled trước để dùng cho cả giá lẫn nút --%>
-                                        <c:set var="isEnrolled" value="false"/>
-                                        <c:if test="${not empty sessionScope.user}">
-                                            <c:forEach var="eid" items="${ENROLLED_IDS}">
-                                                <c:if test="${eid == course.courseId}">
-                                                    <c:set var="isEnrolled" value="true"/>
-                                                </c:if>
-                                            </c:forEach>
-                                        </c:if>
 
-                                        <%-- Hiển thị giá hoặc "Đã thanh toán" --%>
+                                        <%-- Badge giá / trạng thái --%>
                                         <c:choose>
-                                            <c:when test="${isEnrolled }">
+                                            <c:when test="${isCompleted}">
+                                                <span class="card-price completed-label">
+                                                    <i class="bi bi-trophy-fill"></i> Hoàn thành
+                                                </span>
+                                            </c:when>
+                                            <c:when test="${isEnrolled}">
                                                 <span class="card-price enrolled-label">
-                                                    <i class="bi bi-check2-circle"></i> Đã thanh toán
+                                                    <i class="bi bi-check2-circle"></i> Đã đăng ký
                                                 </span>
                                             </c:when>
                                             <c:otherwise>
@@ -396,22 +406,27 @@
                                                     <i class="bi bi-lock"></i> Đăng nhập
                                                 </a>
                                             </c:when>
+                                            <c:when test="${isCompleted}">
+                                                <%-- Đã hoàn thành → nút Học lại (vàng) --%>
+                                                <a href="lesson?courseId=${course.courseId}" class="card-replay-btn">
+                                                    <i class="bi bi-arrow-repeat"></i> Học lại
+                                                </a>
+                                            </c:when>
+                                            <c:when test="${isEnrolled}">
+                                                <%-- Đã đăng ký, đang học --%>
+                                                <a href="lesson?courseId=${course.courseId}" class="card-study-btn">
+                                                    <i class="bi bi-play-circle-fill"></i> Vào học
+                                                </a>
+                                            </c:when>
                                             <c:otherwise>
-                                                <c:choose>
-                                                    <c:when test="${isEnrolled}">
-                                                        <a href="lesson?courseId=${course.courseId}" class="card-study-btn">
-                                                            <i class="bi bi-play-circle-fill"></i> Vào học
-                                                        </a>
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        <button type="button" class="card-enroll-btn"
-                                                            onclick="openModal('${course.courseId}','${fn:escapeXml(course.courseName)}','${course.fee}','${sessionScope.user.balance}')">
-                                                            <i class="bi bi-plus-circle"></i> Đăng ký
-                                                        </button>
-                                                    </c:otherwise>
-                                                </c:choose>
+                                                <%-- Chưa đăng ký --%>
+                                                <button type="button" class="card-enroll-btn"
+                                                    onclick="openModal('${course.courseId}','${fn:escapeXml(course.courseName)}','${course.fee}','${sessionScope.user.balance}')">
+                                                    <i class="bi bi-plus-circle"></i> Đăng ký
+                                                </button>
                                             </c:otherwise>
                                         </c:choose>
+
                                     </div>
                                 </div>
                             </div>
@@ -437,13 +452,12 @@
         </div>
     </footer>
 
-    <!-- ===== MODAL XÁC NHẬN ĐĂNG KÝ ===== -->
+    <!-- MODAL XÁC NHẬN ĐĂNG KÝ -->
     <div class="modal-overlay" id="enrollModal" onclick="closeModalOutside(event)">
         <div class="modal-box">
             <div class="modal-icon">🎓</div>
             <div class="modal-title">Xác nhận đăng ký</div>
             <div class="modal-course-name" id="modalCourseName">—</div>
-
             <div class="modal-info-row">
                 <span class="modal-info-label"><i class="bi bi-tag-fill"></i> Học phí</span>
                 <span class="modal-info-value fee-val" id="modalFee">—</span>
@@ -457,12 +471,10 @@
                 <span class="modal-info-label"><i class="bi bi-arrow-right-circle-fill"></i> Số dư sau đăng ký</span>
                 <span class="modal-info-value after-val" id="modalAfter">—</span>
             </div>
-
             <div class="modal-warning" id="modalWarning">
                 <i class="bi bi-exclamation-triangle-fill"></i>
                 Số dư không đủ! <a href="payment.jsp" style="color:#C62828; font-weight:700;">Nạp tiền ngay →</a>
             </div>
-
             <form id="enrollForm" action="enroll" method="post">
                 <input type="hidden" name="courseId" id="modalCourseId">
                 <div class="modal-actions">
@@ -479,7 +491,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        /* DROPDOWN */
         function toggleDropdown() { document.getElementById('userDropdown').classList.toggle('show'); }
         document.addEventListener('click', function(e) {
             const menu = document.querySelector('.user-menu');
@@ -487,64 +498,53 @@
             if (dd && menu && !menu.contains(e.target) && !dd.contains(e.target)) dd.classList.remove('show');
         });
 
-        /* MODAL */
         function fmt(val) { return Number(val).toLocaleString('vi-VN') + ' ₫'; }
-
         function openModal(courseId, courseName, fee, balance) {
-            const feeNum = parseFloat(fee)     || 0;
+            const feeNum = parseFloat(fee) || 0;
             const balNum = parseFloat(balance) || 0;
             const after  = balNum - feeNum;
-
             document.getElementById('modalCourseId').value         = courseId;
             document.getElementById('modalCourseName').textContent = courseName;
             document.getElementById('modalFee').textContent        = fmt(feeNum);
             document.getElementById('modalBalance').textContent    = fmt(balNum);
-
             const afterEl   = document.getElementById('modalAfter');
             const warnEl    = document.getElementById('modalWarning');
             const confirmEl = document.getElementById('btnConfirm');
-
             if (after < 0) {
-                afterEl.textContent = 'Không đủ số dư!';
-                afterEl.className   = 'modal-info-value danger-val';
+                afterEl.textContent     = 'Không đủ số dư!';
+                afterEl.className       = 'modal-info-value danger-val';
                 warnEl.style.display    = 'block';
                 confirmEl.disabled      = true;
             } else {
-                afterEl.textContent = fmt(after);
-                afterEl.className   = 'modal-info-value after-val';
+                afterEl.textContent     = fmt(after);
+                afterEl.className       = 'modal-info-value after-val';
                 warnEl.style.display    = 'none';
                 confirmEl.disabled      = false;
             }
-
             document.getElementById('enrollModal').classList.add('show');
             document.body.style.overflow = 'hidden';
         }
-
         function closeModal() {
             document.getElementById('enrollModal').classList.remove('show');
             document.body.style.overflow = '';
         }
-
         function closeModalOutside(e) {
             if (e.target === document.getElementById('enrollModal')) closeModal();
         }
-
         document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-        /* FILTER */
         const TOPIC_MAP = {
-            ai:          ['ai', 'machine learning', 'ml', 'deep learning', 'neural', 'nlp', 'computer vision', 'tensorflow', 'pytorch', 'chatgpt', 'llm', 'generative', 'prompt'],
-            data:        ['data', 'python', 'pandas', 'sql', 'analytics', 'statistics', 'tableau', 'power bi', 'excel', 'bi', 'hadoop', 'spark', 'etl'],
-            web:         ['web', 'html', 'css', 'javascript', 'js', 'react', 'vue', 'angular', 'nodejs', 'php', 'laravel', 'django', 'flask', 'frontend', 'backend', 'fullstack', 'typescript', 'next.js', 'api', 'rest', 'java'],
-            design:      ['design', 'ui', 'ux', 'figma', 'photoshop', 'illustrator', 'graphic', 'adobe', 'canva', 'sketch', 'prototype', 'wireframe'],
-            mobile:      ['mobile', 'android', 'ios', 'flutter', 'react native', 'swift', 'kotlin', 'app'],
-            cloud:       ['cloud', 'aws', 'azure', 'gcp', 'google cloud', 'devops', 'docker', 'kubernetes', 'ci/cd', 'linux', 'server', 'network'],
-            security:    ['security', 'cybersecurity', 'hacking', 'ethical', 'pentest', 'firewall', 'encryption', 'blockchain', 'crypto'],
-            language:    ['english', 'tiếng anh', 'giao tiếp', 'ielts', 'toeic', 'toefl', 'japanese', 'tiếng nhật', 'korean', 'tiếng hàn', 'chinese', 'tiếng trung', 'french', 'tiếng pháp', 'german', 'language', 'ngôn ngữ', 'communication', 'speaking', 'writing', 'grammar'],
-            programming: ['java', 'c++', 'c#', 'golang', 'go lang', 'rust', 'ruby', 'scala', 'kotlin', 'swift', 'algorithm', 'data structure', 'cấu trúc dữ liệu', 'lập trình', 'programming', 'oop', 'design pattern', 'clean code'],
-            business:    ['business', 'marketing', 'management', 'finance', 'accounting', 'hr', 'leadership', 'project management', 'scrum', 'agile', 'pmp', 'mba'],
+            ai:          ['ai','machine learning','ml','deep learning','neural','nlp','computer vision','tensorflow','pytorch','chatgpt','llm','generative','prompt'],
+            data:        ['data','python','pandas','sql','analytics','statistics','tableau','power bi','excel','bi','hadoop','spark','etl'],
+            web:         ['web','html','css','javascript','js','react','vue','angular','nodejs','php','laravel','django','flask','frontend','backend','fullstack','typescript','next.js','api','rest','java'],
+            design:      ['design','ui','ux','figma','photoshop','illustrator','graphic','adobe','canva','sketch','prototype','wireframe'],
+            mobile:      ['mobile','android','ios','flutter','react native','swift','kotlin','app'],
+            cloud:       ['cloud','aws','azure','gcp','google cloud','devops','docker','kubernetes','ci/cd','linux','server','network'],
+            security:    ['security','cybersecurity','hacking','ethical','pentest','firewall','encryption','blockchain','crypto'],
+            language:    ['english','tiếng anh','giao tiếp','ielts','toeic','toefl','japanese','tiếng nhật','korean','tiếng hàn','chinese','tiếng trung','french','tiếng pháp','german','language','ngôn ngữ','communication','speaking','writing','grammar'],
+            programming: ['java','c++','c#','golang','go lang','rust','ruby','scala','kotlin','swift','algorithm','data structure','cấu trúc dữ liệu','lập trình','programming','oop','design pattern','clean code'],
+            business:    ['business','marketing','management','finance','accounting','hr','leadership','project management','scrum','agile','pmp','mba'],
         };
-
         function getTopicGroup(t) {
             t = (t || '').toLowerCase();
             for (const [g, kws] of Object.entries(TOPIC_MAP)) {
@@ -552,22 +552,17 @@
             }
             return t;
         }
-
         document.querySelectorAll('.course-card-full').forEach(c => {
             c.dataset.group = getTopicGroup(c.dataset.topic || '');
         });
-
         let currentGroup = '';
-
         function filterByTopic(el, group) {
             document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
             el.classList.add('active');
             currentGroup = group;
             applyFilters();
         }
-
         function filterCourses() { applyFilters(); }
-
         function applyFilters() {
             const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
             let visible = 0;
