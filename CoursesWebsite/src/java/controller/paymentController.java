@@ -3,25 +3,28 @@ package controller;
 import model.PaymentDAO;
 import model.PaymentDTO;
 import model.UserDTO;
-
 import javax.servlet.*;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-@WebServlet("/payment")
 public class paymentController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        HttpSession session = request.getSession(false);
+        UserDTO user = (session != null) ? (UserDTO) session.getAttribute("user") : null;
+        if (user == null) {
+            response.sendRedirect(request.getContextPath() + "/login.jsp");
+            return;
+        }
         String action = request.getParameter("action");
-
         if ("createQR".equals(action)) {
-            createQR(request, response);
+            createQR(request, response, user);
+        } else if ("confirmPending".equals(action)) {
+            confirmPending(request, response, user);
         } else {
-            response.sendRedirect("homePage.jsp");
+            request.getRequestDispatcher("/payment.jsp").forward(request, response);
         }
     }
 
@@ -32,50 +35,74 @@ public class paymentController extends HttpServlet {
     }
 
     // ===== TẠO VIETQR =====
-    private void createQR(HttpServletRequest request, HttpServletResponse response)
+    private void createQR(HttpServletRequest request, HttpServletResponse response, UserDTO user)
             throws IOException {
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-
-        HttpSession session = request.getSession();
-        UserDTO user = (UserDTO) session.getAttribute("user");
-
-        if (user == null) {
-            response.getWriter().print("{\"status\":\"error\",\"message\":\"Not logged in\"}");
-            return;
-        }
-
+        response.setContentType("application/json;charset=UTF-8");
         try {
-            int amount = Integer.parseInt(request.getParameter("amount"));
-            int courseId = Integer.parseInt(request.getParameter("courseId"));
-
-            PaymentDTO p = new PaymentDTO(
-                    user.getUserId(),
-                    courseId,
-                    amount,
-                    "VIETQR",
-                    "PENDING"
-            );
-
-            int paymentId = PaymentDAO.create(p);
-
-            if (paymentId == -1) {
-                response.getWriter().print("{\"status\":\"error\",\"message\":\"DB error\"}");
+            String amtStr = request.getParameter("amount");
+            if (amtStr == null || amtStr.isEmpty()) {
+                response.getWriter().print("{\"status\":\"error\",\"message\":\"Missing amount\"}");
+                return;
+            }
+            int amount = Integer.parseInt(amtStr);
+            if (amount < 10000) {
+                response.getWriter().print("{\"status\":\"error\",\"message\":\"So tien toi thieu 10,000 VND\"}");
                 return;
             }
 
+            // Nạp ví: dùng constructor không có courseId (isTopup = true)
+            PaymentDTO p = new PaymentDTO(user.getUserId(), amount, "VIETQR", "PENDING");
+            int paymentId = PaymentDAO.create(p);
+
+            if (paymentId == -1) {
+                response.getWriter().print("{\"status\":\"error\",\"message\":\"Loi database\"}");
+                return;
+            }
             String orderId = "QR" + paymentId;
-
             response.getWriter().print(
-                    "{\"status\":\"success\",\"orderId\":\"" + orderId + "\"}"
+                "{\"status\":\"success\",\"orderId\":\"" + orderId + "\",\"paymentId\":" + paymentId + "}"
             );
-
         } catch (NumberFormatException e) {
-            response.getWriter().print("{\"status\":\"error\",\"message\":\"Invalid amount\"}");
+            response.getWriter().print("{\"status\":\"error\",\"message\":\"So tien khong hop le\"}");
         } catch (Exception e) {
             e.printStackTrace();
-            response.getWriter().print("{\"status\":\"error\",\"message\":\"Server error\"}");
+            String msg = e.getMessage() != null ? e.getMessage().replace("\"", "'") : "Unknown";
+            response.getWriter().print("{\"status\":\"error\",\"message\":\"" + msg + "\"}");
         }
     }
-} 
+
+    // ===== USER BẤM "ĐÃ THANH TOÁN" =====
+    private void confirmPending(HttpServletRequest request, HttpServletResponse response, UserDTO user)
+            throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        try {
+            String orderIdStr = request.getParameter("orderId");
+            if (orderIdStr == null || !orderIdStr.startsWith("QR")) {
+                response.getWriter().print("{\"status\":\"error\",\"message\":\"orderId khong hop le\"}");
+                return;
+            }
+            int paymentId = Integer.parseInt(orderIdStr.substring(2));
+            PaymentDTO p = PaymentDAO.getById(paymentId);
+            if (p == null) {
+                response.getWriter().print("{\"status\":\"error\",\"message\":\"Khong tim thay giao dich\"}");
+                return;
+            }
+            if (!p.getUserId().equals(user.getUserId())) {
+                response.getWriter().print("{\"status\":\"error\",\"message\":\"Khong co quyen\"}");
+                return;
+            }
+            if (!"PENDING".equals(p.getPaymentStatus())) {
+                response.getWriter().print(
+                    "{\"status\":\"already\",\"currentStatus\":\"" + p.getPaymentStatus() + "\"}"
+                );
+                return;
+            }
+            PaymentDAO.setPendingConfirm(paymentId);
+            response.getWriter().print("{\"status\":\"success\"}");
+        } catch (Exception e) {
+            e.printStackTrace();
+            String msg = e.getMessage() != null ? e.getMessage().replace("\"", "'") : "Unknown";
+            response.getWriter().print("{\"status\":\"error\",\"message\":\"" + msg + "\"}");
+        }
+    }
+}

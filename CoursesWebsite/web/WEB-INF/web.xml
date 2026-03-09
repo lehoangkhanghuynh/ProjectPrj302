@@ -81,10 +81,6 @@
         <url-pattern>/logoutController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>PaymentController</servlet-name>
-        <url-pattern>/PaymentController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>paymentController</servlet-name>
         <url-pattern>/paymentController</url-pattern>
     </servlet-mapping>

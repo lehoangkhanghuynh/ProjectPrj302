@@ -1,609 +1,474 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%!
+    public String fmtBal(Object bal) {
+        if (bal == null) return "0";
+        try {
+            double d = Double.parseDouble(bal.toString().trim());
+            long v = (long) d;
+            return String.format("%,d", v).replace(',', '.');
+        } catch (Exception e) { return "0"; }
+    }
+%>
+<%-- Chưa đăng nhập → về login --%>
+<c:if test="${empty sessionScope.user}">
+    <c:redirect url="login.jsp"/>
+</c:if>
 <!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Nạp tiền - DUKAcademy</title>
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-        <link rel="icon" type="favicon" href="img/page/favicon.jpg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nạp tiền - DUK Academy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="icon" type="image/jpeg" href="img/page/favicon.jpg">
+    <style>
+        :root {
+            --purple:#6C3FC5; --purple-dark:#4E2C96; --purple-deep:#1E0A4A;
+            --purple-light:#F3EEFF; --purple-mid:#9B72E8;
+            --gold:#D4A843; --text:#1A1A2E; --muted:#6B6B8A;
+            --border:#E2D9F3; --bg:#F4F0FC;
+        }
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+        body{font-family:'DM Sans',sans-serif;color:var(--text);background:var(--bg);}
 
-        <style>
-            :root {
-                --purple:      #6C3FC5;
-                --purple-dark: #4E2C96;
-                --purple-deep: #1E0A4A;
-                --purple-light:#F3EEFF;
-                --purple-mid:  #9B72E8;
-                --gold:        #D4A843;
-                --text:        #1A1A2E;
-                --muted:       #6B6B8A;
-                --border:      #E2D9F3;
-                --bg:          #F4F0FC;
-                --momo:        #AE2070;
-                --momo-dark:   #8B1857;
-            }
+        .navbar-main{background:var(--purple-deep);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 20px rgba(0,0,0,0.25);}
+        .brand{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:700;color:#fff;text-decoration:none;}
+        .brand span{color:var(--gold);}
+        .nav-links{display:flex;align-items:center;gap:4px;list-style:none;}
+        .nav-links a{font-size:0.9rem;font-weight:500;color:rgba(255,255,255,0.75);text-decoration:none;padding:7px 14px;border-radius:6px;transition:all 0.15s;}
+        .nav-links a:hover{background:rgba(255,255,255,0.1);color:#fff;}
+        .nav-right{display:flex;align-items:center;gap:12px;}
+        .balance-pill{display:flex;align-items:center;gap:7px;background:rgba(212,168,67,0.12);border:1px solid rgba(212,168,67,0.35);border-radius:8px;padding:7px 14px;text-decoration:none;cursor:pointer;transition:background 0.15s;}
+        .balance-pill:hover{background:rgba(212,168,67,0.22);}
+        .balance-pill i{color:var(--gold);}
+        .balance-label{font-size:0.75rem;font-weight:500;color:rgba(255,255,255,0.6);}
+        .balance-amount{font-size:0.875rem;font-weight:700;color:var(--gold);}
+        .user-menu{display:flex;align-items:center;gap:10px;cursor:pointer;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.15);transition:background 0.15s;}
+        .user-menu:hover{background:rgba(255,255,255,0.08);}
+        .user-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--purple-mid),var(--gold));display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:700;color:#fff;}
+        .user-name{font-size:0.875rem;font-weight:600;color:#fff;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .dropdown-menu-custom{position:absolute;top:76px;right:48px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,0.15);display:none;z-index:200;}
+        .dropdown-menu-custom.show{display:block;}
+        .dropdown-menu-custom a{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:7px;font-size:0.875rem;color:var(--text);text-decoration:none;font-weight:500;transition:background 0.12s;}
+        .dropdown-menu-custom a:hover{background:var(--purple-light);color:var(--purple);}
+        .dropdown-menu-custom .divider-drop{height:1px;background:var(--border);margin:6px 0;}
+        .dropdown-menu-custom .logout-link{color:#CC0000;}
+        .dropdown-menu-custom .logout-link:hover{background:#FFF3F3;color:#CC0000;}
 
-            *, *::before, *::after {
-                box-sizing: border-box;
-                margin: 0;
-                padding: 0;
-            }
+        .page-header{background:linear-gradient(135deg,var(--purple-deep) 0%,#3A1A7A 60%,#5B2DC5 100%);padding:48px 80px 52px;position:relative;overflow:hidden;}
+        .page-header::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:rgba(212,168,67,0.06);top:-150px;right:-80px;}
+        .page-header-inner{position:relative;z-index:1;}
+        .page-eyebrow{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--gold);margin-bottom:10px;}
+        .page-title{font-family:'Playfair Display',serif;font-size:2.4rem;font-weight:700;color:#fff;margin-bottom:10px;}
+        .page-subtitle{font-size:1rem;color:rgba(255,255,255,0.65);}
+        .balance-hero{display:inline-flex;align-items:center;gap:10px;background:rgba(212,168,67,0.15);border:1px solid rgba(212,168,67,0.3);border-radius:12px;padding:12px 20px;margin-top:20px;}
+        .balance-hero-label{font-size:0.82rem;color:rgba(255,255,255,0.65);}
+        .balance-hero-val{font-size:1.4rem;font-weight:700;color:var(--gold);}
 
-            body {
-                font-family: 'DM Sans', sans-serif;
-                background: var(--bg);
-                color: var(--text);
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-            }
+        .main-wrap{padding:40px 80px 80px;}
+        .pay-card{background:#fff;border-radius:20px;box-shadow:0 8px 40px rgba(108,63,197,0.1);overflow:hidden;max-width:860px;margin:0 auto;}
+        .pay-tabs{display:flex;border-bottom:1px solid var(--border);}
+        .pay-tab{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:18px;font-size:0.9rem;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;background:none;border-left:none;border-right:none;border-top:none;font-family:'DM Sans',sans-serif;transition:all 0.15s;}
+        .pay-tab:hover{color:var(--purple);background:var(--purple-light);}
+        .pay-tab.active{color:var(--purple);border-bottom-color:var(--purple);background:var(--purple-light);}
+        .tab-body{padding:36px;}
+        .tab-pane{display:none;}
+        .tab-pane.active{display:block;}
 
-            /* NAVBAR */
-            .navbar {
-                background: var(--purple-deep);
-                padding: 0 48px;
-                height: 68px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                box-shadow: 0 2px 20px rgba(0,0,0,0.25);
-            }
-            .brand {
-                font-family: 'Playfair Display', serif;
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #fff;
-                text-decoration: none;
-            }
-            .brand span {
-                color: var(--gold);
-            }
-            .back-link {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                color: rgba(255,255,255,0.7);
-                text-decoration: none;
-                font-size: 0.875rem;
-                font-weight: 500;
-                padding: 8px 16px;
-                border-radius: 8px;
-                border: 1px solid rgba(255,255,255,0.15);
-                transition: all 0.15s;
-            }
-            .back-link:hover {
-                background: rgba(255,255,255,0.08);
-                color: #fff;
-            }
+        .sec-label{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px;}
+        .amount-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+        .amount-chip{padding:12px;border:1.5px solid var(--border);border-radius:10px;text-align:center;font-size:0.88rem;font-weight:700;color:var(--purple);cursor:pointer;transition:all 0.15s;background:#fff;}
+        .amount-chip:hover{border-color:var(--purple);background:var(--purple-light);}
+        .amount-chip.selected{border-color:var(--purple);background:var(--purple);color:#fff;}
+        .inp-wrap{display:flex;align-items:center;border:1.5px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px;}
+        .inp-wrap:focus-within{border-color:var(--purple);box-shadow:0 0 0 3px rgba(108,63,197,0.12);}
+        .inp-pre{padding:13px 16px;background:var(--bg);color:var(--muted);font-size:0.88rem;font-weight:600;border-right:1px solid var(--border);}
+        .inp-wrap input{flex:1;border:none;outline:none;padding:13px 16px;font-size:1rem;font-weight:700;color:var(--text);font-family:'DM Sans',sans-serif;}
+        .inp-suf{padding:13px 16px;color:var(--muted);font-size:0.82rem;font-weight:600;}
 
-            /* MAIN */
-            .main {
-                flex: 1;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 48px 20px;
-            }
+        .btn-momo{width:100%;padding:15px;border-radius:12px;border:none;background:linear-gradient(135deg,#A50064,#D41977);color:#fff;font-size:1rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all 0.15s;}
+        .btn-momo:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(165,0,100,0.4);}
+        .btn-genqr{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--purple),var(--purple-dark));color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;margin-bottom:16px;}
+        .btn-genqr:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(108,63,197,0.4);}
+        .btn-genqr:disabled{opacity:0.5;cursor:not-allowed;}
+        .btn-paid{width:100%;padding:14px;border-radius:12px;border:none;background:linear-gradient(135deg,#2E7D32,#388E3C);color:#fff;font-size:0.95rem;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.15s;margin-top:14px;}
+        .btn-paid:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 6px 20px rgba(46,125,50,0.4);}
+        .btn-paid:disabled{opacity:0.6;cursor:not-allowed;}
 
-            .payment-wrapper {
-                width: 100%;
-                max-width: 520px;
-                animation: fadeUp 0.4s ease;
-            }
+        .qr-layout{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start;}
+        .bank-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+        .bank-opt{padding:11px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:0.82rem;font-weight:600;color:var(--text);transition:all 0.15s;}
+        .bank-opt:hover{border-color:var(--purple);}
+        .bank-opt.selected{border-color:var(--purple);background:var(--purple-light);color:var(--purple);}
+        .bank-tag{width:32px;height:32px;border-radius:6px;background:var(--purple-light);display:flex;align-items:center;justify-content:center;font-size:0.58rem;font-weight:700;color:var(--purple);flex-shrink:0;}
 
-            @keyframes fadeUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(24px);
-                }
-                to   {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
+        .qr-box{background:var(--bg);border:1.5px solid var(--border);border-radius:16px;padding:24px;width:100%;text-align:center;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+        #qrPlaceholder i{font-size:3rem;opacity:0.25;display:block;margin-bottom:10px;}
+        #qrPlaceholder p{font-size:0.82rem;color:var(--muted);line-height:1.6;}
+        #qrResult{display:none;flex-direction:column;align-items:center;}
+        #qrImage{width:200px;height:200px;border-radius:10px;}
+        .qr-amt{font-size:1.1rem;font-weight:700;color:var(--purple);margin-top:10px;}
+        .qr-oid{font-size:0.72rem;font-weight:700;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:6px;padding:3px 10px;margin-top:6px;}
 
-            /* HEADER CARD */
-            .payment-header {
-                background: linear-gradient(135deg, var(--purple-deep), #3A1A7A, #5B2DC5);
-                border-radius: 20px 20px 0 0;
-                padding: 32px;
-                text-align: center;
-                position: relative;
-                overflow: hidden;
-            }
-            .payment-header::before {
-                content: '';
-                position: absolute;
-                width: 200px;
-                height: 200px;
-                border-radius: 50%;
-                background: rgba(212,168,67,0.08);
-                top: -80px;
-                right: -60px;
-            }
-            .header-icon {
-                width: 64px;
-                height: 64px;
-                background: rgba(255,255,255,0.12);
-                border-radius: 18px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.8rem;
-                margin: 0 auto 16px;
-                backdrop-filter: blur(8px);
-                border: 1px solid rgba(255,255,255,0.15);
-            }
-            .header-title {
-                font-family: 'Playfair Display', serif;
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #fff;
-                margin-bottom: 6px;
-            }
-            .header-sub {
-                font-size: 0.875rem;
-                color: rgba(255,255,255,0.6);
-            }
+        .waiting-box{display:none;background:#E8F5E9;border:1.5px solid #A5D6A7;border-radius:14px;padding:20px;text-align:center;margin-top:14px;}
+        .waiting-box .w-icon{font-size:2rem;margin-bottom:6px;}
+        .waiting-box .w-title{font-size:0.95rem;font-weight:700;color:#2E7D32;margin-bottom:4px;}
+        .waiting-box .w-sub{font-size:0.82rem;color:#388E3C;line-height:1.6;}
+        .waiting-box .w-oid{font-size:0.72rem;color:var(--muted);margin-top:8px;font-weight:700;}
 
-            /* AMOUNT DISPLAY */
-            .amount-display {
-                background: rgba(255,255,255,0.08);
-                border: 1px solid rgba(255,255,255,0.12);
-                border-radius: 12px;
-                padding: 16px 24px;
-                margin-top: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-            }
-            .amount-label {
-                font-size: 0.8rem;
-                color: rgba(255,255,255,0.55);
-                font-weight: 500;
-            }
-            .amount-value {
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: var(--gold);
-            }
+        .info-box{background:var(--purple-light);border:1px solid rgba(108,63,197,0.15);border-radius:12px;padding:16px 18px;margin-top:16px;}
+        .info-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(108,63,197,0.08);font-size:0.82rem;}
+        .info-row:last-child{border-bottom:none;padding-bottom:0;}
+        .info-key{color:var(--muted);font-weight:500;}
+        .info-val{font-weight:700;color:var(--text);}
 
-            /* BODY CARD */
-            .payment-body {
-                background: #fff;
-                border-radius: 0 0 20px 20px;
-                padding: 28px;
-                border: 1px solid var(--border);
-                border-top: none;
-                box-shadow: 0 16px 48px rgba(108,63,197,0.12);
-            }
+        .spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(255,255,255,0.4);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;}
+        @keyframes spin{to{transform:rotate(360deg);}}
 
-            .section-title {
-                font-size: 0.78rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 1.5px;
-                color: var(--muted);
-                margin-bottom: 14px;
-            }
+        footer{background:var(--purple-deep);padding:24px 80px;}
+        .footer-bottom{display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;font-size:0.78rem;color:rgba(255,255,255,0.35);}
 
-            /* AMOUNT INPUT */
-            .amount-input-wrap {
-                position: relative;
-                margin-bottom: 20px;
-            }
-            .amount-input-wrap .currency {
-                position: absolute;
-                left: 16px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 0.9rem;
-                font-weight: 700;
-                color: var(--purple);
-            }
-            .amount-input {
-                width: 100%;
-                padding: 14px 16px 14px 48px;
-                border: 2px solid var(--border);
-                border-radius: 12px;
-                font-size: 1.1rem;
-                font-weight: 700;
-                color: var(--text);
-                font-family: 'DM Sans', sans-serif;
-                outline: none;
-                transition: border-color 0.15s;
-            }
-            .amount-input:focus {
-                border-color: var(--purple);
-            }
+        @media(max-width:768px){
+            .qr-layout{grid-template-columns:1fr;}
+            .main-wrap{padding:24px 16px 60px;}
+            .page-header{padding:32px 20px;}
+            .navbar-main{padding:0 20px;}
+            .amount-grid{grid-template-columns:repeat(2,1fr);}
+            .tab-body{padding:20px;}
+            .dropdown-menu-custom{right:16px;}
+        }
+    </style>
+</head>
+<body>
 
-            /* QUICK AMOUNTS */
-            .quick-amounts {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 8px;
-                margin-bottom: 24px;
-            }
-            .quick-btn {
-                padding: 10px;
-                border: 1.5px solid var(--border);
-                border-radius: 10px;
-                background: #fff;
-                color: var(--muted);
-                font-size: 0.82rem;
-                font-weight: 700;
-                cursor: pointer;
-                font-family: 'DM Sans', sans-serif;
-                transition: all 0.15s;
-                text-align: center;
-            }
-            .quick-btn:hover {
-                border-color: var(--purple);
-                color: var(--purple);
-                background: var(--purple-light);
-            }
-            .quick-btn.active {
-                border-color: var(--purple);
-                color: var(--purple);
-                background: var(--purple-light);
-            }
+<!-- NAVBAR -->
+<nav class="navbar-main" style="position:relative;">
+    <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>
+    <ul class="nav-links">
+        <li><a href="homePage.jsp">Trang chủ</a></li>
+        <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
+        <li><a href="instructors.jsp">Giảng viên</a></li>
+    </ul>
+    <div class="nav-right">
+        <a href="paymentController" class="balance-pill">
+            <i class="bi bi-wallet2"></i>
+            <span class="balance-label">Số dư</span>
+            <span class="balance-amount">
+                <%= fmtBal(((model.UserDTO)session.getAttribute("user")).getBalance()) %> ₫
+            </span>
+        </a>
+        <div class="user-menu" onclick="toggleDD()">
+            <div class="user-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
+            <span class="user-name">${sessionScope.user.fullname}</span>
+            <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6);font-size:0.75rem;"></i>
+        </div>
+        <div class="dropdown-menu-custom" id="userDD">
+            <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
+            <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
+            <a href="paymentController"><i class="bi bi-wallet2"></i> Nạp tiền</a>
+            <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
+            <div class="divider-drop"></div>
+            <a href="mainController?action=logout" class="logout-link"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+        </div>
+    </div>
+</nav>
 
-            /* DIVIDER */
-            .divider {
-                height: 1px;
-                background: var(--border);
-                margin: 20px 0;
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            .divider span {
-                position: absolute;
-                background: #fff;
-                padding: 0 12px;
-                font-size: 0.75rem;
-                color: var(--muted);
-                font-weight: 600;
-            }
+<!-- HEADER -->
+<div class="page-header">
+    <div class="page-header-inner">
+        <div class="page-eyebrow">✦ Ví DUK Academy</div>
+        <h1 class="page-title">Nạp tiền vào tài khoản</h1>
+        <p class="page-subtitle">Hỗ trợ MoMo và chuyển khoản VietQR.</p>
+        <div class="balance-hero">
+            <i class="bi bi-wallet2" style="color:var(--gold);font-size:1.2rem;"></i>
+            <div>
+                <div class="balance-hero-label">Số dư hiện tại</div>
+                <div class="balance-hero-val">
+                    <%= fmtBal(((model.UserDTO)session.getAttribute("user")).getBalance()) %> ₫
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-            /* PAYMENT METHODS */
-            .method-tabs {
-                display: flex;
-                gap: 10px;
-                margin-bottom: 20px;
-            }
-            .method-tab {
-                flex: 1;
-                padding: 12px;
-                border: 2px solid var(--border);
-                border-radius: 12px;
-                background: #fff;
-                cursor: pointer;
-                text-align: center;
-                transition: all 0.15s;
-                font-family: 'DM Sans', sans-serif;
-            }
-            .method-tab:hover {
-                border-color: var(--purple);
-            }
-            .method-tab.active {
-                border-color: var(--purple);
-                background: var(--purple-light);
-            }
-            .method-tab .tab-icon {
-                font-size: 1.4rem;
-                margin-bottom: 4px;
-            }
-            .method-tab .tab-label {
-                font-size: 0.75rem;
-                font-weight: 700;
-                color: var(--text);
-            }
+<!-- MAIN -->
+<div class="main-wrap">
+    <div class="pay-card">
+        <div class="pay-tabs">
+            <button class="pay-tab active" onclick="switchTab('momo',this)">
+                <i class="bi bi-phone"></i> MoMo
+            </button>
+            <button class="pay-tab" onclick="switchTab('qr',this)">
+                <i class="bi bi-qr-code"></i> Chuyển khoản QR
+            </button>
+        </div>
 
-            /* MOMO BUTTON */
-            .btn-momo {
-                width: 100%;
-                padding: 15px;
-                background: linear-gradient(135deg, var(--momo), var(--momo-dark));
-                color: #fff;
-                border: none;
-                border-radius: 12px;
-                font-size: 0.95rem;
-                font-weight: 700;
-                cursor: pointer;
-                font-family: 'DM Sans', sans-serif;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-                transition: all 0.2s;
-                box-shadow: 0 4px 20px rgba(174,32,112,0.3);
-                margin-bottom: 10px;
-            }
-            .btn-momo:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 28px rgba(174,32,112,0.4);
-            }
-            .btn-momo:active {
-                transform: translateY(0);
-            }
-
-            /* QR BUTTON */
-            .btn-qr {
-                width: 100%;
-                padding: 15px;
-                background: #fff;
-                color: var(--purple);
-                border: 2px solid var(--purple);
-                border-radius: 12px;
-                font-size: 0.95rem;
-                font-weight: 700;
-                cursor: pointer;
-                font-family: 'DM Sans', sans-serif;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-                transition: all 0.2s;
-            }
-            .btn-qr:hover {
-                background: var(--purple-light);
-                transform: translateY(-2px);
-            }
-
-            /* QR SECTION */
-            .qr-section {
-                display: none;
-                margin-top: 20px;
-                text-align: center;
-                padding: 24px;
-                background: var(--bg);
-                border-radius: 14px;
-                border: 1px solid var(--border);
-                animation: fadeIn 0.3s ease;
-            }
-            .qr-section.show {
-                display: block;
-            }
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-
-            .qr-title {
-                font-size: 0.82rem;
-                font-weight: 700;
-                color: var(--muted);
-                margin-bottom: 14px;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            .qr-img {
-                width: 220px;
-                height: 220px;
-                border-radius: 12px;
-                border: 3px solid var(--purple);
-                padding: 6px;
-                background: #fff;
-            }
-            .qr-info {
-                margin-top: 14px;
-                font-size: 0.8rem;
-                color: var(--muted);
-                line-height: 1.7;
-            }
-            .qr-info strong {
-                color: var(--text);
-            }
-
-            /* SECURITY NOTE */
-            .security-note {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin-top: 16px;
-                padding: 10px 14px;
-                background: #F0FDF4;
-                border-radius: 8px;
-                font-size: 0.78rem;
-                color: #2E7D32;
-                font-weight: 500;
-            }
-
-            /* FOOTER */
-            footer {
-                background: var(--purple-deep);
-                padding: 20px 48px;
-                text-align: center;
-            }
-            footer span {
-                font-size: 0.75rem;
-                color: rgba(255,255,255,0.3);
-            }
-
-            @media (max-width: 600px) {
-                .navbar {
-                    padding: 0 20px;
-                }
-                .payment-body {
-                    padding: 20px;
-                }
-                footer {
-                    padding: 20px;
-                }
-            }
-        </style>
-    </head>
-    <body>
-
-        <!-- NAVBAR -->
-        <nav class="navbar">
-            <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>
-            <a href="homePage.jsp" class="back-link">
-                <i class="bi bi-arrow-left"></i> Quay lại khóa học
-            </a>
-        </nav>
-
-        <!-- MAIN -->
-        <div class="main">
-            <div class="payment-wrapper">
-
-                <!-- HEADER -->
-                <div class="payment-header">
-                    <div class="header-icon">💳</div>
-                    <div class="header-title">Nạp tiền vào tài khoản</div>
-                    <div class="header-sub">Số dư sẽ được cộng ngay sau khi thanh toán thành công</div>
-
-                    <div class="amount-display">
-                        <span class="amount-label"><i class="bi bi-wallet2"></i> Số dư hiện tại</span>
-                        <span class="amount-value">
-                            <fmt:formatNumber value="${sessionScope.user.balance}" type="number"/> ₫
-                        </span>
+        <div class="tab-body">
+            <!-- TAB MOMO -->
+            <div class="tab-pane active" id="tab-momo">
+                <div style="max-width:440px;margin:0 auto;">
+                    <p class="sec-label">Chọn số tiền nạp</p>
+                    <div class="amount-grid">
+                        <div class="amount-chip" onclick="pickAmt('momo',50000,this)">50.000 ₫</div>
+                        <div class="amount-chip" onclick="pickAmt('momo',100000,this)">100.000 ₫</div>
+                        <div class="amount-chip" onclick="pickAmt('momo',200000,this)">200.000 ₫</div>
+                        <div class="amount-chip" onclick="pickAmt('momo',500000,this)">500.000 ₫</div>
+                        <div class="amount-chip" onclick="pickAmt('momo',1000000,this)">1.000.000 ₫</div>
+                        <div class="amount-chip" onclick="pickAmt('momo',2000000,this)">2.000.000 ₫</div>
+                        <div class="amount-chip" onclick="pickAmt('momo',5000000,this)">5.000.000 ₫</div>
+                        <div class="amount-chip" onclick="pickAmt('momo',0,this)">Tùy chọn</div>
+                    </div>
+                    <p class="sec-label">Hoặc nhập số tiền</p>
+                    <div class="inp-wrap">
+                        <span class="inp-pre"><i class="bi bi-cash-coin"></i></span>
+                        <input type="number" id="momoAmt" placeholder="Nhập số tiền..." min="10000" step="1000" oninput="clearChips('momo')">
+                        <span class="inp-suf">VNĐ</span>
+                    </div>
+                    <button class="btn-momo" onclick="payMomo()">
+                        <i class="bi bi-phone-fill"></i> Thanh toán qua MoMo
+                    </button>
+                    <div class="info-box" style="margin-top:16px;">
+                        <i class="bi bi-info-circle-fill" style="color:var(--purple);"></i>
+                        Bạn sẽ được chuyển đến app MoMo để hoàn tất thanh toán.
                     </div>
                 </div>
+            </div>
 
-                <!-- BODY -->
-                <div class="payment-body">
-
-                    <!-- NHẬP SỐ TIỀN -->
-                    <div class="section-title">Chọn số tiền nạp</div>
-
-                    <div class="amount-input-wrap">
-                        <span class="currency">₫</span>
-                        <input type="number" class="amount-input" id="amountInput"
-                               placeholder="Nhập số tiền..." min="10000"
-                               value="${not empty totalAmount ? totalAmount : ''}">
-                    </div>
-
-                    <div class="quick-amounts">
-                        <button class="quick-btn" onclick="setAmount(50000)">50.000 ₫</button>
-                        <button class="quick-btn" onclick="setAmount(100000)">100.000 ₫</button>
-                        <button class="quick-btn" onclick="setAmount(200000)">200.000 ₫</button>
-                        <button class="quick-btn" onclick="setAmount(500000)">500.000 ₫</button>
-                        <button class="quick-btn" onclick="setAmount(1000000)">1.000.000 ₫</button>
-                        <button class="quick-btn" onclick="setAmount(2000000)">2.000.000 ₫</button>
-                    </div>
-
-                    <div class="divider"><span>Chọn phương thức thanh toán</span></div>
-
-                    <!-- METHOD TABS -->
-                    <div class="method-tabs">
-                        <div class="method-tab active" onclick="switchTab(this, 'momo')">
-                            <div class="tab-icon">💜</div>
-                            <div class="tab-label">MoMo</div>
+            <!-- TAB VIETQR -->
+            <div class="tab-pane" id="tab-qr">
+                <div class="qr-layout">
+                    <!-- LEFT -->
+                    <div>
+                        <p class="sec-label">Chọn ngân hàng</p>
+                        <div class="bank-grid">
+                            <div class="bank-opt selected" onclick="pickBank('BIDV',this)">
+                                <div class="bank-tag">BIDV</div> BIDV
+                            </div>
+                            <div class="bank-opt" onclick="pickBank('VCB',this)">
+                                <div class="bank-tag">VCB</div> Vietcombank
+                            </div>
+                            <div class="bank-opt" onclick="pickBank('TCB',this)">
+                                <div class="bank-tag">TCB</div> Techcombank
+                            </div>
+                            <div class="bank-opt" onclick="pickBank('MB',this)">
+                                <div class="bank-tag">MB</div> MB Bank
+                            </div>
                         </div>
-                        <div class="method-tab" onclick="switchTab(this, 'qr')">
-                            <div class="tab-icon">📱</div>
-                            <div class="tab-label">QR Banking</div>
+
+                        <p class="sec-label">Số tiền nạp</p>
+                        <div class="amount-grid" style="grid-template-columns:repeat(2,1fr);">
+                            <div class="amount-chip" onclick="pickAmt('qr',100000,this)">100.000 ₫</div>
+                            <div class="amount-chip" onclick="pickAmt('qr',200000,this)">200.000 ₫</div>
+                            <div class="amount-chip" onclick="pickAmt('qr',500000,this)">500.000 ₫</div>
+                            <div class="amount-chip" onclick="pickAmt('qr',1000000,this)">1.000.000 ₫</div>
                         </div>
-                    </div>
+                        <div class="inp-wrap">
+                            <span class="inp-pre"><i class="bi bi-cash-coin"></i></span>
+                            <input type="number" id="qrAmt" placeholder="Nhập số tiền..." min="10000" step="1000" oninput="clearChips('qr')">
+                            <span class="inp-suf">VNĐ</span>
+                        </div>
 
-                    <!-- MOMO PANEL -->
-                    <div id="panel-momo">
-                        <form action="payment" method="post" onsubmit="return validateAmount()">
-                            <input type="hidden" name="action" value="create">
-                            <input type="hidden" name="amount" id="momoAmount" value="${totalAmount}">
-                            <button type="submit" class="btn-momo" onclick="syncAmount()">
-                                <span style="font-size:1.2rem;">💜</span>
-                                Thanh toán qua MoMo
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- QR PANEL -->
-                    <div id="panel-qr" style="display:none;">
-                        <button class="btn-qr" onclick="generateQR()">
-                            <i class="bi bi-qr-code"></i> Tạo mã QR thanh toán
+                        <button class="btn-genqr" id="btnGenQR" onclick="genQR()">
+                            <i class="bi bi-qr-code-scan"></i> Tạo mã QR
                         </button>
-                        <div class="qr-section" id="qrSection">
-                            <div class="qr-title"><i class="bi bi-qr-code-scan"></i> Quét mã để thanh toán</div>
-                            <img id="qrImg" class="qr-img" src="" alt="QR Code">
-                            <div class="qr-info">
-                                <strong>Ngân hàng:</strong> VietinBank<br>
-                                <strong>Số tài khoản:</strong> 106879806456<br>
-                                <strong>Chủ TK:</strong> LE HOANG KHANG<br>
-                                <strong>Nội dung:</strong> <span id="qrContent">—</span>
+
+                        <div class="info-box">
+                            <div class="info-row">
+                                <span class="info-key"><i class="bi bi-bank"></i> Ngân hàng</span>
+                                <span class="info-val" id="dispBank">BIDV</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-key"><i class="bi bi-credit-card"></i> Số tài khoản</span>
+                                <span class="info-val">1234 5678 9012</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-key"><i class="bi bi-person"></i> Chủ TK</span>
+                                <span class="info-val">DUK ACADEMY</span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- SECURITY NOTE -->
-                    <div class="security-note">
-                        <i class="bi bi-shield-check-fill"></i>
-                        Giao dịch được mã hóa và bảo mật an toàn
-                    </div>
+                    <!-- RIGHT -->
+                    <div style="display:flex;flex-direction:column;align-items:center;">
+                        <div class="qr-box">
+                            <div id="qrPlaceholder">
+                                <i class="bi bi-qr-code"></i>
+                                <p>Chọn ngân hàng và số tiền<br>rồi bấm <strong>Tạo mã QR</strong></p>
+                            </div>
+                            <div id="qrResult">
+                                <img id="qrImage" src="" alt="QR">
+                                <div class="qr-amt" id="qrAmtLabel"></div>
+                                <div class="qr-oid" id="qrOid"></div>
+                            </div>
+                        </div>
 
+                        <button class="btn-paid" id="btnPaid" style="display:none;" onclick="confirmPaid()">
+                            <i class="bi bi-check-circle-fill"></i> Tôi đã thanh toán
+                        </button>
+
+                        <div class="waiting-box" id="waitingBox">
+                            <div class="w-icon">⏳</div>
+                            <div class="w-title">Đang chờ admin xác nhận</div>
+                            <div class="w-sub">Số dư sẽ được cộng sau khi admin duyệt.<br>Thường trong 5–15 phút.</div>
+                            <div class="w-oid" id="waitOid"></div>
+                        </div>
+
+                        <p style="font-size:0.75rem;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7;">
+                            <i class="bi bi-shield-check" style="color:var(--purple);"></i>
+                            Quét QR bằng app ngân hàng, sau đó bấm<br><strong>"Tôi đã thanh toán"</strong> để thông báo admin.
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        <!-- FOOTER -->
-        <footer>
-            <span>© 2026 DUK Academy. All rights reserved.</span>
-        </footer>
+<!-- FOOTER -->
+<footer>
+    <div class="footer-bottom">
+        <span style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;">
+            DUK<span style="color:var(--gold);">Academy</span>
+        </span>
+        <span>© 2026 DUK Academy. All rights reserved.</span>
+    </div>
+</footer>
 
-        <script>
-            function setAmount(val) {
-                document.getElementById('amountInput').value = val;
-                document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
-                event.target.classList.add('active');
-            }
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const BANKS = {
+        BIDV: { id:'BIDV', acc:'1234567890',  name:'DUK ACADEMY' },
+        VCB:  { id:'VCB',  acc:'9876543210',  name:'DUK ACADEMY' },
+        TCB:  { id:'TCB',  acc:'1122334455',  name:'DUK ACADEMY' },
+        MB:   { id:'MB',   acc:'5566778899',  name:'DUK ACADEMY' },
+    };
+    let selBank = 'BIDV';
+    let curOrderId = null;
 
-            function syncAmount() {
-                document.getElementById('momoAmount').value = document.getElementById('amountInput').value;
-            }
+    function switchTab(t, el) {
+        document.querySelectorAll('.pay-tab').forEach(x => x.classList.remove('active'));
+        document.querySelectorAll('.tab-pane').forEach(x => x.classList.remove('active'));
+        el.classList.add('active');
+        document.getElementById('tab-' + t).classList.add('active');
+    }
 
-            function validateAmount() {
-                const amount = parseInt(document.getElementById('amountInput').value) || 0;
-                if (amount < 10000) {
-                    alert('Số tiền nạp tối thiểu là 10.000 ₫');
-                    return false;
-                }
-                syncAmount();
-                return true;
-            }
+    function pickAmt(type, amt, el) {
+        document.querySelectorAll(type === 'momo' ? '#tab-momo .amount-chip' : '#tab-qr .amount-chip')
+                .forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        const inp = document.getElementById(type === 'momo' ? 'momoAmt' : 'qrAmt');
+        if (amt > 0) inp.value = amt;
+        else { inp.value = ''; inp.focus(); }
+    }
+    function clearChips(type) {
+        document.querySelectorAll(type === 'momo' ? '#tab-momo .amount-chip' : '#tab-qr .amount-chip')
+                .forEach(c => c.classList.remove('selected'));
+    }
 
-            function switchTab(el, panel) {
-                document.querySelectorAll('.method-tab').forEach(t => t.classList.remove('active'));
-                el.classList.add('active');
-                document.getElementById('panel-momo').style.display = panel === 'momo' ? 'block' : 'none';
-                document.getElementById('panel-qr').style.display = panel === 'qr' ? 'block' : 'none';
-            }
+    function pickBank(b, el) {
+        document.querySelectorAll('.bank-opt').forEach(x => x.classList.remove('selected'));
+        el.classList.add('selected');
+        selBank = b;
+        document.getElementById('dispBank').textContent = b;
+        resetQR();
+    }
 
-            function generateQR() {
-                const amount = parseInt(document.getElementById('amountInput').value) || 0;
-                if (amount < 10000) {
-                    alert('Vui lòng nhập số tiền tối thiểu 10.000 ₫');
-                    return;
-                }
-                const bank = "970415";
-                const account = "106879806456";
-                const name = "LE HOANG KHANG";
-                const info = "DUK ${user.userId}";
-                const url = "https://img.vietqr.io/image/"
-                        + bank + "-" + account
-                        + "-qr_only.png?amount=" + amount
-                        + "&addInfo=" + encodeURIComponent(info)
-                        + "&accountName=" + encodeURIComponent(name);
+    function payMomo() {
+        const amt = parseInt(document.getElementById('momoAmt').value);
+        if (!amt || amt < 10000) { alert('Vui lòng nhập số tiền tối thiểu 10.000 ₫'); return; }
+        alert('Tính năng MoMo đang được phát triển. Vui lòng dùng chuyển khoản QR.');
+    }
 
-                document.getElementById('qrImg').src = url;
-                document.getElementById('qrContent').textContent = info;
-                document.getElementById('qrSection').classList.add('show');
-            }
-
-            // Sync amount input khi nhập tay
-            document.getElementById('amountInput').addEventListener('input', function () {
-                document.querySelectorAll('.quick-btn').forEach(b => b.classList.remove('active'));
+    async function genQR() {
+        const amt = parseInt(document.getElementById('qrAmt').value);
+        if (!amt || amt < 10000) { alert('Vui lòng nhập số tiền tối thiểu 10.000 ₫'); return; }
+        const btn = document.getElementById('btnGenQR');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Đang tạo...';
+        resetQR();
+        try {
+            const res = await fetch('paymentController?action=createQR', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'amount=' + amt
             });
-        </script>
-    </body>
+            const data = await res.json();
+            if (data.status !== 'success') {
+                alert('Lỗi: ' + (data.message || 'Không thể tạo QR'));
+                return;
+            }
+            curOrderId = data.orderId;
+            const bank = BANKS[selBank];
+            const note = encodeURIComponent('NAP TIEN DUK ' + data.orderId);
+            const qrUrl = 'https://img.vietqr.io/image/' + bank.id + '-' + bank.acc + '-qr_only.png'
+                        + '?amount=' + amt
+                        + '&addInfo=' + note
+                        + '&accountName=' + encodeURIComponent(bank.name);
+            const img = document.getElementById('qrImage');
+            img.onload = () => {
+                document.getElementById('qrPlaceholder').style.display = 'none';
+                document.getElementById('qrResult').style.display = 'flex';
+                document.getElementById('qrAmtLabel').textContent = amt.toLocaleString('vi-VN') + ' ₫';
+                document.getElementById('qrOid').textContent = 'Ma: ' + data.orderId;
+                document.getElementById('btnPaid').style.display = 'flex';
+            };
+            img.onerror = () => alert('Không tải được ảnh QR, vui lòng thử lại.');
+            img.src = qrUrl;
+        } catch(e) {
+            alert('Lỗi kết nối. Vui lòng thử lại.');
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-qr-code-scan"></i> Tạo mã QR';
+        }
+    }
+
+    async function confirmPaid() {
+        if (!curOrderId) return;
+        const btn = document.getElementById('btnPaid');
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Đang gửi...';
+        try {
+            const res = await fetch('paymentController?action=confirmPending', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'orderId=' + curOrderId
+            });
+            const data = await res.json();
+            if (data.status === 'success' || data.status === 'already') {
+                btn.style.display = 'none';
+                document.getElementById('waitingBox').style.display = 'block';
+                document.getElementById('waitOid').textContent = 'Ma giao dich: ' + curOrderId;
+            } else {
+                alert('Lỗi: ' + (data.message || 'Vui lòng thử lại'));
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Tôi đã thanh toán';
+            }
+        } catch(e) {
+            alert('Lỗi kết nối.');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Tôi đã thanh toán';
+        }
+    }
+
+    function resetQR() {
+        curOrderId = null;
+        document.getElementById('qrPlaceholder').style.display = 'block';
+        document.getElementById('qrResult').style.display = 'none';
+        document.getElementById('btnPaid').style.display = 'none';
+        document.getElementById('waitingBox').style.display = 'none';
+        document.getElementById('qrImage').src = '';
+    }
+
+    function toggleDD() { document.getElementById('userDD').classList.toggle('show'); }
+    document.addEventListener('click', e => {
+        const m = document.querySelector('.user-menu');
+        const d = document.getElementById('userDD');
+        if (d && m && !m.contains(e.target) && !d.contains(e.target)) d.classList.remove('show');
+    });
+</script>
+</body>
 </html>
