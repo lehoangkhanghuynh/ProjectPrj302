@@ -275,7 +275,7 @@
 <nav class="navbar-main" style="position:relative;">
     <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>
     <ul class="nav-links">
-        <li><a href="Search.jsp"><i class="bi bi-compass me-1"></i>Khám phá</a></li>
+        <li><a href="homePage.jsp">Trang Chủ</a></li>
         <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
         <li><a href="instructors.jsp">Giảng viên</a></li>
         <li><a href="#">Về chúng tôi</a></li>
