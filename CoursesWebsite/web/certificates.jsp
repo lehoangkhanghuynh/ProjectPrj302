@@ -211,7 +211,7 @@
 
             <div class="content">
 
-                <img src="${pageContext.request.contextPath}/img/logo/DUK.png" class="logo">
+                <img src="${pageContext.request.contextPath}/img/logo/DUK.png" class="logo" alt="DUK Academy Logo">
 
                 <div class="academy-name">DUK ACADEMY</div>
 
@@ -254,11 +254,25 @@
                 </div>
 
                 <div class="info">
-                    Certificate Code: <strong>${certificate.code}</strong>
+                    Certificate Code: <strong><c:choose>
+                            <c:when test="${not empty certificate.code}">
+                                ${certificate.code}
+                            </c:when>
+                            <c:otherwise>
+                                DUK-000000
+                            </c:otherwise>
+                        </c:choose></strong>
                     &nbsp;|&nbsp;
                     Date:
                     <strong>
-                        <fmt:formatDate value="${certificate.issueDate}" pattern="dd/MM/yyyy"/>
+                        <c:choose>
+                            <c:when test="${not empty certificate.issueDate}">
+                                <fmt:formatDate value="${certificate.issueDate}" pattern="dd/MM/yyyy"/>
+                            </c:when>
+                            <c:otherwise>
+                                --
+                            </c:otherwise>
+                        </c:choose>
                     </strong>
                 </div>
 
@@ -279,8 +293,27 @@
                 </div>
 
             </div>
+            <div style="text-align:center; margin-top:30px;">
+
+                <a href="downloadCertificate?code=${certificate.code}"
+                   style="
+                   padding:12px 28px;
+                   background:#1a237e;
+                   color:white;
+                   text-decoration:none;
+                   border-radius:8px;
+                   font-weight:600;
+                   display:inline-block;">
+                    Download Certificate
+                </a>
+
+                <div style="font-size:12px;margin-top:10px;color:#666;">
+                    Verify at:
+                    ${pageContext.request.serverName}/verify?code=${certificate.code}
+                </div>
+
+            </div>
 
         </div>
-
     </body>
 </html>

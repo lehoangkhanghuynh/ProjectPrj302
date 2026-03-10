@@ -191,8 +191,6 @@
             .lesson-item.active { background: linear-gradient(135deg, #EDE7FF, #E8E0FF); border-color: #B39DDB; color: #2D1B6B; box-shadow: 0 2px 10px rgba(124,77,255,0.1); }
             .lesson-num { width: 28px; height: 28px; border-radius: 50%; background: #EDE7FF; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; color: var(--purple); }
             .lesson-item.active .lesson-num { background: var(--purple); color: #fff; }
-
-            /* Done checkmark in sidebar */
             .lesson-item.done .lesson-num { background: #E8F5E9; color: #2E7D32; }
             .lesson-item-info { flex: 1; min-width: 0; }
             .lesson-item-title { font-size: 0.82rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -242,7 +240,10 @@
                 <div class="video-wrap">
                     <c:choose>
                         <c:when test="${not empty currentLesson and not empty currentLesson.video}">
-                            <div id="videoContainer" data-video="${currentLesson.video}" data-ctx="${pageContext.request.contextPath}">
+                            <%-- data-video và data-ctx được dùng bởi JS để render player --%>
+                            <div id="videoContainer"
+                                 data-video="${currentLesson.video}"
+                                 data-ctx="${pageContext.request.contextPath}">
                                 <div class="no-video">
                                     <i class="bi bi-play-circle" style="font-size:3rem; color:rgba(255,255,255,0.3);"></i>
                                     <span>Đang tải video...</span>
@@ -274,7 +275,6 @@
                             </c:if>
                             <span class="lesson-meta-item"><i class="bi bi-play-circle"></i> Video bài giảng</span>
                             <span class="lesson-meta-item"><i class="bi bi-book"></i>${course.topic}</span>
-                            <%-- Badge trạng thái khóa học --%>
                             <c:choose>
                                 <c:when test="${status == 2}">
                                     <span class="lesson-meta-item" style="color:#B8860B; background:#FFF9C4; padding:3px 10px; border-radius:20px; border:1px solid #FFD54F;">
@@ -335,7 +335,6 @@
 
                     <!-- ===== NAV ===== -->
                     <div class="lesson-nav">
-                        <%-- Tính prevLesson / nextLesson --%>
                         <c:set var="prevLesson" value="${null}"/>
                         <c:set var="nextLesson" value="${null}"/>
                         <c:set var="found"      value="false"/>
@@ -347,7 +346,6 @@
                             </c:choose>
                         </c:forEach>
 
-                        <%-- Nút Bài trước — LUÔN hiện --%>
                         <c:choose>
                             <c:when test="${not empty prevLesson}">
                                 <a href="lesson?courseId=${courseId}&lessonId=${prevLesson.lessonId}" class="btn-nav btn-prev">
@@ -361,27 +359,28 @@
 
                         <div class="nav-spacer"></div>
 
-                        <%-- Nút bên phải --%>
                         <c:choose>
-                            <%-- Còn bài tiếp → luôn hiện nút "Bài tiếp theo" dù status nào --%>
                             <c:when test="${not empty nextLesson}">
                                 <a href="lesson?courseId=${courseId}&lessonId=${nextLesson.lessonId}" class="btn-nav btn-next">
                                     Bài tiếp theo <i class="bi bi-arrow-right"></i>
                                 </a>
                             </c:when>
-
-                            <%-- Bài cuối: hiển thị theo trạng thái --%>
                             <c:otherwise>
                                 <c:choose>
-                                    <%-- Đã nhận chứng chỉ (status=2) → nút xem chứng chỉ --%>
                                     <c:when test="${status == 2}">
                                         <a href="certificate?courseId=${courseId}" class="btn-cert-nav">
                                             <i class="bi bi-award-fill"></i> Xem chứng chỉ
                                         </a>
                                     </c:when>
-                                    <%-- Đang học (status=1) → nút hoàn thành --%>
                                     <c:otherwise>
-                                        <form method="POST" action="lesson" style="margin:0;"><input type="hidden" name="action" value="finishCourse"><input type="hidden" name="courseId" value="${courseId}"><button type="submit" class="btn-complete"><span class="complete-star"><i class="bi bi-star-fill"></i></span> Hoàn thành khóa học! <i class="bi bi-trophy-fill"></i></button></form>
+                                        <form method="POST" action="lesson" style="margin:0;">
+                                            <input type="hidden" name="action" value="finishCourse">
+                                            <input type="hidden" name="courseId" value="${courseId}">
+                                            <button type="submit" class="btn-complete">
+                                                <span class="complete-star"><i class="bi bi-star-fill"></i></span>
+                                                Hoàn thành khóa học! <i class="bi bi-trophy-fill"></i>
+                                            </button>
+                                        </form>
                                     </c:otherwise>
                                 </c:choose>
                             </c:otherwise>
@@ -484,15 +483,7 @@
                                    class="lesson-item ${currentLesson.lessonId == l.lessonId ? 'active' : ''}"
                                    data-lesson-id="${l.lessonId}">
                                     <div class="lesson-num">
-                                        <c:choose>
-                                            <%-- Bài đang xem hoặc bài đã qua (index nhỏ hơn bài hiện tại) --%>
-                                            <c:when test="${currentLesson.lessonId == l.lessonId}">
-                                                ${st.index + 1}
-                                            </c:when>
-                                            <c:otherwise>
-                                                ${st.index + 1}
-                                            </c:otherwise>
-                                        </c:choose>
+                                        ${st.index + 1}
                                     </div>
                                     <div class="lesson-item-info">
                                         <div class="lesson-item-title">${l.title}</div>
@@ -517,22 +508,23 @@
         </div>
 
         <script>
-            // ── Video Player ────────────────────────────────────────────────
-            (function () {
+            // ── Video Player ─────────────────────────────────────────────────
+            function initVideoPlayer() {
                 var container = document.getElementById('videoContainer');
                 if (!container) return;
+
                 var videoUrl = container.getAttribute('data-video');
-                var ctx = container.getAttribute('data-ctx');
-                if (!videoUrl) return;
+                var ctx      = container.getAttribute('data-ctx');
+                if (!videoUrl || videoUrl.trim() === '') return;
+
+                // Nếu đã render iframe hoặc video rồi thì bỏ qua
+                if (container.querySelector('iframe') || container.querySelector('video')) return;
 
                 function getYouTubeId(url) {
                     var m;
-                    m = url.match(/[?&]v=([^&#]+)/);
-                    if (m) return m[1];
-                    m = url.match(/youtu\.be\/([^?&#]+)/);
-                    if (m) return m[1];
-                    m = url.match(/youtube\.com\/embed\/([^?&#]+)/);
-                    if (m) return m[1];
+                    m = url.match(/[?&]v=([^&#]+)/);   if (m) return m[1];
+                    m = url.match(/youtu\.be\/([^?&#]+)/); if (m) return m[1];
+                    m = url.match(/youtube\.com\/embed\/([^?&#]+)/); if (m) return m[1];
                     return null;
                 }
 
@@ -540,7 +532,8 @@
                 if (ytId) {
                     container.innerHTML =
                         '<iframe src="https://www.youtube.com/embed/' + ytId +
-                        '?rel=0&modestbranding=1" style="width:100%;aspect-ratio:16/9;border:none;display:block;"' +
+                        '?rel=0&modestbranding=1"' +
+                        ' style="width:100%;aspect-ratio:16/9;border:none;display:block;"' +
                         ' allowfullscreen allow="autoplay; encrypted-media"></iframe>';
                 } else {
                     var src = videoUrl.startsWith('http') ? videoUrl : ctx + '/' + videoUrl;
@@ -548,9 +541,21 @@
                         '<video controls style="width:100%;aspect-ratio:16/9;background:#000;display:block;">' +
                         '<source src="' + src + '">Trình duyệt không hỗ trợ video.</video>';
                 }
-            })();
+            }
 
-            // ── Topbar Progress ─────────────────────────────────────────────
+            // Chạy ngay khi trang load
+            initVideoPlayer();
+
+            // ── Xử lý bfcache (browser back/forward cache) ──────────────────
+            // Khi user đăng ký xong rồi back lại, trang có thể được restore từ cache
+            // → force reload để lấy dữ liệu mới nhất từ server (có video)
+            window.addEventListener('pageshow', function (e) {
+                if (e.persisted) {
+                    window.location.reload();
+                }
+            });
+
+            // ── Topbar Progress ──────────────────────────────────────────────
             (function () {
                 var items = document.querySelectorAll('.lesson-item');
                 var total = items.length;
@@ -564,16 +569,18 @@
                 if (fill) fill.style.width = Math.round(((currentIdx + 1) / total) * 100) + '%';
                 if (txt)  txt.textContent  = 'Bài ' + (currentIdx + 1) + ' / ' + total;
                 var activeItem = document.querySelector('.lesson-item.active');
-                if (activeItem) activeItem.scrollIntoView({block: 'center', behavior: 'smooth'});
+                if (activeItem) activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
             })();
 
-            // ── Upload UX ───────────────────────────────────────────────────
+            // ── Upload UX ────────────────────────────────────────────────────
             function onFileChange(input) {
                 var label = document.getElementById('fileLabelText');
                 if (input.files && input.files[0]) {
-                    label.textContent = input.files[0].name + ' (' + (input.files[0].size / 1024 / 1024).toFixed(1) + ' MB)';
+                    label.textContent = input.files[0].name +
+                        ' (' + (input.files[0].size / 1024 / 1024).toFixed(1) + ' MB)';
                 }
             }
+
             function startUpload() {
                 var fileInput = document.getElementById('videoFile');
                 if (!fileInput || !fileInput.files || fileInput.files.length === 0) return;

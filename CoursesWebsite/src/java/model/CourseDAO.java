@@ -60,7 +60,7 @@ public class CourseDAO {
                 double fee = rs.getDouble("fee");
                 String status = rs.getString("status");
 
-                CourseDTO c = new CourseDTO(id, topic, name, fee, status,0);
+                CourseDTO c = new CourseDTO(id, topic, name, fee, status, 0);
                 result.add(c);
             }
 
@@ -319,6 +319,122 @@ public class CourseDAO {
                 );
 
                 list.add(c);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<CourseDTO> getCoursesByInstructor(String userId) {
+        List<CourseDTO> list = new ArrayList<>();
+        String sql = "SELECT c.courseId, c.topic, c.courseName, c.fee, c.status "
+                + "FROM Course c "
+                + "JOIN Course_Instructor ci ON c.courseId = ci.courseId "
+                + "JOIN Instructor i ON ci.instructorId = i.instructorId "
+                + "WHERE i.userId = ?";
+        try {
+            Connection conn = DbiUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, userId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CourseDTO c = new CourseDTO();
+                c.setCourseId(rs.getInt("courseId"));
+                c.setTopic(rs.getString("topic"));
+                c.setCourseName(rs.getString("courseName"));
+                c.setFee(rs.getDouble("fee"));
+                c.setStatus(rs.getString("status"));
+                list.add(c);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public boolean createCourse(String topic, String courseName, double fee, String userId) {
+        try {
+            Connection conn = DbiUtils.getConnection();
+
+            // Lấy instructorId từ userId
+            String sqlGetId = "SELECT instructorId FROM Instructor WHERE userId = ?";
+            PreparedStatement ps0 = conn.prepareStatement(sqlGetId);
+            ps0.setString(1, userId);
+            ResultSet rs0 = ps0.executeQuery();
+            if (!rs0.next()) {
+                return false;
+            }
+            int instructorId = rs0.getInt("instructorId");
+
+            // Tạo Course
+            String sql1 = "INSERT INTO Course(topic, courseName, fee, status) VALUES(?,?,?,?)";
+            PreparedStatement ps1 = conn.prepareStatement(sql1, PreparedStatement.RETURN_GENERATED_KEYS);
+            ps1.setString(1, topic);
+            ps1.setString(2, courseName);
+            ps1.setDouble(3, fee);
+            ps1.setString(4, "active");
+            ps1.executeUpdate();
+
+            ResultSet rs1 = ps1.getGeneratedKeys();
+            if (rs1.next()) {
+                int courseId = rs1.getInt(1);
+
+                // Insert Course_Instructor
+                String sql2 = "INSERT INTO Course_Instructor(courseId, instructorId) VALUES(?,?)";
+                PreparedStatement ps2 = conn.prepareStatement(sql2);
+                ps2.setInt(1, courseId);
+                ps2.setInt(2, instructorId);
+                ps2.executeUpdate();
+            }
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //update danh cho instructor
+    public boolean updateCourse(int courseId, String topic, String courseName, double fee) {
+
+        String sql = "UPDATE Course SET topic=?, courseName=?, fee=? WHERE courseId=?";
+
+        try {
+            Connection conn = DbiUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, topic);
+            ps.setString(2, courseName);
+            ps.setDouble(3, fee);
+            ps.setInt(4, courseId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public List<String> getReviewsByCourse(int courseId) {
+
+        List<String> list = new ArrayList<>();
+
+        String sql = "SELECT comment FROM Review WHERE courseId=?";
+
+        try {
+            Connection conn = DbiUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, courseId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(rs.getString("comment"));
             }
 
         } catch (Exception e) {

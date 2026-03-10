@@ -53,6 +53,13 @@ public class mainController extends HttpServlet {
             url = "forgotPasswordController";
         } else if ("resetpassword".equals(action)) {
             url = "resetPasswordController";
+        }else if (action.equals("createCourse")
+                || action.equals("updateCourse")
+                || action.equals("addLesson")
+                || action.equals("deleteLesson")
+                || action.equals("viewMyCourses")
+                || action.equals("viewReviews")) {
+            url = "instructorController";
         }
 
         RequestDispatcher rd = request.getRequestDispatcher(url);

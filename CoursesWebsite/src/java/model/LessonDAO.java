@@ -65,5 +65,44 @@ public class LessonDAO {
         return 0;
     }
 
+    public boolean addLesson(int courseId, String lessonTitle, String videoUrl) {
+
+        String sql = "INSERT INTO Lesson(courseId, title, videoUrl) VALUES(?,?,?)";
+
+        try {
+            Connection conn = DbiUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, courseId);
+            ps.setString(2, lessonTitle);
+            ps.setString(3, videoUrl);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean deleteLesson(int lessonId) {
+
+        String sql = "DELETE FROM Lesson WHERE lessonId=?";
+
+        try {
+            Connection conn = DbiUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, lessonId);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
 }

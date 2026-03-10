@@ -68,6 +68,10 @@
         <servlet-name>courseCompleteController</servlet-name>
         <servlet-class>controller.courseCompleteController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>instructorController</servlet-name>
+        <servlet-class>controller.instructorController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -135,6 +139,10 @@
     <servlet-mapping>
         <servlet-name>courseCompleteController</servlet-name>
         <url-pattern>/courseCompleteController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>instructorController</servlet-name>
+        <url-pattern>/instructorController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

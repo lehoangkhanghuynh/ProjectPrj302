@@ -215,6 +215,13 @@
         .btn-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
         .modal-warning { display: none; background: #FFF3F3; border: 1px solid #FFCDD2; border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-size: 0.82rem; color: #C62828; font-weight: 600; }
 
+        /* LOADING OVERLAY khi đang enroll */
+        .enroll-loading { display: none; position: fixed; inset: 0; background: rgba(10,5,30,0.55); backdrop-filter: blur(4px); z-index: 2000; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+        .enroll-loading.show { display: flex; }
+        .enroll-spinner { width: 52px; height: 52px; border: 4px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .enroll-loading-text { color: #fff; font-size: 0.95rem; font-weight: 600; }
+
         @media (max-width: 1200px) { .course-grid-full { grid-template-columns: repeat(3, 1fr); } .trending-grid { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 900px) { .course-grid-full { grid-template-columns: repeat(2, 1fr); } .trending-grid { grid-template-columns: 1fr; } .main-content, .page-header, .filter-bar { padding-left: 20px; padding-right: 20px; } .navbar-main { padding: 0 20px; } .search-bar { display: none; } }
         @media (max-width: 600px) { .course-grid-full { grid-template-columns: 1fr; } }
@@ -226,6 +233,12 @@
 <div class="toast-noti" id="toastNoti">
     <i class="bi bi-heart-fill"></i>
     <span id="toastMsg">Đã thêm vào mục yêu thích</span>
+</div>
+
+<!-- LOADING OVERLAY khi enroll -->
+<div class="enroll-loading" id="enrollLoading">
+    <div class="enroll-spinner"></div>
+    <div class="enroll-loading-text">Đang đăng ký khóa học...</div>
 </div>
 
 <!-- NAVBAR -->
@@ -534,7 +547,13 @@
             <i class="bi bi-exclamation-triangle-fill"></i>
             Số dư không đủ! <a href="paymentController" style="color:#C62828; font-weight:700;">Nạp tiền ngay →</a>
         </div>
-        <form id="enrollForm" action="enroll" method="post">
+        <%--
+            FIX: Form enroll giờ submit qua JS để có thể show loading overlay
+            trước khi redirect. EnrollServlet phải redirect về:
+              lesson?courseId=X&lessonId=<first_lesson_id>
+            để trang lesson.jsp load đúng bài đầu tiên kèm video ngay lập tức.
+        --%>
+        <form id="enrollForm" action="enroll" method="post" onsubmit="onEnrollSubmit()">
             <input type="hidden" name="courseId" id="modalCourseId">
             <div class="modal-actions">
                 <button type="button" class="btn-cancel" onclick="closeModal()"><i class="bi bi-x-circle"></i> Hủy</button>
@@ -641,21 +660,51 @@
 
     /* ===== MODAL ===== */
     function fmt(val) { return Number(val).toLocaleString('vi-VN') + ' ₫'; }
+
     function openModal(courseId, courseName, fee, balance) {
         const feeNum = parseFloat(fee) || 0, balNum = parseFloat(balance) || 0, after = balNum - feeNum;
         document.getElementById('modalCourseId').value         = courseId;
         document.getElementById('modalCourseName').textContent = courseName;
         document.getElementById('modalFee').textContent        = fmt(feeNum);
         document.getElementById('modalBalance').textContent    = fmt(balNum);
-        const afterEl = document.getElementById('modalAfter'), warnEl = document.getElementById('modalWarning'), confirmEl = document.getElementById('btnConfirm');
-        if (after < 0) { afterEl.textContent = 'Không đủ số dư!'; afterEl.className = 'modal-info-value danger-val'; warnEl.style.display = 'block'; confirmEl.disabled = true; }
-        else { afterEl.textContent = fmt(after); afterEl.className = 'modal-info-value after-val'; warnEl.style.display = 'none'; confirmEl.disabled = false; }
+        const afterEl = document.getElementById('modalAfter');
+        const warnEl  = document.getElementById('modalWarning');
+        const confirmEl = document.getElementById('btnConfirm');
+        if (after < 0) {
+            afterEl.textContent = 'Không đủ số dư!';
+            afterEl.className   = 'modal-info-value danger-val';
+            warnEl.style.display  = 'block';
+            confirmEl.disabled    = true;
+        } else {
+            afterEl.textContent = fmt(after);
+            afterEl.className   = 'modal-info-value after-val';
+            warnEl.style.display  = 'none';
+            confirmEl.disabled    = false;
+        }
         document.getElementById('enrollModal').classList.add('show');
         document.body.style.overflow = 'hidden';
     }
-    function closeModal() { document.getElementById('enrollModal').classList.remove('show'); document.body.style.overflow = ''; }
-    function closeModalOutside(e) { if (e.target === document.getElementById('enrollModal')) closeModal(); }
+
+    function closeModal() {
+        document.getElementById('enrollModal').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    function closeModalOutside(e) {
+        if (e.target === document.getElementById('enrollModal')) closeModal();
+    }
+
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    /* ===== ENROLL SUBMIT — hiện loading overlay ===== */
+    function onEnrollSubmit() {
+        // Đóng modal, hiện loading spinner trong khi server xử lý và redirect
+        document.getElementById('enrollModal').classList.remove('show');
+        document.body.style.overflow = '';
+        document.getElementById('enrollLoading').classList.add('show');
+        // Form submit bình thường (không preventDefault), server sẽ redirect
+        // EnrollServlet cần redirect về: lesson?courseId=X&lessonId=<first_lesson_id>
+    }
 
     /* ===== FILTER ===== */
     const TOPIC_MAP = {
@@ -670,18 +719,40 @@
         programming:['java','c++','c#','golang','go lang','rust','ruby','scala','kotlin','swift','algorithm','data structure','cấu trúc dữ liệu','lập trình','programming','oop','design pattern','clean code'],
         business:['business','marketing','management','finance','accounting','hr','leadership','project management','scrum','agile','pmp','mba'],
     };
-    function getTopicGroup(t) { t=(t||'').toLowerCase(); for(const[g,kws]of Object.entries(TOPIC_MAP)){if(kws.some(kw=>t.includes(kw)))return g;} return t; }
-    document.querySelectorAll('.course-card-full').forEach(c => { c.dataset.group = getTopicGroup(c.dataset.topic||''); });
+
+    function getTopicGroup(t) {
+        t = (t || '').toLowerCase();
+        for (const [g, kws] of Object.entries(TOPIC_MAP)) {
+            if (kws.some(kw => t.includes(kw))) return g;
+        }
+        return t;
+    }
+
+    document.querySelectorAll('.course-card-full').forEach(c => {
+        c.dataset.group = getTopicGroup(c.dataset.topic || '');
+    });
+
     let currentGroup = '';
-    function filterByTopic(el, group) { document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active')); el.classList.add('active'); currentGroup=group; applyFilters(); }
+    function filterByTopic(el, group) {
+        document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        currentGroup = group;
+        applyFilters();
+    }
+
     function filterCourses() { applyFilters(); }
+
     function applyFilters() {
-        const search=(document.getElementById('searchInput')?.value||'').toLowerCase(); let visible=0;
-        document.querySelectorAll('.course-card-full').forEach(card=>{
-            const ok=(!search||((card.dataset.name||'').toLowerCase().includes(search)||(card.dataset.topic||'').toLowerCase().includes(search)))&&(!currentGroup||card.dataset.group===currentGroup);
-            card.style.display=ok?'':'none'; if(ok)visible++;
+        const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+        let visible = 0;
+        document.querySelectorAll('.course-card-full').forEach(card => {
+            const ok = (!search || ((card.dataset.name || '').toLowerCase().includes(search) || (card.dataset.topic || '').toLowerCase().includes(search)))
+                    && (!currentGroup || card.dataset.group === currentGroup);
+            card.style.display = ok ? '' : 'none';
+            if (ok) visible++;
         });
-        const b=document.getElementById('courseCount'); if(b)b.textContent=visible+' khóa học';
+        const b = document.getElementById('courseCount');
+        if (b) b.textContent = visible + ' khóa học';
     }
 </script>
 </body>
