@@ -47,7 +47,9 @@ public class mainController extends HttpServlet {
 
             url = "adminController";
 
-        } 
+        }else if(action.equals("searchcourse")){
+            url = "searchCourseController";
+        }
 
 
         RequestDispatcher rd = request.getRequestDispatcher(url);

@@ -6,21 +6,19 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import model.UserDAO;
-import model.UserDTO;
-import model.WishlistDAO;
+import model.CourseDAO;
+import model.CourseDTO;
 
 /**
  *
  * @author HOANG KHANG PC
  */
-public class loginController extends HttpServlet {
+public class searchCourseController extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,42 +32,23 @@ public class loginController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        HttpSession session = request.getSession();
-        String userName = request.getParameter("userName");
-        String password = request.getParameter("password");
-        UserDAO udao = new UserDAO();
-        UserDTO user = udao.login(userName, password);
-
-        if (user != null) {
-            // Kiểm tra account lock
-            if (!user.isStatus()) {
-                request.setAttribute("message", "Account is locked!");
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                return;
-            }
-
-            session.setAttribute("user", user);
-
-            // ✅ Load wishlist vào session ngay khi login
-            // → navbar pill hiện đúng count từ mọi trang ngay lập tức
-            WishlistDAO wDao = new WishlistDAO();
-            String userId = user.getUserId();
-            session.setAttribute("WISHLIST_IDS", wDao.getWishlistIds(userId));
-            session.setAttribute("WISHLIST_COURSES", wDao.getWishlistCourses(userId));
-
-            // Phân quyền
-            if (user.getRole() == 1) {
-                response.sendRedirect("homePage.jsp");
-            } else if (user.getRole() == 2) {
-                response.sendRedirect("instructor.jsp");
-            } else if (user.getRole() == 3) {
-                response.sendRedirect("homePage.jsp");
-            }
-
-        } else {
-            request.setAttribute("message", "Account or Password is Wrong!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+        String keywords = request.getParameter("keywords");
+        
+        if (keywords == null) {
+            keywords = "";
         }
+        
+        CourseDAO udao = new CourseDAO();
+        ArrayList<CourseDTO> list = new ArrayList<>();
+        
+        if (!keywords.trim().isEmpty()) {
+            list = udao.filterByName(keywords);
+        }
+        
+        request.setAttribute("keywords", keywords);
+        request.setAttribute("list", list);
+        
+        request.getRequestDispatcher("search.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

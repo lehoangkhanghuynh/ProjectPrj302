@@ -6,10 +6,13 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import model.CourseDTO;
 import model.WishlistDAO;
 
 /**
@@ -18,19 +21,11 @@ import model.WishlistDAO;
  */
 public class wishlistController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
+        String ajax = request.getParameter("ajax"); // "1" nếu gọi từ AJAX
         WishlistDAO dao = new WishlistDAO();
 
         if (action == null) {
@@ -39,69 +34,81 @@ public class wishlistController extends HttpServlet {
         }
 
         if (action.equals("add")) {
-
             String userId = request.getParameter("userId");
             int courseId = Integer.parseInt(request.getParameter("courseId"));
-
             dao.addWishlist(userId, courseId);
 
-            response.sendRedirect("homePage.jsp");
-        } else if (action.equals("view")) {
+            // Cập nhật lại session sau khi thêm
+            refreshWishlistSession(request, userId, dao);
 
-            String userId = request.getParameter("userId");
+            if ("1".equals(ajax)) {
+                response.setStatus(200);
+                return;
+            }
+            response.sendRedirect("courseController?action=ExploreCourse");
 
-            request.setAttribute("wishlist", dao.getWishlistByUser(userId));
-
-            request.getRequestDispatcher("wishlist.jsp").forward(request, response);
         } else if (action.equals("remove")) {
-
-            int wishlistId = Integer.parseInt(request.getParameter("wishlistId"));
             String userId = request.getParameter("userId");
+            String wishlistIdStr = request.getParameter("wishlistId");
+            String courseIdStr = request.getParameter("courseId");
 
-            dao.deleteWishlist(wishlistId);
+            if (wishlistIdStr != null) {
+                dao.deleteWishlist(Integer.parseInt(wishlistIdStr));
+            } else if (courseIdStr != null && userId != null) {
+                dao.deleteByUserAndCourse(userId, Integer.parseInt(courseIdStr));
+            }
 
-            response.sendRedirect("wishlistController?action=view&userId=" + userId);
+            // Cập nhật lại session sau khi xóa
+            if (userId != null) {
+                refreshWishlistSession(request, userId, dao);
+            }
+
+            if ("1".equals(ajax)) {
+                response.setStatus(200);
+                return;
+            }
+            String from = request.getParameter("from");
+            if ("wishlist".equals(from)) {
+                response.sendRedirect("wishlistController?action=view&userId=" + userId);
+            } else {
+                response.sendRedirect("courseController?action=ExploreCourse");
+            }
+
+        } else if (action.equals("view")) {
+            String userId = request.getParameter("userId");
+            request.setAttribute("wishlist", dao.getWishlistByUser(userId));
+            request.getRequestDispatcher("wishlist.jsp").forward(request, response);
         }
-
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
+     * Load lại WISHLIST_IDS và WISHLIST_COURSES vào session. Gọi sau mỗi
+     * add/remove để navbar pill luôn đúng.
      */
+    private void refreshWishlistSession(HttpServletRequest request, String userId, WishlistDAO dao) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            List<Integer> wishIds = dao.getWishlistIds(userId);
+            List<CourseDTO> wishCourses = dao.getWishlistCourses(userId);
+            session.setAttribute("WISHLIST_IDS", wishIds);
+            session.setAttribute("WISHLIST_COURSES", wishCourses);
+        }
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

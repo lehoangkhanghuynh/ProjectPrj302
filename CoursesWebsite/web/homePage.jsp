@@ -1,11 +1,22 @@
-<%-- 
+<%--
     Document   : homePage
     Created on : Feb 23, 2026, 10:11:54 PM
     Author     : HOANG KHANG PC
 --%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%!
+    public String fmtBal(Object bal) {
+        if (bal == null) return "0";
+        try {
+            double d = Double.parseDouble(bal.toString().trim());
+            long v = (long) d;
+            return String.format("%,d", v).replace(',', '.');
+        } catch (Exception e) { return "0"; }
+    }
+%>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -61,9 +72,7 @@
                 text-decoration: none;
                 letter-spacing: 0.3px;
             }
-            .brand span {
-                color: var(--gold);
-            }
+            .brand span { color: var(--gold); }
             .nav-links {
                 display: flex;
                 align-items: center;
@@ -99,9 +108,7 @@
                 gap: 8px;
                 transition: background 0.15s;
             }
-            .search-bar:hover {
-                background: rgba(255,255,255,0.15);
-            }
+            .search-bar:hover { background: rgba(255,255,255,0.15); }
             .search-bar input {
                 background: none;
                 border: none;
@@ -111,13 +118,8 @@
                 font-family: 'DM Sans', sans-serif;
                 width: 180px;
             }
-            .search-bar input::placeholder {
-                color: rgba(255,255,255,0.5);
-            }
-            .search-bar i {
-                color: rgba(255,255,255,0.6);
-                font-size: 0.9rem;
-            }
+            .search-bar input::placeholder { color: rgba(255,255,255,0.5); }
+            .search-bar i { color: rgba(255,255,255,0.6); font-size: 0.9rem; }
 
             /* ===== BALANCE PILL ===== */
             .balance-pill {
@@ -132,24 +134,38 @@
                 transition: background 0.15s;
                 cursor: pointer;
             }
-            .balance-pill:hover {
-                background: rgba(212,168,67,0.22);
-            }
-            .balance-pill i {
-                color: var(--gold);
-                font-size: 0.95rem;
-            }
-            .balance-label {
-                font-size: 0.75rem;
-                font-weight: 500;
-                color: rgba(255,255,255,0.6);
-            }
-            .balance-amount {
-                font-size: 0.875rem;
-                font-weight: 700;
-                color: var(--gold);
-                letter-spacing: 0.2px;
-            }
+            .balance-pill:hover { background: rgba(212,168,67,0.22); }
+            .balance-pill i { color: var(--gold); font-size: 0.95rem; }
+            .balance-label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.6); }
+            .balance-amount { font-size: 0.875rem; font-weight: 700; color: var(--gold); letter-spacing: 0.2px; }
+
+            /* ===== WISHLIST PILL ===== */
+            .wishlist-pill-wrap { position: relative; }
+            .wishlist-pill { display: flex; align-items: center; gap: 7px; background: rgba(229,57,53,0.12); border: 1px solid rgba(229,57,53,0.35); border-radius: 8px; padding: 7px 14px; cursor: pointer; transition: background 0.15s; user-select: none; }
+            .wishlist-pill:hover { background: rgba(229,57,53,0.2); }
+            .wishlist-pill i { color: #FF6B6B; font-size: 1rem; }
+            .wishlist-pill-label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.6); }
+            .wishlist-pill-count { font-size: 0.875rem; font-weight: 700; color: #FF6B6B; }
+            .wishlist-dropdown { position: absolute; top: calc(100% + 10px); right: 0; background: #fff; border: 1px solid var(--border); border-radius: 14px; min-width: 320px; max-width: 360px; box-shadow: 0 12px 40px rgba(0,0,0,0.18); display: none; z-index: 300; overflow: hidden; }
+            .wishlist-dropdown.show { display: block; animation: ddIn 0.18s ease; }
+            @keyframes ddIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+            .wishlist-dd-header { padding: 14px 18px 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+            .wishlist-dd-title { font-size: 0.9rem; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 7px; }
+            .wishlist-dd-title i { color: #E53935; }
+            .wishlist-dd-link { font-size: 0.75rem; font-weight: 600; color: var(--purple); text-decoration: none; }
+            .wishlist-dd-link:hover { text-decoration: underline; }
+            .wishlist-dd-list { max-height: 320px; overflow-y: auto; padding: 8px; }
+            .wishlist-dd-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; transition: background 0.12s; }
+            .wishlist-dd-item:hover { background: var(--purple-light); }
+            .wishlist-dd-thumb { width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, var(--purple-deep), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; overflow: hidden; }
+            .wishlist-dd-thumb img { width: 100%; height: 100%; object-fit: cover; }
+            .wishlist-dd-info { flex: 1; min-width: 0; }
+            .wishlist-dd-name { font-size: 0.8rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .wishlist-dd-price { font-size: 0.72rem; color: var(--purple); font-weight: 600; margin-top: 2px; }
+            .wishlist-dd-remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1rem; padding: 4px 6px; border-radius: 50%; transition: color 0.15s, background 0.15s; flex-shrink: 0; }
+            .wishlist-dd-remove:hover { color: #E53935; background: #FFF3F3; }
+            .wishlist-dd-empty { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 0.85rem; }
+            .wishlist-dd-empty i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: 0.4; }
 
             .user-menu {
                 display: flex;
@@ -161,564 +177,194 @@
                 transition: background 0.15s;
                 border: 1px solid rgba(255,255,255,0.15);
             }
-            .user-menu:hover {
-                background: rgba(255,255,255,0.08);
-            }
+            .user-menu:hover { background: rgba(255,255,255,0.08); }
             .user-avatar {
-                width: 34px;
-                height: 34px;
-                border-radius: 50%;
+                width: 34px; height: 34px; border-radius: 50%;
                 background: linear-gradient(135deg, var(--purple-mid), var(--gold));
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.9rem;
-                font-weight: 700;
-                color: #fff;
-                flex-shrink: 0;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 0.9rem; font-weight: 700; color: #fff; flex-shrink: 0;
             }
-            .user-name {
-                font-size: 0.875rem;
-                font-weight: 600;
-                color: #fff;
-                max-width: 120px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
+            .user-name { font-size: 0.875rem; font-weight: 600; color: #fff; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
             .dropdown-menu-custom {
-                position: absolute;
-                top: 76px;
-                right: 48px;
-                background: #fff;
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                padding: 8px;
-                min-width: 200px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.15);
-                display: none;
-                z-index: 200;
+                position: absolute; top: 76px; right: 48px;
+                background: #fff; border: 1px solid var(--border);
+                border-radius: 10px; padding: 8px; min-width: 200px;
+                box-shadow: 0 8px 32px rgba(0,0,0,0.15); display: none; z-index: 200;
             }
-            .dropdown-menu-custom.show {
-                display: block;
-            }
-            .dropdown-menu-custom a {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                padding: 10px 14px;
-                border-radius: 7px;
-                font-size: 0.875rem;
-                color: var(--text);
-                text-decoration: none;
-                font-weight: 500;
-                transition: background 0.12s;
-            }
-            .dropdown-menu-custom a:hover {
-                background: var(--purple-light);
-                color: var(--purple);
-            }
-            .dropdown-menu-custom .divider-drop {
-                height: 1px;
-                background: var(--border);
-                margin: 6px 0;
-            }
-            .dropdown-menu-custom .logout-link {
-                color: #CC0000;
-            }
-            .dropdown-menu-custom .logout-link:hover {
-                background: #FFF3F3;
-                color: #CC0000;
-            }
+            .dropdown-menu-custom.show { display: block; }
+            .dropdown-menu-custom a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 0.875rem; color: var(--text); text-decoration: none; font-weight: 500; transition: background 0.12s; }
+            .dropdown-menu-custom a:hover { background: var(--purple-light); color: var(--purple); }
+            .dropdown-menu-custom .divider-drop { height: 1px; background: var(--border); margin: 6px 0; }
+            .dropdown-menu-custom .logout-link { color: #CC0000; }
+            .dropdown-menu-custom .logout-link:hover { background: #FFF3F3; color: #CC0000; }
 
             /* ===== HERO ===== */
             .hero {
                 background: linear-gradient(145deg, var(--purple-deep) 0%, #3A1A7A 50%, #5B2DC5 100%);
                 padding: 88px 80px 0;
-                display: flex;
-                align-items: center;
-                gap: 64px;
-                overflow: hidden;
-                min-height: 500px;
-                position: relative;
+                display: flex; align-items: center; gap: 64px;
+                overflow: hidden; min-height: 500px; position: relative;
             }
             .hero::before {
-                content: '';
-                position: absolute;
-                width: 600px;
-                height: 600px;
-                border-radius: 50%;
+                content: ''; position: absolute;
+                width: 600px; height: 600px; border-radius: 50%;
                 background: rgba(212,168,67,0.05);
-                top: -200px;
-                right: -100px;
+                top: -200px; right: -100px;
             }
             .hero-content {
-                flex: 1;
-                padding-bottom: 40px;
-                position: relative;
-                z-index: 1;
+                flex: 1; padding-bottom: 40px; position: relative; z-index: 1;
                 animation: fadeUp 0.6s ease both;
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
+                display: flex; flex-direction: column; align-items: flex-start;
             }
             .hero-eyebrow {
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
-                background: rgba(212,168,67,0.15);
-                border: 1px solid rgba(212,168,67,0.3);
-                color: var(--gold);
-                font-size: 0.78rem;
-                font-weight: 700;
-                padding: 6px 14px;
-                border-radius: 20px;
-                margin-bottom: 22px;
-                letter-spacing: 1px;
-                text-transform: uppercase;
-                align-self: flex-start;
+                display: inline-flex; align-items: center; gap: 8px;
+                background: rgba(212,168,67,0.15); border: 1px solid rgba(212,168,67,0.3);
+                color: var(--gold); font-size: 0.78rem; font-weight: 700;
+                padding: 6px 14px; border-radius: 20px; margin-bottom: 22px;
+                letter-spacing: 1px; text-transform: uppercase; align-self: flex-start;
             }
             .welcome-badge {
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                background: rgba(255,255,255,0.08);
-                border: 1px solid rgba(255,255,255,0.15);
-                border-radius: 10px;
-                padding: 10px 18px;
-                margin-bottom: 22px;
-                color: rgba(255,255,255,0.9);
-                font-size: 0.9rem;
-                font-weight: 500;
+                display: inline-flex; align-items: center; gap: 10px;
+                background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+                border-radius: 10px; padding: 10px 18px; margin-bottom: 22px;
+                color: rgba(255,255,255,0.9); font-size: 0.9rem; font-weight: 500;
                 align-self: flex-start;
             }
-            .welcome-badge strong {
-                color: var(--gold);
-            }
+            .welcome-badge strong { color: var(--gold); }
             .hero h1 {
                 font-family: 'Playfair Display', serif;
-                font-size: 3.4rem;
-                font-weight: 700;
-                color: #fff;
-                line-height: 1.15;
-                margin-bottom: 20px;
+                font-size: 3.4rem; font-weight: 700; color: #fff;
+                line-height: 1.15; margin-bottom: 20px;
             }
-            .hero h1 em {
-                font-style: normal;
-                color: var(--gold);
-            }
+            .hero h1 em { font-style: normal; color: var(--gold); }
             .hero p {
-                font-size: 1.05rem;
-                color: rgba(255,255,255,0.78);
-                max-width: 500px;
-                line-height: 1.7;
-                margin-bottom: 36px;
+                font-size: 1.05rem; color: rgba(255,255,255,0.78);
+                max-width: 500px; line-height: 1.7; margin-bottom: 36px;
             }
-            .hero-actions {
-                display: flex;
-                gap: 14px;
-                flex-wrap: wrap;
-            }
+            .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
             .btn-hero-primary {
-                background: var(--gold);
-                color: var(--purple-deep);
-                font-weight: 700;
-                font-size: 0.95rem;
-                padding: 13px 32px;
-                border-radius: 8px;
-                border: none;
-                text-decoration: none;
+                background: var(--gold); color: var(--purple-deep);
+                font-weight: 700; font-size: 0.95rem; padding: 13px 32px;
+                border-radius: 8px; border: none; text-decoration: none;
                 transition: opacity 0.15s, transform 0.1s;
                 box-shadow: 0 4px 16px rgba(212,168,67,0.4);
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
+                display: inline-flex; align-items: center; gap: 8px;
             }
-            .btn-hero-primary:hover {
-                opacity: 0.9;
-                transform: translateY(-1px);
-                color: var(--purple-deep);
-            }
+            .btn-hero-primary:hover { opacity: 0.9; transform: translateY(-1px); color: var(--purple-deep); }
             .btn-hero-secondary {
-                background: transparent;
-                color: #fff;
-                font-weight: 600;
-                font-size: 0.95rem;
-                padding: 13px 28px;
-                border-radius: 8px;
-                border: 1.5px solid rgba(255,255,255,0.35);
-                text-decoration: none;
-                transition: border-color 0.15s, background 0.15s;
-                display: inline-flex;
-                align-items: center;
-                gap: 8px;
+                background: transparent; color: #fff; font-weight: 600; font-size: 0.95rem;
+                padding: 13px 28px; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.35);
+                text-decoration: none; transition: border-color 0.15s, background 0.15s;
+                display: inline-flex; align-items: center; gap: 8px;
             }
-            .btn-hero-secondary:hover {
-                border-color: #fff;
-                background: rgba(255,255,255,0.06);
-                color: #fff;
-            }
+            .btn-hero-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.06); color: #fff; }
 
             .hero-right {
-                flex: 0 0 360px;
-                padding-bottom: 40px;
-                position: relative;
-                z-index: 1;
+                flex: 0 0 360px; padding-bottom: 40px;
+                position: relative; z-index: 1;
                 animation: fadeUp 0.6s 0.2s ease both;
             }
             .instructor-panel {
                 background: rgba(255,255,255,0.06);
                 border: 1px solid rgba(255,255,255,0.12);
-                border-radius: 14px;
-                padding: 20px;
+                border-radius: 14px; padding: 20px;
                 backdrop-filter: blur(12px);
             }
             .instructor-panel-title {
-                font-size: 0.72rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 1.5px;
-                color: var(--gold);
-                margin-bottom: 14px;
-                display: flex;
-                align-items: center;
-                gap: 6px;
+                font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+                letter-spacing: 1.5px; color: var(--gold); margin-bottom: 14px;
+                display: flex; align-items: center; gap: 6px;
             }
             .instructor-card {
-                background: #fff;
-                border-radius: 10px;
-                padding: 12px 14px;
-                margin-bottom: 10px;
+                background: #fff; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
                 box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                transition: transform 0.15s;
+                display: flex; align-items: center; gap: 12px; transition: transform 0.15s;
             }
-            .instructor-card:last-child {
-                margin-bottom: 0;
-            }
-            .instructor-card:hover {
-                transform: translateX(3px);
-            }
+            .instructor-card:last-child { margin-bottom: 0; }
+            .instructor-card:hover { transform: translateX(3px); }
             .instructor-avatar {
-                width: 46px;
-                height: 46px;
-                min-width: 46px;
-                border-radius: 50%;
-                object-fit: cover;
-                object-position: center top;
-                flex-shrink: 0;
-                border: 2px solid var(--border);
-                display: block;
+                width: 46px; height: 46px; min-width: 46px; border-radius: 50%;
+                object-fit: cover; object-position: center top; flex-shrink: 0;
+                border: 2px solid var(--border); display: block;
             }
             .instructor-avatar-placeholder {
-                width: 46px;
-                height: 46px;
-                min-width: 46px;
-                border-radius: 50%;
-                flex-shrink: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.1rem;
-                font-weight: 700;
-                color: #fff;
+                width: 46px; height: 46px; min-width: 46px; border-radius: 50%; flex-shrink: 0;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 1.1rem; font-weight: 700; color: #fff;
                 border: 2px solid rgba(255,255,255,0.3);
             }
-            .av1 {
-                background: linear-gradient(135deg, #6C3FC5, #9B72E8);
-            }
-            .av2 {
-                background: linear-gradient(135deg, #D4A843, #F5CC6A);
-                color: #1E0A4A;
-            }
-            .av3 {
-                background: linear-gradient(135deg, #1B5E20, #43A047);
-            }
-            .instructor-info {
-                flex: 1;
-                min-width: 0;
-            }
-            .instructor-info h4 {
-                font-size: 0.84rem;
-                font-weight: 700;
-                color: var(--text);
-                margin-bottom: 2px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-            .instructor-info .ins-subject {
-                font-size: 0.72rem;
-                color: var(--purple);
-                font-weight: 600;
-                margin-bottom: 3px;
-            }
-            .instructor-info .ins-meta {
-                font-size: 0.7rem;
-                color: var(--muted);
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-            .ins-stars {
-                color: var(--gold);
-                font-size: 0.68rem;
-            }
+            .av1 { background: linear-gradient(135deg, #6C3FC5, #9B72E8); }
+            .av2 { background: linear-gradient(135deg, #D4A843, #F5CC6A); color: #1E0A4A; }
+            .av3 { background: linear-gradient(135deg, #1B5E20, #43A047); }
+            .instructor-info { flex: 1; min-width: 0; }
+            .instructor-info h4 { font-size: 0.84rem; font-weight: 700; color: var(--text); margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+            .instructor-info .ins-subject { font-size: 0.72rem; color: var(--purple); font-weight: 600; margin-bottom: 3px; }
+            .instructor-info .ins-meta { font-size: 0.7rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+            .ins-stars { color: var(--gold); font-size: 0.68rem; }
             .ins-badge {
-                background: var(--purple-light);
-                color: var(--purple);
-                font-size: 0.6rem;
-                font-weight: 700;
-                padding: 2px 7px;
-                border-radius: 4px;
-                text-transform: uppercase;
-                letter-spacing: 0.3px;
-                flex-shrink: 0;
+                background: var(--purple-light); color: var(--purple);
+                font-size: 0.6rem; font-weight: 700; padding: 2px 7px;
+                border-radius: 4px; text-transform: uppercase; letter-spacing: 0.3px; flex-shrink: 0;
             }
 
             /* ===== COURSES ===== */
-            .courses {
-                background: #F8F5FF;
-                padding: 72px 80px;
-            }
-            .section-eyebrow {
-                font-size: 0.75rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                color: var(--purple);
-                margin-bottom: 8px;
-            }
-            .section-title {
-                font-family: 'Playfair Display', serif;
-                font-size: 2rem;
-                font-weight: 700;
-                color: var(--text);
-                margin-bottom: 8px;
-            }
-            .section-sub {
-                font-size: 0.95rem;
-                color: var(--muted);
-                margin-bottom: 40px;
-                max-width: 520px;
-            }
-            .course-grid {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 20px;
-            }
+            .courses { background: #F8F5FF; padding: 72px 80px; }
+            .section-eyebrow { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--purple); margin-bottom: 8px; }
+            .section-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+            .section-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 40px; max-width: 520px; }
+            .course-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
             .course-card {
-                background: #fff;
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                overflow: hidden;
-                text-decoration: none;
-                color: var(--text);
-                transition: box-shadow 0.2s, transform 0.2s;
-                display: block;
+                background: #fff; border: 1px solid var(--border); border-radius: 12px;
+                overflow: hidden; text-decoration: none; color: var(--text);
+                transition: box-shadow 0.2s, transform 0.2s; display: block;
             }
-            .course-card:hover {
-                box-shadow: 0 10px 32px rgba(108,63,197,0.14);
-                transform: translateY(-4px);
-                color: var(--text);
-            }
+            .course-card:hover { box-shadow: 0 10px 32px rgba(108,63,197,0.14); transform: translateY(-4px); color: var(--text); }
             .course-thumb {
-                height: 148px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 3rem;
-                overflow: hidden;
-                position: relative;
+                height: 148px; display: flex; align-items: center; justify-content: center;
+                font-size: 3rem; overflow: hidden; position: relative;
             }
-            .course-thumb img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-                display: block;
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-            .th1 {
-                background: linear-gradient(135deg, #1E0A4A, #6C3FC5);
-            }
-            .th2 {
-                background: linear-gradient(135deg, #3A1A7A, #9B72E8);
-            }
-            .th3 {
-                background: linear-gradient(135deg, #4E2C96, #D4A843);
-            }
-            .th4 {
-                background: linear-gradient(135deg, #1A0D35, #5B2DC5);
-            }
-            .course-body {
-                padding: 16px 18px 18px;
-            }
-            .course-org {
-                font-size: 0.72rem;
-                font-weight: 700;
-                color: var(--purple);
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                margin-bottom: 6px;
-            }
-            .course-body h3 {
-                font-size: 0.9rem;
-                font-weight: 700;
-                line-height: 1.45;
-                margin-bottom: 10px;
-                color: var(--text);
-            }
-            .course-meta {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 0.78rem;
-            }
-            .course-stars {
-                color: var(--gold);
-            }
-            .course-score {
-                font-weight: 700;
-                color: var(--text);
-            }
-            .course-count {
-                color: var(--muted);
-            }
-            .course-tag {
-                display: inline-block;
-                background: var(--purple-light);
-                color: var(--purple);
-                font-size: 0.68rem;
-                font-weight: 700;
-                padding: 3px 9px;
-                border-radius: 4px;
-                margin-top: 10px;
-            }
+            .course-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; position: absolute; top: 0; left: 0; }
+            .th1 { background: linear-gradient(135deg, #1E0A4A, #6C3FC5); }
+            .th2 { background: linear-gradient(135deg, #3A1A7A, #9B72E8); }
+            .th3 { background: linear-gradient(135deg, #4E2C96, #D4A843); }
+            .th4 { background: linear-gradient(135deg, #1A0D35, #5B2DC5); }
+            .course-body { padding: 16px 18px 18px; }
+            .course-org { font-size: 0.72rem; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+            .course-body h3 { font-size: 0.9rem; font-weight: 700; line-height: 1.45; margin-bottom: 10px; color: var(--text); }
+            .course-meta { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; }
+            .course-stars { color: var(--gold); }
+            .course-score { font-weight: 700; color: var(--text); }
+            .course-count { color: var(--muted); }
+            .course-tag { display: inline-block; background: var(--purple-light); color: var(--purple); font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 4px; margin-top: 10px; }
 
             /* ===== FOOTER ===== */
-            footer {
-                background: var(--purple-deep);
-                padding: 56px 80px 24px;
-            }
-            .footer-grid {
-                display: grid;
-                grid-template-columns: 2fr 1fr 1fr 1fr;
-                gap: 48px;
-                margin-bottom: 40px;
-            }
-            .footer-brand-text {
-                font-family: 'Playfair Display', serif;
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #fff;
-                display: block;
-                margin-bottom: 10px;
-            }
-            .footer-brand-text span {
-                color: var(--gold);
-            }
-            .footer-desc {
-                font-size: 0.875rem;
-                color: rgba(255,255,255,0.5);
-                line-height: 1.7;
-                margin-bottom: 20px;
-            }
-            .footer-social {
-                display: flex;
-                gap: 10px;
-            }
-            .footer-social a {
-                width: 34px;
-                height: 34px;
-                border-radius: 8px;
-                background: rgba(255,255,255,0.07);
-                border: 1px solid rgba(255,255,255,0.1);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: rgba(255,255,255,0.6);
-                font-size: 0.9rem;
-                text-decoration: none;
-                transition: background 0.15s, color 0.15s;
-            }
-            .footer-social a:hover {
-                background: var(--purple);
-                color: #fff;
-                border-color: var(--purple);
-            }
-            .footer-col h4 {
-                font-size: 0.8rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                color: rgba(255,255,255,0.5);
-                margin-bottom: 16px;
-            }
-            .footer-col a {
-                display: block;
-                font-size: 0.875rem;
-                color: rgba(255,255,255,0.65);
-                text-decoration: none;
-                margin-bottom: 10px;
-                transition: color 0.15s;
-            }
-            .footer-col a:hover {
-                color: var(--gold);
-            }
-            .footer-bottom {
-                border-top: 1px solid rgba(255,255,255,0.08);
-                padding-top: 20px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                font-size: 0.78rem;
-                color: rgba(255,255,255,0.35);
-            }
+            footer { background: var(--purple-deep); padding: 56px 80px 24px; }
+            .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
+            .footer-brand-text { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: #fff; display: block; margin-bottom: 10px; }
+            .footer-brand-text span { color: var(--gold); }
+            .footer-desc { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 20px; }
+            .footer-social { display: flex; gap: 10px; }
+            .footer-social a { width: 34px; height: 34px; border-radius: 8px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.6); font-size: 0.9rem; text-decoration: none; transition: background 0.15s, color 0.15s; }
+            .footer-social a:hover { background: var(--purple); color: #fff; border-color: var(--purple); }
+            .footer-col h4 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 16px; }
+            .footer-col a { display: block; font-size: 0.875rem; color: rgba(255,255,255,0.65); text-decoration: none; margin-bottom: 10px; transition: color 0.15s; }
+            .footer-col a:hover { color: var(--gold); }
+            .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; color: rgba(255,255,255,0.35); }
 
             @keyframes fadeUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(28px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                from { opacity: 0; transform: translateY(28px); }
+                to   { opacity: 1; transform: translateY(0); }
             }
 
-            @media (max-width: 1100px) {
-                .course-grid {
-                    grid-template-columns: repeat(2, 1fr);
-                }
-            }
+            @media (max-width: 1100px) { .course-grid { grid-template-columns: repeat(2, 1fr); } }
             @media (max-width: 900px) {
-                .hero {
-                    flex-direction: column;
-                    padding: 48px 24px 0;
-                }
-                .hero-right {
-                    flex: none;
-                    width: 100%;
-                }
-                .courses, footer {
-                    padding: 48px 24px;
-                }
-                .footer-grid {
-                    grid-template-columns: 1fr;
-                    gap: 32px;
-                }
-                .navbar-main {
-                    padding: 0 20px;
-                }
-                .search-bar, .balance-pill {
-                    display: none;
-                }
+                .hero { flex-direction: column; padding: 48px 24px 0; }
+                .hero-right { flex: none; width: 100%; }
+                .courses, footer { padding: 48px 24px; }
+                .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+                .navbar-main { padding: 0 20px; }
+                .search-bar, .balance-pill { display: none; }
             }
         </style>
     </head>
@@ -737,15 +383,8 @@
                 <li><a href="instructors.jsp">Giảng viên</a></li>
                 <li><a href="#">Về chúng tôi</a></li>
                 <li><a href="dating.jsp">study and date</a></li>
-                    <c:if test="${sessionScope.user.role == 1}">
-                        <c:if test="${sessionScope.user != null && sessionScope.user.role == 1}">
-                        <li><a href="administrator.jsp">Administrator Manager</a></li>
-                        </c:if>                </c:if>
-
-                <c:if test="${sessionScope.user.role == 3}">
-                    <li>
-                        <a href="wishlistController?action=view&userId=${sessionScope.user.userId}">Wishlist</a>
-                    </li>
+                <c:if test="${sessionScope.user.role == 1}">
+                    <li><a href="administrator.jsp">Administrator Manager</a></li>
                 </c:if>
             </ul>
 
@@ -757,21 +396,69 @@
                     </div>
                 </form>
 
-                <%-- BALANCE PILL - chỉ hiện khi đã đăng nhập --%>
                 <c:if test="${not empty sessionScope.user}">
+                    <%-- BALANCE PILL --%>
                     <a href="paymentController" class="balance-pill">
                         <i class="bi bi-wallet2"></i>
                         <span class="balance-label">Số dư</span>
-                        <span class="balance-amount">${sessionScope.user.balance != null ? sessionScope.user.balance : '0'} ₫</span>
+                        <span class="balance-amount">
+                            <%= fmtBal(session.getAttribute("user") != null ? ((model.UserDTO)session.getAttribute("user")).getBalance() : null) %> ₫
+                        </span>
                     </a>
+
+                    <%-- WISHLIST PILL --%>
+                    <div class="wishlist-pill-wrap" id="wishlistWrap">
+                        <div class="wishlist-pill" onclick="toggleWishlistDD(event)">
+                            <i class="bi bi-heart-fill"></i>
+                            <span class="wishlist-pill-label">Yêu thích</span>
+                            <span class="wishlist-pill-count" id="wishCount">${not empty WISHLIST_IDS ? WISHLIST_IDS.size() : 0}</span>
+                        </div>
+                        <div class="wishlist-dropdown" id="wishlistDD">
+                            <div class="wishlist-dd-header">
+                                <span class="wishlist-dd-title"><i class="bi bi-heart-fill"></i> Khóa học yêu thích</span>
+                                <a href="wishlistController?action=view&userId=${sessionScope.user.userId}" class="wishlist-dd-link">Xem tất cả</a>
+                            </div>
+                            <div class="wishlist-dd-list" id="wishlistDDList">
+                                <c:choose>
+                                    <c:when test="${not empty WISHLIST_COURSES}">
+                                        <c:forEach var="wc" items="${WISHLIST_COURSES}">
+                                            <div class="wishlist-dd-item" id="wish-item-${wc.courseId}">
+                                                <div class="wishlist-dd-thumb">
+                                                    <img src="${pageContext.request.contextPath}/img/courses/course${wc.courseId}.jpg"
+                                                         alt="${wc.courseName}" onerror="this.style.display='none';">
+                                                </div>
+                                                <div class="wishlist-dd-info">
+                                                    <div class="wishlist-dd-name">${wc.courseName}</div>
+                                                    <div class="wishlist-dd-price">
+                                                        <c:choose>
+                                                            <c:when test="${wc.fee == 0}">Miễn phí</c:when>
+                                                            <c:otherwise>${wc.fee} ₫</c:otherwise>
+                                                        </c:choose>
+                                                    </div>
+                                                </div>
+                                                <button class="wishlist-dd-remove" title="Xóa khỏi yêu thích"
+                                                        onclick="removeWishItem(event, '${wc.courseId}')">
+                                                    <i class="bi bi-x"></i>
+                                                </button>
+                                            </div>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="wishlist-dd-empty" id="wishEmptyMsg">
+                                            <i class="bi bi-heart"></i>
+                                            Chưa có khóa học yêu thích
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
+                    </div>
                 </c:if>
 
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <div class="user-menu" onclick="toggleDropdown()">
-                            <div class="user-avatar">
-                                ${fn:substring(user.fullname, 0, 1)}
-                            </div>
+                            <div class="user-avatar">${fn:substring(user.fullname, 0, 1)}</div>
                             <span class="user-name">${sessionScope.user.fullname}</span>
                             <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6); font-size:0.75rem;"></i>
                         </div>
@@ -779,7 +466,7 @@
                             <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
                             <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
                             <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
-                            <a href="wishlistController?action=view&userId=${sessionScope.user.userId}"><i class="bi bi-gear"></i>Mục Yêu thích</a>
+                            <a href="wishlistController?action=view&userId=${sessionScope.user.userId}"><i class="bi bi-heart"></i> Mục Yêu thích</a>
                             <div class="divider-drop"></div>
                             <a href="mainController?action=logout" class="logout-link">
                                 <i class="bi bi-box-arrow-right"></i> Đăng xuất
@@ -979,17 +666,39 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                            function toggleDropdown() {
-                                const dd = document.getElementById('userDropdown');
-                                dd.classList.toggle('show');
-                            }
-                            document.addEventListener('click', function (e) {
-                                const menu = document.querySelector('.user-menu');
-                                const dd = document.getElementById('userDropdown');
-                                if (dd && menu && !menu.contains(e.target) && !dd.contains(e.target)) {
-                                    dd.classList.remove('show');
-                                }
-                            });
+            function toggleDropdown() {
+                document.getElementById('userDropdown').classList.toggle('show');
+            }
+
+            /* WISHLIST */
+            function toggleWishlistDD(e) {
+                e.stopPropagation();
+                document.getElementById('wishlistDD').classList.toggle('show');
+                document.getElementById('userDropdown') && document.getElementById('userDropdown').classList.remove('show');
+            }
+            function removeWishItem(e, courseId) {
+                e.stopPropagation();
+                const userId = '${sessionScope.user.userId}';
+                fetch('wishlistController?action=remove&courseId=' + courseId + '&userId=' + userId + '&ajax=1')
+                    .then(() => {
+                        const item = document.getElementById('wish-item-' + courseId);
+                        if (item) item.remove();
+                        const el = document.getElementById('wishCount');
+                        if (el) el.textContent = Math.max(0, parseInt(el.textContent || '0') - 1);
+                        const list = document.getElementById('wishlistDDList');
+                        if (list && list.querySelectorAll('.wishlist-dd-item').length === 0)
+                            list.innerHTML = '<div class="wishlist-dd-empty"><i class="bi bi-heart"></i>Chưa có khóa học yêu thích</div>';
+                    });
+            }
+
+            document.addEventListener('click', function (e) {
+                const menu = document.querySelector('.user-menu');
+                const dd = document.getElementById('userDropdown');
+                const ww = document.getElementById('wishlistWrap');
+                const wd = document.getElementById('wishlistDD');
+                if (dd && menu && !menu.contains(e.target) && !dd.contains(e.target)) dd.classList.remove('show');
+                if (wd && ww && !ww.contains(e.target)) wd.classList.remove('show');
+            });
         </script>
     </body>
 </html>

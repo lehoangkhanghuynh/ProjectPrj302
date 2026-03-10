@@ -16,11 +16,8 @@
             <c:redirect url="login.jsp" />
         </c:if>
         <jsp:include page="listCourse.jsp"/>
-
-        <jsp:include page="listCourse.jsp"/>
-
         <c:if test="${not empty sessionScope.user}">
-
+            
         </c:if>
     </body>
 </html>

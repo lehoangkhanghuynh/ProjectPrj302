@@ -15,6 +15,10 @@ import model.CourseDAO;
 import model.CourseDTO;
 import model.UserDTO;
 
+/**
+ *
+ * @author HOANG KHANG PC
+ */
 @WebServlet("/courseComplete")
 public class courseCompleteController extends HttpServlet {
 

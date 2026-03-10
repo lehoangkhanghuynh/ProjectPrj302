@@ -1,4 +1,5 @@
 package controller;
+
 import model.EnrollDAO;
 import model.UserDAO;
 import model.UserDTO;
@@ -10,6 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ *
+ * @author HOANG KHANG PC
+ */
 @WebServlet("/enroll")
 public class enrollController extends HttpServlet {
 
@@ -26,14 +31,14 @@ public class enrollController extends HttpServlet {
         }
 
         String userId = user.getUserId();
-        int courseId  = Integer.parseInt(request.getParameter("courseId"));
+        int courseId = Integer.parseInt(request.getParameter("courseId"));
 
         EnrollDAO enrollDAO = new EnrollDAO();
-        UserDAO   userDAO   = new UserDAO();
+        UserDAO userDAO = new UserDAO();
 
         try {
             // Lấy balance mới nhất từ DB (tránh dùng session cũ)
-            double fee     = enrollDAO.getCourseFee(courseId);
+            double fee = enrollDAO.getCourseFee(courseId);
             double balance = userDAO.getBalance(userId);
 
             // Đã enroll và đã thanh toán (status=1) hoặc hoàn thành (status=2) → không làm gì thêm
