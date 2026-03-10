@@ -68,14 +68,6 @@
         <servlet-name>courseCompleteController</servlet-name>
         <servlet-class>controller.courseCompleteController</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>certificateController</servlet-name>
-        <servlet-class>controller.certificateController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>searchCourseController</servlet-name>
-        <servlet-class>controller.searchCourseController</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -87,6 +79,10 @@
     <servlet-mapping>
         <servlet-name>logoutController</servlet-name>
         <url-pattern>/logoutController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PaymentController</servlet-name>
+        <url-pattern>/PaymentController</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>paymentController</servlet-name>
@@ -139,14 +135,6 @@
     <servlet-mapping>
         <servlet-name>courseCompleteController</servlet-name>
         <url-pattern>/courseCompleteController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>certificateController</servlet-name>
-        <url-pattern>/certificateController</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>searchCourseController</servlet-name>
-        <url-pattern>/searchCourseController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

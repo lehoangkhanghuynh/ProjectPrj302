@@ -35,11 +35,11 @@ public class mainController extends HttpServlet {
             url = "enrollController";
         } else if ("register".equals(action)) {
             url = "registerController";
-        }else if  (action.equals("updateUser")){
+        } else if (action.equals("updateUser")) {
             url = "updateUserController";
-        }else if (action.equals("updatePassword")){
+        } else if (action.equals("updatePassword")) {
             url = "updatePasswordController";
-        }else if (action.equals("manageUsers")
+        } else if (action.equals("manageUsers")
                 || action.equals("blockUser")
                 || action.equals("unblockUser")
                 || action.equals("manageCourses")
@@ -47,10 +47,13 @@ public class mainController extends HttpServlet {
 
             url = "adminController";
 
-        }else if(action.equals("searchcourse")){
+        } else if (action.equals("searchcourse")) {
             url = "searchCourseController";
+        } else if (action.equals("forgotpassword")) {
+            url = "forgotPasswordController";
+        } else if ("resetpassword".equals(action)) {
+            url = "resetPasswordController";
         }
-
 
         RequestDispatcher rd = request.getRequestDispatcher(url);
         rd.forward(request, response);

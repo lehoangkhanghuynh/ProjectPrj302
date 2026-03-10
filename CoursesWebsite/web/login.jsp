@@ -1057,7 +1057,7 @@
                         <div style="margin-bottom:10px;">
                             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;">
                                 <label class="f-label" style="margin:0;">Mật khẩu</label>
-                                <a href="#" class="forgot">Quên mật khẩu?</a>
+                                <a href="forgotPassword.jsp" class="forgot">Quên mật khẩu?</a>
                             </div>
                             <div class="pw-wrap">
                                 <input type="password" class="f-input" name="password" id="lPw" placeholder="Nhập mật khẩu" required />

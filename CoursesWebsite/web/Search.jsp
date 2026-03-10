@@ -17,7 +17,7 @@
         </c:if>
         <jsp:include page="listCourse.jsp"/>
         <c:if test="${not empty sessionScope.user}">
-            
+            <span style="color: red">
         </c:if>
     </body>
 </html>

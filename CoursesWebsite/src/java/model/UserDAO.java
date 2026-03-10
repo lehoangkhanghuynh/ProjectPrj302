@@ -274,5 +274,44 @@ public class UserDAO {
         return result > 0;
     }
 
-    
+    public boolean updatePasswordByEmail(String email, String password) {
+
+        String sql = "UPDATE Users SET password = ? WHERE email = ?";
+
+        try {
+            Connection conn = DbiUtils.getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, password);
+            ps.setString(2, email);
+
+            return ps.executeUpdate() > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public String getFullnameByEmail(String email) {
+        String name = null;
+        String sql = "SELECT fullname FROM Users WHERE email = ?";
+
+        try (Connection conn = DbiUtils.getConnection()){
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                name = rs.getString("fullname");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return name;
+    }
+
 }
