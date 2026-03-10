@@ -7,19 +7,24 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    Object userObj = session.getAttribute("user");
+    if (userObj == null) {
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
+        return;
+    }
+%>
 <%!
     public String fmtBal(Object bal) {
-        if (bal == null) {
-            return "0";
-        }
-        try {
-            double d = Double.parseDouble(bal.toString().trim());
-            long v = (long) d;
-            return String.format("%,d", v).replace(',', '.');
-        } catch (Exception e) {
-            return "0";
-        }
+    if (bal == null) return "0";
+    try {
+        double d = Double.parseDouble(bal.toString().trim());
+        long v = (long) d;
+        return String.format("%,d", v).replace(',', '.');
+    } catch (Exception e) {
+        return "0";
     }
+}
 %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -905,10 +910,6 @@
         </style>
     </head>
     <body>
-        <c:if test="${empty sessionScope.user}">
-            <c:redirect url="login.jsp"/>
-        </c:if>
-
         <!-- NAVBAR -->
         <nav class="navbar-main" style="position:relative;">
             <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>

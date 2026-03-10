@@ -39,7 +39,7 @@ public class loginController extends HttpServlet {
         String password = request.getParameter("password");
         UserDAO udao = new UserDAO();
         UserDTO user = udao.login(userName, password);
-
+        
         if (user != null) {
             // Kiểm tra account lock
             if (!user.isStatus()) {
