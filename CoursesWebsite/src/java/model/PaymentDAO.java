@@ -3,6 +3,10 @@ import java.sql.*;
 import java.util.*;
 import utils.DbiUtils;
 
+/**
+ *
+ * @author HOANG KHANG PC
+ */
 public class PaymentDAO {
 
     // ===== CREATE =====

@@ -2,6 +2,10 @@ package model;
 
 import java.sql.Timestamp;
 
+/**
+ *
+ * @author HOANG KHANG PC
+ */
 public class PaymentDTO {
 
     private int paymentId;
