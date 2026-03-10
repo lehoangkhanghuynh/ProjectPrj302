@@ -11,9 +11,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import model.CourseDAO;
 import model.CourseDTO;
 import model.EnrollDAO;
+import model.PaymentDAO;
 import model.UserDAO;
 import model.UserDTO;
 
@@ -23,50 +25,51 @@ import model.UserDTO;
  */
 public class adminController extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+
+        // Kiểm tra quyền admin
+        HttpSession session = request.getSession(false);
+        UserDTO user = (session != null) ? (UserDTO) session.getAttribute("user") : null;
+        if (user == null || user.getRole() != 1) {
+            response.sendRedirect("login.jsp");
+            return;
+        }
+
         String action = request.getParameter("action");
+        if (action == null) {
+            action = "dashboard";
+        }
         String url = "administrator.jsp";
 
         try {
-
-            if (action == null) {
-                action = "dashboard";
-            }
-
             switch (action) {
-
                 case "manageUsers":
                     url = manageUsers(request);
                     break;
-
                 case "blockUser":
                     url = blockUser(request);
                     break;
-
                 case "unblockUser":
                     url = unblockUser(request);
                     break;
-
                 case "manageCourses":
                     url = manageCourses(request);
                     break;
-
                 case "viewPayments":
                     url = viewPayments(request);
                     break;
+                case "confirmPayment":
+                    url = confirmPayment(request);
+                    break;
+                case "cancelPayment":
+                    url = cancelPayment(request);
+                    break;
+                case "viewTopups":
+                    url = viewTopups(request);
+                    break;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -80,95 +83,75 @@ public class adminController extends HttpServlet {
 
     // ================= USER =================
     private String manageUsers(HttpServletRequest request) {
-
         UserDAO dao = new UserDAO();
-
         List<UserDTO> list = dao.getAllUsers();
-
         request.setAttribute("USER_LIST", list);
-
         return "adminUsers.jsp";
     }
 
     private String blockUser(HttpServletRequest request) {
-
         String userId = request.getParameter("userId");
-
-        UserDAO dao = new UserDAO();
-
-        dao.blockUser(userId);
-
+        new UserDAO().blockUser(userId);
         return "redirect:adminController?action=manageUsers";
     }
 
     private String unblockUser(HttpServletRequest request) {
-
         String userId = request.getParameter("userId");
-
-        UserDAO dao = new UserDAO();
-
-        dao.unblockUser(userId);
-
+        new UserDAO().unblockUser(userId);
         return "redirect:adminController?action=manageUsers";
     }
 
     // ================= COURSE =================
     private String manageCourses(HttpServletRequest request) {
-
         CourseDAO dao = new CourseDAO();
-
         List<CourseDTO> list = dao.getCoursesWithStudents();
-
         request.setAttribute("COURSE_LIST", list);
-
         return "adminCourses.jsp";
     }
 
-    // ================= PAYMENT =================
+    // ================= PAYMENT (Enrollment) =================
+    // Giữ nguyên - dùng EnrollDAO để xem user có vào khóa học không
     private String viewPayments(HttpServletRequest request) {
         EnrollDAO dao = new EnrollDAO();
-
         request.setAttribute("ENROLL_LIST", dao.getAllEnrollments());
         return "adminPayments.jsp";
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    // ================= TOPUP (Nạp ví) =================
+    // Xem danh sách nạp tiền chờ xác nhận
+    private String viewTopups(HttpServletRequest request) throws Exception {
+        request.setAttribute("TOPUP_LIST", PaymentDAO.getPendingConfirm());
+        return "adminTopups.jsp";
+    }
+
+    // Admin duyệt nạp tiền → cộng tiền vào ví user
+    private String confirmPayment(HttpServletRequest request) throws Exception {
+        int paymentId = Integer.parseInt(request.getParameter("paymentId"));
+        PaymentDAO.confirm(paymentId);
+        return "redirect:adminController?action=viewTopups";
+    }
+
+    // Admin hủy giao dịch nạp tiền
+    private String cancelPayment(HttpServletRequest request) throws Exception {
+        int paymentId = Integer.parseInt(request.getParameter("paymentId"));
+        PaymentDAO.cancel(paymentId);
+        return "redirect:adminController?action=viewTopups";
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
+        return "Admin Controller";
+    }
 }

@@ -46,14 +46,11 @@ public class paymentController extends HttpServlet {
             }
             int amount = Integer.parseInt(amtStr);
             if (amount < 10000) {
-                response.getWriter().print("{\"status\":\"error\",\"message\":\"So tien toi thieu 10,000 VND\"}");
+                response.getWriter().print("{\"status\":\"error\",\"message\":\"So tien toi thieu 10.000 VND\"}");
                 return;
             }
-
-            // Nạp ví: dùng constructor không có courseId (isTopup = true)
             PaymentDTO p = new PaymentDTO(user.getUserId(), amount, "VIETQR", "PENDING");
             int paymentId = PaymentDAO.create(p);
-
             if (paymentId == -1) {
                 response.getWriter().print("{\"status\":\"error\",\"message\":\"Loi database\"}");
                 return;

@@ -93,7 +93,7 @@
             }
 
             .logo {
-                width: 140px;
+                width: 120px;
                 margin: -30px auto 10px auto;
                 background: transparent;
             }
@@ -163,7 +163,8 @@
 
             .signature {
                 text-align: center;
-                width: 220px;
+                width: 160px;
+                height: 120px;
             }
 
             .sig-line {

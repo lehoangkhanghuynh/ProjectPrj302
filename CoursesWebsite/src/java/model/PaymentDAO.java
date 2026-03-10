@@ -7,21 +7,16 @@ public class PaymentDAO {
 
     // ===== CREATE =====
     public static int create(PaymentDTO p) throws Exception {
-        String sql = "INSERT INTO Payment(userId, courseId, amount, paymentMethod, paymentStatus, isTopup) "
+        String sql = "INSERT INTO Payment(userId, amount, paymentMethod, paymentStatus, isTopup) "
                    + "OUTPUT INSERTED.paymentId "
-                   + "VALUES (?, ?, ?, ?, ?, ?)";
+                   + "VALUES (?, ?, ?, ?, ?)";
         try (Connection con = DbiUtils.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, p.getUserId());
-            if (p.getCourseId() != null) {
-                ps.setInt(2, p.getCourseId());
-            } else {
-                ps.setNull(2, Types.INTEGER);
-            }
-            ps.setInt(3, p.getAmount());
-            ps.setString(4, p.getPaymentMethod());
-            ps.setString(5, p.getPaymentStatus());
-            ps.setBoolean(6, p.isTopup());
+            ps.setInt(2, p.getAmount());
+            ps.setString(3, p.getPaymentMethod());
+            ps.setString(4, p.getPaymentStatus());
+            ps.setBoolean(5, p.isTopup());
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return rs.getInt(1);
             }
@@ -42,9 +37,10 @@ public class PaymentDAO {
         return null;
     }
 
-    // ===== USER CLICKS "ĐÃ THANH TOÁN" → chờ admin xác nhận =====
+    // ===== USER CLICKS "ĐÃ THANH TOÁN" =====
     public static void setPendingConfirm(int id) throws Exception {
-        String sql = "UPDATE Payment SET paymentStatus='PENDING_CONFIRM' WHERE paymentId=? AND paymentStatus='PENDING'";
+        String sql = "UPDATE Payment SET paymentStatus='PENDING_CONFIRM' "
+                   + "WHERE paymentId=? AND paymentStatus='PENDING'";
         try (Connection con = DbiUtils.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -54,7 +50,8 @@ public class PaymentDAO {
 
     // ===== ADMIN CONFIRMS → SUCCESS =====
     public static void confirm(int id) throws Exception {
-        String sql = "UPDATE Payment SET paymentStatus='SUCCESS', paymentDate=GETDATE() WHERE paymentId=?";
+        String sql = "UPDATE Payment SET paymentStatus='SUCCESS', paymentDate=GETDATE() "
+                   + "WHERE paymentId=?";
         try (Connection con = DbiUtils.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -65,7 +62,7 @@ public class PaymentDAO {
     // ===== LIST PENDING_CONFIRM (admin panel) =====
     public static List<PaymentDTO> getPendingConfirm() throws Exception {
         List<PaymentDTO> list = new ArrayList<>();
-        String sql = "SELECT * FROM Payment WHERE paymentStatus='PENDING_CONFIRM' ORDER BY createdAt DESC";
+        String sql = "SELECT * FROM Payment WHERE paymentStatus='PENDING_CONFIRM' ORDER BY paymentId DESC";
         try (Connection con = DbiUtils.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -86,19 +83,25 @@ public class PaymentDAO {
         return list;
     }
 
+    // ===== ADMIN HUY GIAO DICH =====
+    public static void cancel(int id) throws Exception {
+        String sql = "UPDATE Payment SET paymentStatus='CANCELLED' WHERE paymentId=? AND paymentStatus IN ('PENDING','PENDING_CONFIRM')";
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
+    }
+
     // ===== MAP ResultSet → DTO =====
     private static PaymentDTO map(ResultSet rs) throws Exception {
-        int courseIdRaw = rs.getInt("courseId");
-        Integer courseId = rs.wasNull() ? null : courseIdRaw;
         return new PaymentDTO(
                 rs.getInt("paymentId"),
                 rs.getString("userId"),
-                courseId,
                 rs.getInt("amount"),
                 rs.getString("paymentMethod"),
                 rs.getTimestamp("paymentDate"),
                 rs.getString("paymentStatus"),
-                rs.getTimestamp("createdAt"),
                 rs.getBoolean("isTopup")
         );
     }

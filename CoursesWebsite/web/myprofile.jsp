@@ -1,223 +1,115 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hồ sơ của tôi - KKKAcademy</title>
+    <title>Hồ sơ của tôi - DUK Academy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-
+    <link rel="icon" type="image/jpeg" href="img/page/favicon.jpg">
     <style>
         :root {
-            --ink:          #0D0B1A;
-            --ink-soft:     #3D3959;
-            --ink-muted:    #7E7A9A;
-            --surface:      #F7F5FF;
-            --surface-card: #FFFFFF;
-            --accent:       #5B3FE0;
-            --accent-glow:  #7B5FF0;
-            --accent-soft:  #EEE9FF;
-            --gold:         #C9922A;
-            --gold-light:   #F5E0B0;
+            --purple:       #6C3FC5;
+            --purple-dark:  #4E2C96;
+            --purple-deep:  #1E0A4A;
+            --purple-light: #F3EEFF;
+            --purple-mid:   #9B72E8;
+            --gold:         #D4A843;
+            --text:         #1A1A2E;
+            --muted:        #6B6B8A;
+            --border:       #E2D9F3;
+            --bg:           #F8F5FF;
+            --white:        #FFFFFF;
             --success:      #1A7A4A;
             --success-bg:   #EDFAF4;
             --success-border:#A3E6C4;
             --error:        #B91C1C;
             --error-bg:     #FFF2F2;
             --error-border: #FCA5A5;
-            --border:       #E4DFFA;
-            --border-focus: #8B6FEF;
-            --radius-sm:    8px;
-            --radius-md:    12px;
-            --radius-lg:    18px;
-            --radius-xl:    24px;
-            --shadow-sm:    0 1px 4px rgba(91,63,224,0.06);
-            --shadow-md:    0 4px 20px rgba(91,63,224,0.10);
-            --shadow-lg:    0 8px 40px rgba(91,63,224,0.14);
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); min-height: 100vh; }
 
-        body {
-            font-family: 'Sora', sans-serif;
-            color: var(--ink);
-            background: var(--surface);
-            min-height: 100vh;
-        }
-
-        /* ─── NAVBAR ──────────────────────────────────────── */
+        /* ─── NAVBAR ─── */
         .navbar-main {
-            background: var(--ink);
-            padding: 0 52px;
-            height: 66px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 200;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            background: var(--purple-deep);
+            padding: 0 48px; height: 68px;
+            display: flex; align-items: center; justify-content: space-between;
+            position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.25);
         }
-
-        .brand {
-            font-family: 'Fraunces', serif;
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: #fff;
-            text-decoration: none;
-            letter-spacing: -0.3px;
-        }
+        .brand { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; color: #fff; text-decoration: none; }
         .brand span { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+        .nav-links a { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; padding: 7px 14px; border-radius: 6px; transition: all 0.15s; }
+        .nav-links a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .balance-pill { display: flex; align-items: center; gap: 7px; background: rgba(212,168,67,0.12); border: 1px solid rgba(212,168,67,0.35); border-radius: 8px; padding: 7px 14px; text-decoration: none; transition: background 0.15s; }
+        .balance-pill:hover { background: rgba(212,168,67,0.22); }
+        .balance-pill i { color: var(--gold); }
+        .balance-label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.6); }
+        .balance-amount { font-size: 0.875rem; font-weight: 700; color: var(--gold); }
+        .user-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); transition: background 0.15s; }
+        .user-menu:hover { background: rgba(255,255,255,0.08); }
+        .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--purple-mid), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; color: #fff; }
+        .user-name { font-size: 0.875rem; font-weight: 600; color: #fff; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .dropdown-menu-custom { position: absolute; top: 76px; right: 48px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px; min-width: 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); display: none; z-index: 200; }
+        .dropdown-menu-custom.show { display: block; }
+        .dropdown-menu-custom a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 0.875rem; color: var(--text); text-decoration: none; font-weight: 500; transition: background 0.12s; }
+        .dropdown-menu-custom a:hover { background: var(--purple-light); color: var(--purple); }
+        .dropdown-menu-custom .divider-drop { height: 1px; background: var(--border); margin: 6px 0; }
+        .dropdown-menu-custom .logout-link { color: #CC0000; }
+        .dropdown-menu-custom .logout-link:hover { background: #FFF3F3; color: #CC0000; }
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 2px;
-            list-style: none;
-        }
-        .nav-links a {
-            font-size: 0.84rem;
-            font-weight: 500;
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            padding: 6px 14px;
-            border-radius: var(--radius-sm);
-            transition: background 0.15s, color 0.15s;
-        }
-        .nav-links a:hover {
-            background: rgba(255,255,255,0.07);
-            color: #fff;
-        }
+        /* ─── PAGE ─── */
+        .page-wrap { max-width: 820px; margin: 44px auto 60px; padding: 0 20px; }
 
-        .user-chip {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            text-decoration: none;
-            padding: 5px 14px 5px 6px;
-            border-radius: 40px;
-            border: 1px solid rgba(255,255,255,0.12);
-            transition: background 0.15s;
-        }
-        .user-chip:hover { background: rgba(255,255,255,0.07); }
-
-        .avatar-ring {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8B6FEF 0%, var(--gold) 100%);
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem; font-weight: 700; color: #fff;
-            flex-shrink: 0; overflow: hidden;
-        }
-        .user-chip-name {
-            font-size: 0.82rem;
-            font-weight: 600;
-            color: #fff;
-        }
-
-        /* ─── PAGE ────────────────────────────────────────── */
-        .page-wrap {
-            max-width: 820px;
-            margin: 44px auto 60px;
-            padding: 0 20px;
-        }
-
-        /* ─── HERO BANNER ─────────────────────────────────── */
+        /* ─── BANNER ─── */
         .profile-banner {
-            background: var(--ink);
-            border-radius: var(--radius-xl);
-            padding: 36px 40px;
-            display: flex;
-            align-items: center;
-            gap: 22px;
-            margin-bottom: 22px;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(145deg, var(--purple-deep) 0%, #3A1A7A 50%, #5B2DC5 100%);
+            border-radius: 18px; padding: 36px 40px;
+            display: flex; align-items: center; gap: 22px;
+            margin-bottom: 22px; position: relative; overflow: hidden;
             animation: riseUp 0.5s cubic-bezier(.16,1,.3,1) both;
-        }
-
-        /* decorative blobs */
-        .profile-banner::before,
-        .profile-banner::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            pointer-events: none;
+            box-shadow: 0 8px 32px rgba(108,63,197,0.25);
         }
         .profile-banner::before {
-            width: 260px; height: 260px;
-            background: radial-gradient(circle, rgba(139,111,239,0.18) 0%, transparent 70%);
-            top: -100px; right: -60px;
+            content: ''; position: absolute;
+            width: 300px; height: 300px; border-radius: 50%;
+            background: rgba(212,168,67,0.06);
+            top: -120px; right: -60px;
         }
-        .profile-banner::after {
-            width: 160px; height: 160px;
-            background: radial-gradient(circle, rgba(201,146,42,0.12) 0%, transparent 70%);
-            bottom: -80px; left: 30px;
-        }
-
         .banner-avatar {
-            width: 70px; height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #8B6FEF 0%, var(--gold) 100%);
+            width: 72px; height: 72px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--purple-mid), var(--gold));
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Fraunces', serif;
-            font-size: 1.7rem; font-weight: 700; color: #fff;
-            flex-shrink: 0;
-            border: 2.5px solid rgba(255,255,255,0.18);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem; font-weight: 700; color: #fff;
+            flex-shrink: 0; border: 2.5px solid rgba(255,255,255,0.2);
             position: relative; z-index: 1;
-            overflow: hidden;
         }
-
         .banner-info { position: relative; z-index: 1; }
-        .banner-info h1 {
-            font-family: 'Fraunces', serif;
-            font-size: 1.35rem;
-            font-weight: 600;
-            color: #fff;
-            letter-spacing: -0.3px;
-            margin-bottom: 3px;
-        }
-        .banner-info p {
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.45);
-        }
-
+        .banner-info h1 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: #fff; margin-bottom: 4px; }
+        .banner-info p { font-size: 0.84rem; color: rgba(255,255,255,0.5); }
         .banner-id {
-            margin-left: auto;
-            position: relative; z-index: 1;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: var(--radius-md);
-            padding: 10px 20px;
-            text-align: center;
-            backdrop-filter: blur(8px);
+            margin-left: auto; position: relative; z-index: 1;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px; padding: 10px 20px; text-align: center;
         }
-        .banner-id .lbl {
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.35);
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-            display: block;
-            margin-bottom: 3px;
-        }
-        .banner-id .val {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--gold);
-            letter-spacing: 0.5px;
-        }
+        .banner-id .lbl { font-size: 0.65rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1.2px; display: block; margin-bottom: 3px; }
+        .banner-id .val { font-size: 1rem; font-weight: 700; color: var(--gold); }
 
-        /* ─── CARDS ───────────────────────────────────────── */
+        /* ─── CARDS ─── */
         .card-block {
-            background: var(--surface-card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 30px 34px;
-            margin-bottom: 18px;
-            box-shadow: var(--shadow-sm);
+            background: var(--white); border: 1px solid var(--border);
+            border-radius: 16px; padding: 30px 34px; margin-bottom: 18px;
+            box-shadow: 0 2px 12px rgba(108,63,197,0.06);
             animation: riseUp 0.5s cubic-bezier(.16,1,.3,1) both;
         }
         .card-block:nth-child(2) { animation-delay: 0.06s; }
@@ -229,270 +121,145 @@
         }
 
         .card-heading {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-            font-size: 0.92rem;
-            font-weight: 700;
-            color: var(--ink);
-            margin-bottom: 22px;
-            padding-bottom: 16px;
+            display: flex; align-items: center; gap: 11px;
+            font-size: 0.92rem; font-weight: 700; color: var(--text);
+            margin-bottom: 22px; padding-bottom: 16px;
             border-bottom: 1px solid var(--border);
         }
         .card-heading-icon {
             width: 34px; height: 34px;
-            background: var(--accent-soft);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            display: flex; align-items: center; justify-content: center;
-            color: var(--accent);
-            font-size: 0.9rem;
+            background: var(--purple-light); border: 1px solid var(--border);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            color: var(--purple); font-size: 0.9rem;
         }
 
-        /* ─── FORM ────────────────────────────────────────── */
-        .field-label {
-            display: block;
-            font-size: 0.76rem;
-            font-weight: 600;
-            color: var(--ink-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-bottom: 6px;
+        /* ─── INFO GRID ─── */
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .info-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 12px; padding: 14px 16px;
         }
+        .info-icon {
+            width: 36px; height: 36px; background: var(--purple-light);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            color: var(--purple); font-size: 1rem; flex-shrink: 0;
+        }
+        .info-label { display: block; font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+        .info-value { display: block; font-size: 0.88rem; font-weight: 600; color: var(--text); }
+        .info-empty { font-style: normal; font-weight: 400; color: var(--muted); font-size: 0.82rem; }
 
-        .field-input,
-        select.field-input {
-            font-family: 'Sora', sans-serif;
-            font-size: 0.875rem;
-            width: 100%;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 10px 13px;
-            color: var(--ink);
-            background: #FAFAFA;
+        /* ─── FORM ─── */
+        .field-label { display: block; font-size: 0.76rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; }
+        .field-input, select.field-input {
+            font-family: 'DM Sans', sans-serif; font-size: 0.875rem; width: 100%;
+            border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 13px;
+            color: var(--text); background: var(--bg);
             transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
-            appearance: none;
-            -webkit-appearance: none;
+            appearance: none; -webkit-appearance: none;
         }
-        .field-input:focus,
-        select.field-input:focus {
-            border-color: var(--border-focus);
-            box-shadow: 0 0 0 3px rgba(139,111,239,0.12);
-            background: #fff;
-            outline: none;
+        .field-input:focus, select.field-input:focus {
+            border-color: var(--purple); box-shadow: 0 0 0 3px rgba(108,63,197,0.12);
+            background: #fff; outline: none;
         }
         .field-input::placeholder { color: #C0BAD9; }
-
-        .select-wrap {
-            position: relative;
-        }
+        .select-wrap { position: relative; }
         .select-wrap::after {
-            content: '\F282';
-            font-family: 'bootstrap-icons';
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--ink-muted);
-            font-size: 0.78rem;
-            pointer-events: none;
+            content: '\F282'; font-family: 'bootstrap-icons';
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+            color: var(--muted); font-size: 0.78rem; pointer-events: none;
         }
-
         .pw-wrap { position: relative; }
         .pw-toggle {
-            position: absolute;
-            right: 11px; top: 50%;
-            transform: translateY(-50%);
-            background: none; border: none;
-            color: var(--ink-muted);
-            cursor: pointer;
-            font-size: 0.95rem;
-            padding: 0; line-height: 1;
-            transition: color 0.12s;
+            position: absolute; right: 11px; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: var(--muted); cursor: pointer;
+            font-size: 0.95rem; padding: 0; line-height: 1; transition: color 0.12s;
         }
-        .pw-toggle:hover { color: var(--accent); }
+        .pw-toggle:hover { color: var(--purple); }
         .pw-wrap .field-input { padding-right: 36px; }
 
-        /* field group spacing */
         .field-row { display: grid; gap: 16px; }
         .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
         .field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
-
-        @media (max-width: 640px) {
-            .field-row.cols-2,
-            .field-row.cols-3 { grid-template-columns: 1fr; }
-        }
-
         .field-group { display: flex; flex-direction: column; }
 
-        /* ─── INFO GRID ───────────────────────────────────── */
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .info-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-md);
-            padding: 14px 16px;
-        }
-        .info-icon {
-            width: 36px; height: 36px;
-            background: var(--accent-soft);
-            border-radius: var(--radius-sm);
-            display: flex; align-items: center; justify-content: center;
-            color: var(--accent);
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
-        .info-label {
-            display: block;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: var(--ink-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 3px;
-        }
-        .info-value {
-            display: block;
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--ink);
-        }
-        .info-empty {
-            font-style: normal;
-            font-weight: 400;
-            color: var(--ink-muted);
-            font-size: 0.82rem;
-        }
-        @media (max-width: 640px) {
-            .info-grid { grid-template-columns: 1fr; }
-        }
-
-        /* ─── BUTTONS ─────────────────────────────────────── */
+        /* ─── BUTTONS ─── */
         .btn-primary {
-            font-family: 'Sora', sans-serif;
-            font-size: 0.84rem;
-            font-weight: 700;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            padding: 10px 26px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
-            box-shadow: 0 4px 16px rgba(91,63,224,0.28);
-            letter-spacing: 0.1px;
+            font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 700;
+            background: var(--purple); color: #fff; border: none;
+            padding: 11px 28px; border-radius: 8px; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 7px;
+            transition: all 0.15s;
+            box-shadow: 0 4px 16px rgba(108,63,197,0.3);
         }
-        .btn-primary:hover {
-            background: var(--accent-glow);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 22px rgba(91,63,224,0.36);
-        }
-        .btn-primary:active { transform: translateY(0); }
-
+        .btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(108,63,197,0.4); }
         .btn-ghost {
-            font-family: 'Sora', sans-serif;
-            font-size: 0.84rem;
-            font-weight: 600;
-            background: transparent;
-            color: var(--ink-soft);
-            border: 1.5px solid var(--border);
-            padding: 10px 22px;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            text-decoration: none;
-            transition: border-color 0.15s, background 0.15s, color 0.15s;
+            font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600;
+            background: transparent; color: var(--muted);
+            border: 1.5px solid var(--border); padding: 11px 22px; border-radius: 8px;
+            cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+            text-decoration: none; transition: all 0.15s;
         }
-        .btn-ghost:hover {
-            border-color: var(--accent);
-            background: var(--accent-soft);
-            color: var(--accent);
-        }
+        .btn-ghost:hover { border-color: var(--purple); background: var(--purple-light); color: var(--purple); }
+        .actions-row { display: flex; align-items: center; gap: 10px; margin-top: 24px; flex-wrap: wrap; }
 
-        .actions-row {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 24px;
-            flex-wrap: wrap;
-        }
-
-        /* ─── ALERTS ──────────────────────────────────────── */
+        /* ─── ALERTS ─── */
         .alert-ok, .alert-err {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-            border-radius: var(--radius-sm);
-            padding: 11px 14px;
-            font-size: 0.84rem;
-            font-weight: 500;
-            margin-top: 18px;
+            display: flex; align-items: center; gap: 9px;
+            border-radius: 8px; padding: 11px 14px;
+            font-size: 0.84rem; font-weight: 500; margin-top: 18px;
         }
-        .alert-ok {
-            background: var(--success-bg);
-            border: 1px solid var(--success-border);
-            color: var(--success);
-        }
-        .alert-err {
-            background: var(--error-bg);
-            border: 1px solid var(--error-border);
-            color: var(--error);
-        }
+        .alert-ok { background: var(--success-bg); border: 1px solid var(--success-border); color: var(--success); }
+        .alert-err { background: var(--error-bg); border: 1px solid var(--error-border); color: var(--error); }
 
-        /* ─── DIVIDER ─────────────────────────────────────── */
-        .field-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 4px 0 8px;
-        }
-
-        /* ─── RESPONSIVE ──────────────────────────────────── */
         @media (max-width: 768px) {
-            .navbar-main { padding: 0 18px; }
+            .navbar-main { padding: 0 20px; }
             .page-wrap { margin: 22px auto 40px; }
-            .profile-banner {
-                flex-direction: column;
-                text-align: center;
-                padding: 28px 24px;
-                gap: 16px;
-            }
+            .profile-banner { flex-direction: column; text-align: center; padding: 28px 24px; gap: 16px; }
             .banner-id { margin-left: 0; }
             .card-block { padding: 22px 18px; }
             .nav-links { display: none; }
+            .field-row.cols-2, .field-row.cols-3 { grid-template-columns: 1fr; }
+            .info-grid { grid-template-columns: 1fr; }
+            .dropdown-menu-custom { right: 16px; }
         }
     </style>
 </head>
 <body>
 
 <c:if test="${empty sessionScope.user}">
-    <c:redirect url="login.jsp" />
+    <c:redirect url="login.jsp"/>
 </c:if>
 
 <!-- NAVBAR -->
-<nav class="navbar-main">
-    <a href="homePage.jsp" class="brand">KKK<span>Academy</span></a>
+<nav class="navbar-main" style="position:relative;">
+    <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>
     <ul class="nav-links">
-        <li><a href="search.jsp"><i class="bi bi-compass me-1"></i>Khám phá</a></li>
+        <li><a href="Search.jsp"><i class="bi bi-compass me-1"></i>Khám phá</a></li>
         <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
-        <li><a href="#">Giảng viên</a></li>
+        <li><a href="instructors.jsp">Giảng viên</a></li>
         <li><a href="#">Về chúng tôi</a></li>
     </ul>
-    <a href="homePage.jsp" class="user-chip">
-        <div class="avatar-ring">${sessionScope.user.fullname}</div>
-        <span class="user-chip-name">${sessionScope.user.fullname}</span>
-    </a>
+    <div class="nav-right">
+        <a href="paymentController" class="balance-pill">
+            <i class="bi bi-wallet2"></i>
+            <span class="balance-label">Số dư</span>
+            <span class="balance-amount">${sessionScope.user.balance != null ? sessionScope.user.balance : '0'} ₫</span>
+        </a>
+        <div class="user-menu" onclick="toggleDD()">
+            <div class="user-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
+            <span class="user-name">${sessionScope.user.fullname}</span>
+            <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6);font-size:0.75rem;"></i>
+        </div>
+        <div class="dropdown-menu-custom" id="userDD">
+            <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
+            <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
+            <a href="paymentController"><i class="bi bi-wallet2"></i> Nạp tiền</a>
+            <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
+            <div class="divider-drop"></div>
+            <a href="mainController?action=logout" class="logout-link"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+        </div>
+    </div>
 </nav>
 
 <!-- PAGE -->
@@ -500,7 +267,7 @@
 
     <!-- BANNER -->
     <div class="profile-banner">
-        <div class="banner-avatar">${sessionScope.user.fullname}</div>
+        <div class="banner-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
         <div class="banner-info">
             <h1>${sessionScope.user.fullname}</h1>
             <p>${sessionScope.user.email}</p>
@@ -538,9 +305,7 @@
                     <span class="info-label">Tuổi</span>
                     <span class="info-value">
                         <c:choose>
-                            <c:when test="${not empty sessionScope.user.age and sessionScope.user.age != 0}">
-                                ${sessionScope.user.age} tuổi
-                            </c:when>
+                            <c:when test="${not empty sessionScope.user.age and sessionScope.user.age != 0}">${sessionScope.user.age} tuổi</c:when>
                             <c:otherwise><em class="info-empty">Chưa cập nhật</em></c:otherwise>
                         </c:choose>
                     </span>
@@ -599,26 +364,19 @@
             <div class="card-heading-icon"><i class="bi bi-person-fill"></i></div>
             Cập nhật thông tin cá nhân
         </div>
-
         <form action="mainController" method="POST">
-            <input type="hidden" name="action" value="updateUser" />
-            <input type="hidden" name="userId" value="${sessionScope.user.userId}" />
-
-            <!-- Row 1: name + email -->
+            <input type="hidden" name="action" value="updateUser"/>
+            <input type="hidden" name="userId" value="${sessionScope.user.userId}"/>
             <div class="field-row cols-2" style="margin-bottom:16px;">
                 <div class="field-group">
                     <label class="field-label">Họ và tên</label>
-                    <input type="text" class="field-input" name="fullname"
-                           value="${sessionScope.user.fullname}" />
+                    <input type="text" class="field-input" name="fullname" value="${sessionScope.user.fullname}"/>
                 </div>
                 <div class="field-group">
                     <label class="field-label">Email</label>
-                    <input type="text" class="field-input" name="email"
-                           value="${sessionScope.user.email}" />
+                    <input type="text" class="field-input" name="email" value="${sessionScope.user.email}"/>
                 </div>
             </div>
-
-            <!-- Row 2: age + location + sex -->
             <div class="field-row cols-3" style="margin-bottom:16px;">
                 <div class="field-group">
                     <label class="field-label">Tuổi</label>
@@ -626,60 +384,51 @@
                         <select name="age" class="field-input">
                             <option value="">-- Chọn --</option>
                             <c:forEach begin="16" end="80" var="i">
-                                <option value="${i}"
-                                    <c:if test="${sessionScope.user.age == i}">selected</c:if>>${i}</option>
+                                <option value="${i}" <c:if test="${sessionScope.user.age == i}">selected</c:if>>${i}</option>
                             </c:forEach>
                         </select>
                     </div>
                 </div>
                 <div class="field-group">
                     <label class="field-label">Quê quán</label>
-                    <input type="text" class="field-input" name="location"
-                           value="${sessionScope.user.location}" placeholder="Thành phố, tỉnh…" />
+                    <input type="text" class="field-input" name="location" value="${sessionScope.user.location}" placeholder="Thành phố, tỉnh…"/>
                 </div>
                 <div class="field-group">
                     <label class="field-label">Giới tính</label>
                     <div class="select-wrap">
                         <select name="sex" class="field-input">
                             <option value="">-- Chọn --</option>
-                            <option value="male">Nam</option>
-                            <option value="female">Nữ</option>
-                            <option value="other">Khác</option>
+                            <option value="male" <c:if test="${sessionScope.user.sex == 'male'}">selected</c:if>>Nam</option>
+                            <option value="female" <c:if test="${sessionScope.user.sex == 'female'}">selected</c:if>>Nữ</option>
+                            <option value="other" <c:if test="${sessionScope.user.sex == 'other'}">selected</c:if>>Khác</option>
                         </select>
                     </div>
                 </div>
             </div>
-
-            <!-- Row 3: marital status -->
             <div class="field-row" style="margin-bottom:4px; max-width:280px;">
                 <div class="field-group">
                     <label class="field-label">Tình trạng hôn nhân</label>
                     <div class="select-wrap">
                         <select name="maritalStatus" class="field-input">
                             <option value="">-- Chọn --</option>
-                            <option value="single">Độc thân</option>
-                            <option value="married">Đã kết hôn</option>
-                            <option value="divorced">Ly hôn</option>
-                            <option value="widowed">Góa phụ</option>
-                            <option value="separated">Ly thân</option>
-                            <option value="singleDad">Bố đơn thân</option>
-                            <option value="singleMom">Mẹ đơn thân</option>
+                            <option value="single" <c:if test="${sessionScope.user.marital_status == 'single'}">selected</c:if>>Độc thân</option>
+                            <option value="married" <c:if test="${sessionScope.user.marital_status == 'married'}">selected</c:if>>Đã kết hôn</option>
+                            <option value="divorced" <c:if test="${sessionScope.user.marital_status == 'divorced'}">selected</c:if>>Ly hôn</option>
+                            <option value="widowed" <c:if test="${sessionScope.user.marital_status == 'widowed'}">selected</c:if>>Góa phụ</option>
+                            <option value="separated" <c:if test="${sessionScope.user.marital_status == 'separated'}">selected</c:if>>Ly thân</option>
+                            <option value="singleDad" <c:if test="${sessionScope.user.marital_status == 'singleDad'}">selected</c:if>>Bố đơn thân</option>
+                            <option value="singleMom" <c:if test="${sessionScope.user.marital_status == 'singleMom'}">selected</c:if>>Mẹ đơn thân</option>
                         </select>
                     </div>
                 </div>
             </div>
-
             <div class="actions-row">
-                <button type="submit" class="btn-primary"
-                        onclick="return confirm('Bạn có chắc muốn cập nhật thông tin không?')">
+                <button type="submit" class="btn-primary" onclick="return confirm('Bạn có chắc muốn cập nhật thông tin không?')">
                     <i class="bi bi-check-lg"></i> Lưu thay đổi
                 </button>
-                <a href="homePage.jsp" class="btn-ghost">
-                    <i class="bi bi-arrow-left"></i> Quay lại
-                </a>
+                <a href="homePage.jsp" class="btn-ghost"><i class="bi bi-arrow-left"></i> Quay lại</a>
             </div>
         </form>
-
         <c:if test="${not empty MSG}">
             <div class="alert-ok"><i class="bi bi-check-circle-fill"></i> ${MSG}</div>
         </c:if>
@@ -694,58 +443,40 @@
             <div class="card-heading-icon"><i class="bi bi-shield-lock-fill"></i></div>
             Đổi mật khẩu
         </div>
-
         <form action="mainController" method="POST">
-            <input type="hidden" name="action" value="updatePassword" />
-            <input type="hidden" name="userId" value="${sessionScope.user.userId}" />
-
+            <input type="hidden" name="action" value="updatePassword"/>
+            <input type="hidden" name="userId" value="${sessionScope.user.userId}"/>
             <div class="field-row" style="margin-bottom:16px; max-width:420px;">
                 <div class="field-group">
                     <label class="field-label">Mật khẩu hiện tại</label>
                     <div class="pw-wrap">
-                        <input type="password" class="field-input" name="oldPassword"
-                               id="oldPassword" required placeholder="••••••••" />
-                        <button type="button" class="pw-toggle"
-                                onclick="togglePw('oldPassword',this)">
-                            <i class="bi bi-eye"></i>
-                        </button>
+                        <input type="password" class="field-input" name="oldPassword" id="oldPassword" required placeholder="••••••••"/>
+                        <button type="button" class="pw-toggle" onclick="togglePw('oldPassword',this)"><i class="bi bi-eye"></i></button>
                     </div>
                 </div>
             </div>
-
             <div class="field-row cols-2">
                 <div class="field-group">
                     <label class="field-label">Mật khẩu mới</label>
                     <div class="pw-wrap">
-                        <input type="password" class="field-input" name="password"
-                               id="newPassword" required placeholder="Tối thiểu 6 ký tự" />
-                        <button type="button" class="pw-toggle"
-                                onclick="togglePw('newPassword',this)">
-                            <i class="bi bi-eye"></i>
-                        </button>
+                        <input type="password" class="field-input" name="password" id="newPassword" required placeholder="Tối thiểu 6 ký tự"/>
+                        <button type="button" class="pw-toggle" onclick="togglePw('newPassword',this)"><i class="bi bi-eye"></i></button>
                     </div>
                 </div>
                 <div class="field-group">
                     <label class="field-label">Xác nhận mật khẩu mới</label>
                     <div class="pw-wrap">
-                        <input type="password" class="field-input" name="confirmPassword"
-                               id="confirmPassword" required placeholder="Nhập lại mật khẩu" />
-                        <button type="button" class="pw-toggle"
-                                onclick="togglePw('confirmPassword',this)">
-                            <i class="bi bi-eye"></i>
-                        </button>
+                        <input type="password" class="field-input" name="confirmPassword" id="confirmPassword" required placeholder="Nhập lại mật khẩu"/>
+                        <button type="button" class="pw-toggle" onclick="togglePw('confirmPassword',this)"><i class="bi bi-eye"></i></button>
                     </div>
                 </div>
             </div>
-
             <div class="actions-row">
-                <button type="submit" class="btn-primary"
-                        onclick="return confirmPassword()">
+                <button type="submit" class="btn-primary" onclick="return confirmPw()">
                     <i class="bi bi-shield-check"></i> Đổi mật khẩu
                 </button>
             </div>
         </form>
-
         <c:if test="${not empty MSGpass}">
             <div class="alert-ok"><i class="bi bi-check-circle-fill"></i> ${MSGpass}</div>
         </c:if>
@@ -754,31 +485,31 @@
         </c:if>
     </div>
 
-</div><!-- /page-wrap -->
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     function togglePw(id, btn) {
         const inp = document.getElementById(id);
         const ico = btn.querySelector('i');
-        if (inp.type === 'password') {
-            inp.type = 'text';
-            ico.className = 'bi bi-eye-slash';
-        } else {
-            inp.type = 'password';
-            ico.className = 'bi bi-eye';
-        }
+        if (inp.type === 'password') { inp.type = 'text'; ico.className = 'bi bi-eye-slash'; }
+        else { inp.type = 'password'; ico.className = 'bi bi-eye'; }
     }
-
-    function confirmPassword() {
+    function confirmPw() {
         const old  = document.getElementById('oldPassword').value.trim();
         const pw   = document.getElementById('newPassword').value;
         const conf = document.getElementById('confirmPassword').value;
-        if (!old)            { alert('Vui lòng nhập mật khẩu cũ!'); return false; }
-        if (pw.length < 6)   { alert('Mật khẩu mới phải có ít nhất 6 ký tự!'); return false; }
-        if (pw !== conf)     { alert('Mật khẩu xác nhận không khớp!'); return false; }
+        if (!old)          { alert('Vui lòng nhập mật khẩu cũ!'); return false; }
+        if (pw.length < 6) { alert('Mật khẩu mới phải có ít nhất 6 ký tự!'); return false; }
+        if (pw !== conf)   { alert('Mật khẩu xác nhận không khớp!'); return false; }
         return confirm('Bạn có chắc muốn đổi mật khẩu không?');
     }
+    function toggleDD() { document.getElementById('userDD').classList.toggle('show'); }
+    document.addEventListener('click', e => {
+        const m = document.querySelector('.user-menu');
+        const d = document.getElementById('userDD');
+        if (d && m && !m.contains(e.target) && !d.contains(e.target)) d.classList.remove('show');
+    });
 </script>
 </body>
 </html>
