@@ -14,11 +14,12 @@ public class UserDTO {
     private String fullname;
     private String email;
     private String password;
-    private byte role; //auto 3 student
+    private byte role; //cho student auto role 3
     private boolean status;
     private double balance;
     private int age;
     private String location, sex, marital_status;
+
     public double getBalance() {
         return balance;
     }
@@ -48,6 +49,10 @@ public class UserDTO {
     }
 
     public String getMarital_status() {
+        return marital_status;
+    }
+
+    public String getMaritalStatus() {
         return marital_status;
     }
 

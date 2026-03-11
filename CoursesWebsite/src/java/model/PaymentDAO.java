@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package model;
 import java.sql.*;
 import java.util.*;
@@ -109,4 +113,13 @@ public class PaymentDAO {
                 rs.getBoolean("isTopup")
         );
     }
+    public static void addBalanceToUser(String userId, int amount) throws Exception {
+    String sql = "UPDATE Users SET balance = balance + ? WHERE userId = ?";
+    try (Connection con = DbiUtils.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, amount);
+        ps.setString(2, userId);
+        ps.executeUpdate();
+    }
+}
 }

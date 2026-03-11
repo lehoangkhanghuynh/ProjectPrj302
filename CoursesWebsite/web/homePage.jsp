@@ -907,6 +907,10 @@
                     display: none;
                 }
             }
+            .nav-links a:hover, .nav-links a.active {
+                background: rgba(255,255,255,0.08);
+                color: #fff;
+            }
         </style>
     </head>
     <body>
@@ -915,12 +919,12 @@
             <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>
 
             <ul class="nav-links">
-                <li><a href="homePage.jsp">Trang chủ</a></li>
+                <li><a href="homePage.jsp" class="active">Trang chủ</a></li>
                 <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
                 <li><a href="instructors.jsp">Giảng viên</a></li>
-                <li><a href="#">Về chúng tôi</a></li>
+           
                 <li><a href="dating.jsp">study and date</a></li>
-                    <c:if test="${sessionScope.user.role == 1}">
+                                                <c:if test="${sessionScope.user.role == 1}">
                     <li><a href="administrator.jsp">Administrator Manager</a></li>
                     </c:if>
                     <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
@@ -930,6 +934,7 @@
                         </a>
                     </li>
                 </c:if>
+                            <li><a href="about.jsp">Thông tin Chung</a></li>
             </ul>
 
             <div class="nav-right">
@@ -1009,8 +1014,9 @@
                         <div class="dropdown-menu-custom" id="userDropdown">
                             <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
                             <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
+                            <a href="paymentController"><i class="bi bi-wallet2"></i> Nạp tiền</a>
                             <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
-                            <a href="wishlistController?action=view&userId=${sessionScope.user.userId}"><i class="bi bi-heart"></i> Mục Yêu thích</a>
+                            <a href="wishlistController?action=view&userId=${sessionScope.user.userId}"><i class="bi bi-heart"></i> Yêu thích</a>
                             <div class="divider-drop"></div>
                             <a href="mainController?action=logout" class="logout-link">
                                 <i class="bi bi-box-arrow-right"></i> Đăng xuất

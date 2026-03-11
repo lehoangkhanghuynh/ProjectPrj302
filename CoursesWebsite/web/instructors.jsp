@@ -248,8 +248,18 @@
                 <li><a href="homePage.jsp">Trang chủ</a></li>
                 <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
                 <li><a href="instructors.jsp" class="active">Giảng viên</a></li>
-                <li><a href="#">Về chúng tôi</a></li>
                 <li><a href="dating.jsp">Study &amp; Date</a></li>
+                                            <c:if test="${sessionScope.user.role == 1}">
+                    <li><a href="administrator.jsp">Administrator Manager</a></li>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
+                    <li>
+                        <a href="instructorDashboard.jsp">
+                            Instructor Manager
+                        </a>
+                    </li>
+                </c:if>
+                            <li><a href="about.jsp">Thông tin Chung</a></li>
             </ul>
             <div class="nav-right">
                 <c:choose>
@@ -667,8 +677,8 @@
                     <div class="cta-title">Chia sẻ kiến thức, truyền cảm hứng</div>
                     <p class="cta-sub">Bạn là chuyên gia trong lĩnh vực của mình? Hãy cùng DUK Academy xây dựng thế hệ nhân tài tương lai và tạo thu nhập từ đam mê giảng dạy.</p>
                     <div class="cta-actions">
-                        <a href="#" class="btn-cta-primary"><i class="bi bi-mortarboard-fill"></i> Đăng ký giảng dạy</a>
-                        <a href="#" class="btn-cta-secondary"><i class="bi bi-info-circle"></i> Tìm hiểu thêm</a>
+                        <a href="mailto:lonhkim82@gmail.com?subject=Đăng ký giảng dạy tại DUK Academy&body=Xin chào,%0A%0ATôi muốn đăng ký trở thành giảng viên tại DUK Academy.%0A%0AThông tin của tôi:%0A- Họ tên:%0A- Lĩnh vực chuyên môn:%0A- Kinh nghiệm:%0A%0ATôi xin đính kèm CV theo email này.%0A%0AXin cảm ơn!" class="btn-cta-primary"><i class="bi bi-mortarboard-fill"></i> Đăng ký giảng dạy</a>
+                        <a href="about.jsp" class="btn-cta-secondary"><i class="bi bi-info-circle"></i> Tìm hiểu thêm</a>
                     </div>
                 </div>
             </div>

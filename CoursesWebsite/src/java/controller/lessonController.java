@@ -18,7 +18,6 @@ import model.EnrollDAO;
 import model.LessonDAO;
 import model.LessonDTO;
 import model.UserDTO;
-
 /**
  *
  * @author HOANG KHANG PC
@@ -65,8 +64,8 @@ public class lessonController extends HttpServlet {
         } else if ("deleteComment".equals(action)) {
             try {
                 int commentId = Integer.parseInt(request.getParameter("commentId"));
-                int lessonId = Integer.parseInt(request.getParameter("lessonId"));
-                int courseId = Integer.parseInt(request.getParameter("courseId"));
+                int lessonId  = Integer.parseInt(request.getParameter("lessonId"));
+                int courseId  = Integer.parseInt(request.getParameter("courseId"));
                 CommentDAO dao = new CommentDAO();
                 dao.deleteComment(commentId, user.getUserId());
                 response.sendRedirect("lesson?courseId=" + courseId + "&lessonId=" + lessonId + "#comments");
@@ -128,8 +127,8 @@ public class lessonController extends HttpServlet {
             LessonDAO lessonDAO = new LessonDAO();
             CourseDAO courseDAO = new CourseDAO();
 
-            List<LessonDTO> lessons = lessonDAO.getLessonsByCourse(courseId);
-            CourseDTO course = courseDAO.searchByID(String.valueOf(courseId));
+            List<LessonDTO> lessons   = lessonDAO.getLessonsByCourse(courseId);
+            CourseDTO course          = courseDAO.searchByID(String.valueOf(courseId));
 
             // Xác định bài học hiện tại
             LessonDTO currentLesson = null;
@@ -149,12 +148,12 @@ public class lessonController extends HttpServlet {
 
             // Truyền status vào JSP để hiển thị đúng nút
             // status: 1 = đang học, 2 = đã hoàn thành
-            request.setAttribute("status", status);
-            request.setAttribute("courseId", courseId);
-            request.setAttribute("course", course);
-            request.setAttribute("lessons", lessons);
+            request.setAttribute("status",        status);
+            request.setAttribute("courseId",      courseId);
+            request.setAttribute("course",        course);
+            request.setAttribute("lessons",       lessons);
             request.setAttribute("currentLesson", currentLesson);
-            request.setAttribute("comments", comments);
+            request.setAttribute("comments",      comments);
 
             request.getRequestDispatcher("lesson.jsp").forward(request, response);
 

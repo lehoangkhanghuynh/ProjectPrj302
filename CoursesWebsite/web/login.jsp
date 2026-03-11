@@ -916,7 +916,7 @@
         <nav class="navbar-main">
             <a href="welcome.jsp" class="brand">DUK<span>Academy</span></a>
             <ul class="nav-links">
-                <li><a href="#">Khám phá</a></li>
+                <li><a href="about.jsp">Giới Thiệu Chung</a></li>
                 <li><a href="#">Khóa học</a></li>
                 <li><a href="#">Giảng viên</a></li>
             </ul>

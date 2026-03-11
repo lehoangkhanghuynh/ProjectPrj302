@@ -1,28 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 import utils.DbiUtils;
 
-/**
- *
- * @author HOANG KHANG PC
- */
 public class CertificateDAO {
 
     public boolean createCertificate(CertificateDTO c) {
-
-        try {
-            Connection conn = DbiUtils.getConnection();
-
-            String sql = "INSERT INTO Certificate(userId, courseId, issueDate, code) VALUES(?,?,?,?)";
-
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(
+                "INSERT INTO Certificates(userId, courseId, issueDate, code) VALUES('?',?,?,'?')"
+        )) {
 
             ps.setString(1, c.getUserId());
             ps.setInt(2, c.getCourseId());
@@ -34,7 +25,6 @@ public class CertificateDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return false;
     }
 
@@ -43,7 +33,7 @@ public class CertificateDAO {
         try {
             Connection conn = DbiUtils.getConnection();
 
-            String sql = "SELECT * FROM Certificate WHERE userId = ? AND courseId = ?";
+            String sql = "SELECT * FROM Certificates WHERE userId = ? AND courseId = ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -70,4 +60,36 @@ public class CertificateDAO {
         return null;
     }
 
+    public List<CertificateDTO> getCertificatesByUser(String userId) {
+
+        List<CertificateDTO> list = new ArrayList<>();
+        try {
+            Connection conn = DbiUtils.getConnection();
+
+            String sql = "SELECT * FROM Certificates WHERE userId = ?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                CertificateDTO cert = new CertificateDTO(
+                        rs.getInt("certificateId"),
+                        rs.getString("userId"),
+                        rs.getInt("courseId"),
+                        rs.getTimestamp("issueDate"),
+                        rs.getString("code")
+                );
+
+                list.add(cert);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

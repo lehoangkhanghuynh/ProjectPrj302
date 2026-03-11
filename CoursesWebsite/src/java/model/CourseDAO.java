@@ -79,6 +79,14 @@ public class CourseDAO {
         return null;
     }
 
+    public CourseDTO searchByIDc(int id) {
+        ArrayList<CourseDTO> list = searchByColumn("courseId", String.valueOf(id));
+        if (!list.isEmpty()) {
+            return list.get(0);
+        }
+        return null;
+    }
+
     // ================= SEARCH BY NAME =================
     public ArrayList<CourseDTO> searchByName(String name) {
         return searchByColumn("courseName", name);

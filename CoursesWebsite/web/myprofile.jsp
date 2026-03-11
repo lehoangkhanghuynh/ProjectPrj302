@@ -278,7 +278,18 @@
         <li><a href="homePage.jsp">Trang Chủ</a></li>
         <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
         <li><a href="instructors.jsp">Giảng viên</a></li>
-        <li><a href="#">Về chúng tôi</a></li>
+                            <c:if test="${sessionScope.user.role == 1}">
+                    <li><a href="administrator.jsp">Administrator Manager</a></li>
+                    </c:if>
+                    <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
+                    <li>
+                        <a href="instructorDashboard.jsp">
+                            Instructor Manager
+                        </a>
+                    </li>
+                </c:if>
+                            <li><a href="about.jsp">Thông tin Chung</a></li>
+
     </ul>
     <div class="nav-right">
         <%-- BALANCE PILL --%>
