@@ -76,6 +76,10 @@
         <servlet-name>adminPaymentController</servlet-name>
         <servlet-class>controller.adminPaymentController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>reviewController</servlet-name>
+        <servlet-class>controller.reviewController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>mainController</servlet-name>
         <url-pattern>/mainController</url-pattern>
@@ -151,6 +155,10 @@
     <servlet-mapping>
         <servlet-name>adminPaymentController</servlet-name>
         <url-pattern>/adminPaymentController</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>reviewController</servlet-name>
+        <url-pattern>/reviewController</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

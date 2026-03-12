@@ -33,29 +33,10 @@
                 --lesson-info-bg:  #FFFFFF;
             }
             *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-            body {
-                font-family: 'DM Sans', sans-serif;
-                color: var(--text);
-                background: var(--surface-main);
-                height: 100vh;
-                display: flex;
-                flex-direction: column;
-                overflow: hidden;
-            }
+            body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--surface-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-            /* ===== TOPBAR ===== */
-            .topbar {
-                background: var(--topbar-bg);
-                height: 58px;
-                display: flex;
-                align-items: center;
-                padding: 0 24px;
-                gap: 16px;
-                border-bottom: 1px solid rgba(255,255,255,0.08);
-                flex-shrink: 0;
-                z-index: 50;
-                box-shadow: 0 2px 16px rgba(45,27,107,0.35);
-            }
+            /* TOPBAR */
+            .topbar { background: var(--topbar-bg); height: 58px; display: flex; align-items: center; padding: 0 24px; gap: 16px; border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; z-index: 50; box-shadow: 0 2px 16px rgba(45,27,107,0.35); }
             .topbar-brand { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: #fff; text-decoration: none; white-space: nowrap; }
             .topbar-brand span { color: var(--gold); }
             .topbar-divider { width: 1px; height: 24px; background: rgba(255,255,255,0.18); }
@@ -67,10 +48,10 @@
             .progress-bar-wrap { width: 130px; height: 6px; background: rgba(255,255,255,0.12); border-radius: 3px; overflow: hidden; }
             .progress-bar-fill { height: 100%; background: linear-gradient(90deg, #B39DDB, var(--gold)); border-radius: 3px; transition: width 0.4s ease; }
 
-            /* ===== MAIN LAYOUT ===== */
+            /* MAIN LAYOUT */
             .main-layout { display: flex; flex: 1; overflow: hidden; }
 
-            /* ===== VIDEO AREA ===== */
+            /* VIDEO AREA */
             .video-area { flex: 1; display: flex; flex-direction: column; overflow-y: auto; background: var(--surface-main); }
             .video-area::-webkit-scrollbar { width: 5px; }
             .video-area::-webkit-scrollbar-thumb { background: #D1C4E9; border-radius: 3px; }
@@ -104,39 +85,26 @@
             .upload-file-btn { display: flex; align-items: center; gap: 8px; background: rgba(255,179,0,0.08); border: 1px solid rgba(255,179,0,0.3); border-radius: 8px; padding: 9px 16px; font-size: 0.82rem; color: #7A6000; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 100%; }
             .upload-submit { display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, var(--gold), #E6A200); color: #2D1B00; border: none; border-radius: 8px; padding: 9px 22px; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; white-space: nowrap; box-shadow: 0 3px 10px rgba(255,179,0,0.3); }
             .upload-submit:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(255,179,0,0.45); }
-            .upload-progress { display: none; margin-top: 10px; }
-            .upload-bar { height: 4px; background: rgba(0,0,0,0.08); border-radius: 2px; overflow: hidden; }
-            .upload-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--purple-mid), var(--gold)); border-radius: 2px; transition: width 0.2s; }
-            .upload-status { font-size: 0.75rem; color: #8B7000; margin-top: 6px; }
 
             /* ALERT */
             .alert { margin: 16px 36px 0; padding: 12px 18px; border-radius: 10px; font-size: 0.83rem; font-weight: 600; display: flex; align-items: center; gap: 10px; }
             .alert-success { background: #F0FFF4; border: 1px solid #6EE7B7; color: #065F46; }
-            .alert-error { background: #FFF5F5; border: 1px solid #FCA5A5; color: #991B1B; }
+            .alert-error   { background: #FFF5F5; border: 1px solid #FCA5A5; color: #991B1B; }
 
-            /* ===== NAV BUTTONS ===== */
+            /* NAV BUTTONS */
             .lesson-nav { display: flex; gap: 14px; padding: 24px 36px 32px; background: var(--surface-main); align-items: center; flex-wrap: wrap; }
             .btn-nav { display: flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; font-size: 0.88rem; font-weight: 700; text-decoration: none; transition: all 0.18s; font-family: 'DM Sans', sans-serif; border: none; cursor: pointer; position: relative; overflow: hidden; }
             .btn-prev { background: #fff; color: var(--purple-dark); border: 2px solid #D1C4E9; box-shadow: 0 2px 8px rgba(124,77,255,0.08); }
             .btn-prev:hover { background: #EDE7FF; border-color: var(--purple); color: var(--purple); box-shadow: 0 4px 16px rgba(124,77,255,0.15); transform: translateY(-1px); }
             .btn-next { background: linear-gradient(135deg, var(--purple) 0%, var(--purple-dark) 100%); color: #fff; box-shadow: 0 4px 20px rgba(124,77,255,0.4); padding: 13px 28px; font-size: 0.92rem; }
-            .btn-next::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent); opacity: 0; transition: opacity 0.18s; }
             .btn-next:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,77,255,0.55); }
-            .btn-next:hover::before { opacity: 1; }
-
-            /* COMPLETE button */
-            .btn-complete { display: flex; align-items: center; gap: 10px; padding: 13px 28px; border-radius: 12px; font-size: 0.92rem; font-weight: 700; text-decoration: none; transition: all 0.2s; font-family: 'DM Sans', sans-serif; border: none; cursor: pointer; position: relative; overflow: hidden; background: linear-gradient(135deg, #FFB300 0%, #FF6F00 100%); color: #fff; box-shadow: 0 5px 22px rgba(255,111,0,0.45); animation: pulseGlow 2.4s ease-in-out infinite; }
-            @keyframes pulseGlow { 0%, 100% { box-shadow: 0 5px 22px rgba(255,111,0,0.45); } 50% { box-shadow: 0 8px 32px rgba(255,111,0,0.7), 0 0 0 4px rgba(255,179,0,0.18); } }
-            .btn-complete::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent); opacity: 0; transition: opacity 0.2s; }
+            .btn-complete { display: flex; align-items: center; gap: 10px; padding: 13px 28px; border-radius: 12px; font-size: 0.92rem; font-weight: 700; font-family: 'DM Sans', sans-serif; border: none; cursor: pointer; background: linear-gradient(135deg, #FFB300 0%, #FF6F00 100%); color: #fff; box-shadow: 0 5px 22px rgba(255,111,0,0.45); animation: pulseGlow 2.4s ease-in-out infinite; }
+            @keyframes pulseGlow { 0%,100%{box-shadow:0 5px 22px rgba(255,111,0,0.45)} 50%{box-shadow:0 8px 32px rgba(255,111,0,0.7),0 0 0 4px rgba(255,179,0,0.18)} }
             .btn-complete:hover { transform: translateY(-3px); color: #fff; }
-            .btn-complete:hover::before { opacity: 1; }
             .btn-complete .complete-star { font-size: 1.1rem; animation: spin 3s linear infinite; }
-            @keyframes spin { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(360deg) scale(1); } }
-
-            /* CERT button in nav */
+            @keyframes spin { 0%{transform:rotate(0deg) scale(1)} 50%{transform:rotate(180deg) scale(1.2)} 100%{transform:rotate(360deg) scale(1)} }
             .btn-cert-nav { display: flex; align-items: center; gap: 10px; padding: 13px 28px; border-radius: 12px; font-size: 0.92rem; font-weight: 700; text-decoration: none; transition: all 0.2s; background: linear-gradient(135deg, #F59E0B, #D97706); color: #fff; box-shadow: 0 5px 22px rgba(245,158,11,0.45); }
             .btn-cert-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.6); color: #fff; }
-
             .btn-nav.disabled { opacity: 0.35; pointer-events: none; }
             .nav-spacer { flex: 1; }
 
@@ -149,7 +117,63 @@
             .btn-cert { display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #F59E0B, #D97706); color: #fff; padding: 11px 22px; border-radius: 10px; font-size: 0.88rem; font-weight: 700; text-decoration: none; white-space: nowrap; box-shadow: 0 4px 14px rgba(245,158,11,0.45); transition: all 0.18s; }
             .btn-cert:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(245,158,11,0.6); color: #fff; }
 
-            /* ===== COMMENTS ===== */
+            /* ===== REVIEW SECTION ===== */
+            .review-section { padding: 0 36px 32px; }
+            .review-section-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--purple-dark); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+            .review-summary { display: flex; gap: 28px; background: #fff; border: 1px solid #EDE7FF; border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; box-shadow: 0 2px 10px rgba(124,77,255,0.05); }
+            .review-avg-block { text-align: center; min-width: 80px; }
+            .review-avg-num { font-size: 2.8rem; font-weight: 700; color: var(--purple); line-height: 1; }
+            .review-avg-stars { color: var(--gold); font-size: 1rem; margin: 4px 0; }
+            .review-avg-count { font-size: 0.72rem; color: var(--muted); }
+            .review-dist { flex: 1; min-width: 160px; }
+            .dist-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+            .dist-label { font-size: 0.72rem; color: var(--muted); width: 28px; text-align: right; flex-shrink: 0; }
+            .dist-bar-wrap { flex: 1; background: #EDE7FF; border-radius: 4px; height: 7px; overflow: hidden; }
+            .dist-bar-fill { height: 100%; background: linear-gradient(90deg, var(--purple), var(--purple-mid)); border-radius: 4px; }
+            .dist-cnt { font-size: 0.68rem; color: var(--muted); width: 20px; flex-shrink: 0; }
+            .rv-alert { padding: 11px 16px; border-radius: 10px; font-size: 0.83rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+            .rv-alert-success { background: #F0FFF4; border: 1px solid #6EE7B7; color: #065F46; }
+            .rv-alert-error   { background: #FFF5F5; border: 1px solid #FCA5A5; color: #991B1B; }
+            .review-form-box { background: #fff; border: 1px solid #EDE7FF; border-radius: 14px; padding: 20px 24px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(124,77,255,0.05); }
+            .review-form-heading { font-size: 0.88rem; font-weight: 700; color: #1A0A3A; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+            .star-picker { display: flex; flex-direction: row-reverse; gap: 4px; margin-bottom: 12px; width: fit-content; }
+            .star-picker input[type="radio"] { display: none; }
+            .star-picker label { font-size: 1.8rem; color: #D1C4E9; cursor: pointer; transition: color 0.12s; line-height: 1; }
+            .star-picker input[type="radio"]:checked ~ label,
+            .star-picker label:hover,
+            .star-picker label:hover ~ label { color: var(--gold); }
+            .review-textarea { width: 100%; border: 1.5px solid #D1C4E9; border-radius: 10px; padding: 11px 14px; font-size: 0.88rem; font-family: 'DM Sans', sans-serif; color: #1A0A3A; resize: vertical; min-height: 90px; outline: none; transition: border-color 0.15s; background: #F7F4FF; }
+            .review-textarea:focus { border-color: var(--purple); background: #fff; }
+            .review-form-actions { display: flex; gap: 10px; margin-top: 12px; }
+            .btn-rv-submit { background: linear-gradient(135deg, var(--purple), var(--purple-dark)); color: #fff; border: none; padding: 9px 20px; border-radius: 9px; font-size: 0.82rem; font-weight: 700; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; box-shadow: 0 3px 10px rgba(124,77,255,0.3); }
+            .btn-rv-submit:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(124,77,255,0.45); }
+            .btn-rv-cancel { background: #fff; color: var(--muted); border: 1.5px solid #D1C4E9; padding: 9px 16px; border-radius: 9px; font-size: 0.82rem; font-weight: 600; font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all 0.15s; }
+            .btn-rv-cancel:hover { border-color: var(--purple); color: var(--purple); }
+            .my-review-card { background: #F3F0FF; border: 1.5px solid #B39DDB; border-radius: 12px; padding: 16px 20px; margin-bottom: 20px; }
+            .my-review-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--purple); margin-bottom: 8px; }
+            .my-review-stars { color: var(--gold); font-size: 1rem; margin-bottom: 6px; }
+            .my-review-comment { font-size: 0.875rem; color: #3D2B6B; line-height: 1.6; }
+            .my-review-actions { display: flex; gap: 8px; margin-top: 12px; }
+            .btn-rv-edit { background: var(--purple-light); color: var(--purple-dark); border: none; padding: 6px 14px; border-radius: 7px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+            .btn-rv-edit:hover { background: var(--purple); color: #fff; }
+            .btn-rv-delete { background: #FFF5F5; color: #991B1B; border: 1px solid #FCA5A5; padding: 6px 14px; border-radius: 7px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+            .btn-rv-delete:hover { background: #991B1B; color: #fff; }
+            .review-list { display: flex; flex-direction: column; gap: 12px; }
+            .review-card { background: #fff; border: 1px solid #EDE7FF; border-radius: 12px; padding: 16px 20px; transition: box-shadow 0.15s; box-shadow: 0 1px 6px rgba(124,77,255,0.04); }
+            .review-card:hover { box-shadow: 0 4px 16px rgba(124,77,255,0.1); }
+            .rv-card-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+            .rv-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--purple-mid)); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+            .rv-name { font-size: 0.82rem; font-weight: 700; color: #2D1B6B; }
+            .rv-time { font-size: 0.7rem; color: #B0A0D0; margin-left: auto; }
+            .rv-stars { color: var(--gold); font-size: 0.88rem; margin-bottom: 6px; }
+            .rv-comment { font-size: 0.875rem; color: #3D2B6B; line-height: 1.65; }
+            .btn-rv-admin-delete { background: none; border: none; cursor: pointer; color: #C5B8F0; font-size: 0.75rem; padding: 3px 8px; border-radius: 6px; transition: all 0.15s; font-family: 'DM Sans', sans-serif; float: right; }
+            .btn-rv-admin-delete:hover { color: #E53935; background: #FFF5F5; }
+            .no-reviews { text-align: center; padding: 32px 20px; }
+            .no-reviews i { font-size: 2rem; color: #D1C4E9; display: block; margin-bottom: 8px; }
+            .no-reviews p { font-size: 0.83rem; color: #B0A0D0; }
+
+            /* COMMENTS */
             .comments-section { padding: 0 36px 48px; background: var(--surface-main); }
             .comments-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding-top: 8px; }
             .comments-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--purple-dark); display: flex; align-items: center; gap: 8px; }
@@ -178,7 +202,7 @@
             .no-comments i { font-size: 2.2rem; color: #D1C4E9; display: block; margin-bottom: 10px; }
             .no-comments p { font-size: 0.83rem; color: #B0A0D0; }
 
-            /* ===== SIDEBAR ===== */
+            /* SIDEBAR */
             .sidebar { width: var(--sidebar-w); flex-shrink: 0; background: var(--surface-sidebar); border-left: 1px solid #EDE7FF; display: flex; flex-direction: column; overflow: hidden; box-shadow: -4px 0 20px rgba(124,77,255,0.06); }
             .sidebar-header { padding: 18px 20px; border-bottom: 1px solid #EDE7FF; flex-shrink: 0; background: #fff; }
             .sidebar-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--purple); margin-bottom: 4px; }
@@ -191,7 +215,6 @@
             .lesson-item.active { background: linear-gradient(135deg, #EDE7FF, #E8E0FF); border-color: #B39DDB; color: #2D1B6B; box-shadow: 0 2px 10px rgba(124,77,255,0.1); }
             .lesson-num { width: 28px; height: 28px; border-radius: 50%; background: #EDE7FF; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; color: var(--purple); }
             .lesson-item.active .lesson-num { background: var(--purple); color: #fff; }
-            .lesson-item.done .lesson-num { background: #E8F5E9; color: #2E7D32; }
             .lesson-item-info { flex: 1; min-width: 0; }
             .lesson-item-title { font-size: 0.82rem; font-weight: 600; line-height: 1.4; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
             .lesson-item-dur { font-size: 0.7rem; color: #B0A0D0; display: flex; align-items: center; gap: 4px; }
@@ -205,7 +228,7 @@
             @media (max-width: 768px) {
                 .main-layout { flex-direction: column; }
                 .sidebar { width: 100%; height: 280px; border-left: none; border-top: 1px solid #EDE7FF; }
-                .lesson-info, .content-area, .lesson-nav, .comments-section, .upload-panel, .alert, .certificate-banner { padding-left: 20px; padding-right: 20px; }
+                .lesson-info, .content-area, .lesson-nav, .comments-section, .review-section, .upload-panel, .alert, .certificate-banner { padding-left: 20px; padding-right: 20px; }
                 .topbar-progress { display: none; }
                 .upload-form { flex-direction: column; align-items: stretch; }
                 .certificate-banner { flex-direction: column; text-align: center; }
@@ -219,11 +242,13 @@
             <a href="courseController?action=ExploreCourse" class="topbar-brand">DUK<span>Academy</span></a>
             <div class="topbar-divider"></div>
             <span class="topbar-course">${course.courseName}</span>
+            <%-- Progress bar: currentIndex từ Controller, không cần JS --%>
             <c:if test="${not empty lessons}">
                 <div class="topbar-progress">
-                    <span class="progress-text" id="progressText">Bài 1 / ${fn:length(lessons)}</span>
+                    <span class="progress-text">Bài ${currentIndex} / ${fn:length(lessons)}</span>
                     <div class="progress-bar-wrap">
-                        <div class="progress-bar-fill" id="progressFill" style="width: 0%"></div>
+                        <div class="progress-bar-fill"
+                             style="width: ${currentIndex * 100 / fn:length(lessons)}%"></div>
                     </div>
                 </div>
             </c:if>
@@ -236,19 +261,28 @@
         <div class="main-layout">
             <div class="video-area">
 
-                <!-- VIDEO -->
+                <!-- VIDEO: render trực tiếp bằng JSTL, không cần JS -->
                 <div class="video-wrap">
                     <c:choose>
                         <c:when test="${not empty currentLesson and not empty currentLesson.video}">
-                            <%-- data-video và data-ctx được dùng bởi JS để render player --%>
-                            <div id="videoContainer"
-                                 data-video="${currentLesson.video}"
-                                 data-ctx="${pageContext.request.contextPath}">
-                                <div class="no-video">
-                                    <i class="bi bi-play-circle" style="font-size:3rem; color:rgba(255,255,255,0.3);"></i>
-                                    <span>Đang tải video...</span>
-                                </div>
-                            </div>
+                            <c:choose>
+                                <%-- YouTube: ytVideoId đã được trích sẵn ở Controller --%>
+                                <c:when test="${not empty ytVideoId}">
+                                    <iframe
+                                        src="https://www.youtube.com/embed/${ytVideoId}?rel=0&modestbranding=1"
+                                        style="width:100%;aspect-ratio:16/9;border:none;display:block;"
+                                        allowfullscreen
+                                        allow="autoplay; encrypted-media">
+                                    </iframe>
+                                </c:when>
+                                <%-- Video local --%>
+                                <c:otherwise>
+                                    <video controls style="width:100%;aspect-ratio:16/9;background:#000;display:block;">
+                                        <source src="${pageContext.request.contextPath}/${currentLesson.video}">
+                                        Trình duyệt không hỗ trợ video.
+                                    </video>
+                                </c:otherwise>
+                            </c:choose>
                         </c:when>
                         <c:otherwise>
                             <div class="no-video">
@@ -263,11 +297,7 @@
 
                     <!-- LESSON INFO -->
                     <div class="lesson-info">
-                        <div class="lesson-number">
-                            <c:forEach var="l" items="${lessons}" varStatus="st">
-                                <c:if test="${l.lessonId == currentLesson.lessonId}">Bài ${st.index + 1} / ${fn:length(lessons)}</c:if>
-                            </c:forEach>
-                        </div>
+                        <div class="lesson-number">Bài ${currentIndex} / ${fn:length(lessons)}</div>
                         <div class="lesson-title">${currentLesson.title}</div>
                         <div class="lesson-meta">
                             <c:if test="${currentLesson.duration > 0}">
@@ -290,7 +320,7 @@
                         </div>
                     </div>
 
-                    <!-- ALERTS -->
+                    <!-- ALERTS upload -->
                     <c:if test="${not empty sessionScope.uploadSuccess}">
                         <div class="alert alert-success"><i class="bi bi-check-circle-fill"></i>${sessionScope.uploadSuccess}</div>
                         <c:remove var="uploadSuccess" scope="session"/>
@@ -304,19 +334,22 @@
                     <c:if test="${sessionScope.user.role == 1 || sessionScope.user.role == 2}">
                         <div class="upload-panel">
                             <div class="upload-label"><i class="bi bi-cloud-upload-fill"></i> Upload Video cho bài này</div>
-                            <form id="uploadForm" method="POST" action="uploadVideo" enctype="multipart/form-data">
+                            <form method="POST" action="uploadVideo" enctype="multipart/form-data">
                                 <input type="hidden" name="courseId" value="${courseId}">
                                 <input type="hidden" name="lessonId" value="${currentLesson.lessonId}">
                                 <div class="upload-form">
                                     <div class="upload-file-wrap">
-                                        <input type="file" name="videoFile" id="videoFile" accept="video/*,.mp4,.webm,.ogg,.mov,.mkv" onchange="onFileChange(this)">
-                                        <div class="upload-file-btn"><i class="bi bi-file-earmark-play"></i><span id="fileLabelText">Chọn file video (mp4, webm, mkv...)</span></div>
+                                        <input type="file" name="videoFile" id="videoFile"
+                                               accept="video/*,.mp4,.webm,.ogg,.mov,.mkv"
+                                               onchange="onFileChange(this)">
+                                        <div class="upload-file-btn">
+                                            <i class="bi bi-file-earmark-play"></i>
+                                            <span id="fileLabelText">Chọn file video (mp4, webm, mkv...)</span>
+                                        </div>
                                     </div>
-                                    <button type="submit" class="upload-submit" onclick="startUpload()"><i class="bi bi-upload"></i> Upload</button>
-                                </div>
-                                <div class="upload-progress" id="uploadProgress">
-                                    <div class="upload-bar"><div class="upload-bar-fill" id="uploadBarFill"></div></div>
-                                    <div class="upload-status" id="uploadStatus">Đang upload...</div>
+                                    <button type="submit" class="upload-submit">
+                                        <i class="bi bi-upload"></i> Upload
+                                    </button>
                                 </div>
                             </form>
                         </div>
@@ -333,7 +366,7 @@
                         </div>
                     </div>
 
-                    <!-- ===== NAV ===== -->
+                    <!-- NAV -->
                     <div class="lesson-nav">
                         <c:set var="prevLesson" value="${null}"/>
                         <c:set var="nextLesson" value="${null}"/>
@@ -401,7 +434,161 @@
                         </div>
                     </c:if>
 
-                    <!-- ===== COMMENTS ===== -->
+                    <%-- ===== REVIEW SECTION — chỉ hiện khi status=2 ===== --%>
+                    <c:if test="${status == 2}">
+                        <div class="review-section" id="reviews">
+                            <div class="review-section-title">
+                                <i class="bi bi-star-fill" style="color:var(--gold)"></i>
+                                Đánh giá khóa học
+                                <span style="background:#EDE7FF;color:var(--purple);padding:2px 10px;border-radius:20px;font-size:0.72rem;">${REVIEW_COUNT} đánh giá</span>
+                            </div>
+
+                            <%-- Flash messages --%>
+                            <c:if test="${not empty sessionScope.reviewSuccess}">
+                                <div class="rv-alert rv-alert-success"><i class="bi bi-check-circle-fill"></i>${sessionScope.reviewSuccess}</div>
+                                <c:remove var="reviewSuccess" scope="session"/>
+                            </c:if>
+                            <c:if test="${not empty sessionScope.reviewError}">
+                                <div class="rv-alert rv-alert-error"><i class="bi bi-exclamation-circle-fill"></i>${sessionScope.reviewError}</div>
+                                <c:remove var="reviewError" scope="session"/>
+                            </c:if>
+
+                            <%-- Summary bar --%>
+                            <div class="review-summary">
+                                <div class="review-avg-block">
+                                    <div class="review-avg-num"><fmt:formatNumber value="${AVG_RATING}" maxFractionDigits="1"/></div>
+                                    <%-- Avg stars: render bằng JSTL thay vì JS --%>
+                                    <div class="review-avg-stars">
+                                        <c:forEach begin="1" end="5" var="i">
+                                            <c:choose>
+                                                <c:when test="${AVG_RATING >= i}"><i class="bi bi-star-fill"></i></c:when>
+                                                <c:when test="${AVG_RATING + 0.5 >= i}"><i class="bi bi-star-half"></i></c:when>
+                                                <c:otherwise><i class="bi bi-star"></i></c:otherwise>
+                                            </c:choose>
+                                        </c:forEach>
+                                    </div>
+                                    <div class="review-avg-count">${REVIEW_COUNT} đánh giá</div>
+                                </div>
+                                <div class="review-dist">
+                                    <c:forEach var="star" items="5,4,3,2,1">
+                                        <c:set var="cnt" value="${DIST[star] != null ? DIST[star] : 0}"/>
+                                        <c:set var="pct" value="${REVIEW_COUNT > 0 ? (cnt * 100 / REVIEW_COUNT) : 0}"/>
+                                        <div class="dist-row">
+                                            <span class="dist-label">${star}★</span>
+                                            <div class="dist-bar-wrap">
+                                                <div class="dist-bar-fill" style="width:${pct}%"></div>
+                                            </div>
+                                            <span class="dist-cnt">${cnt}</span>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </div>
+
+                            <%-- Form / My review --%>
+                            <c:choose>
+                                <c:when test="${not empty MY_REVIEW}">
+                                    <div class="my-review-card" id="myReviewBlock">
+                                        <div class="my-review-label"><i class="bi bi-person-check-fill"></i> Đánh giá của bạn</div>
+                                        <div class="my-review-stars">${MY_REVIEW.starString}</div>
+                                        <div class="my-review-comment">${MY_REVIEW.comment}</div>
+                                        <div class="my-review-actions">
+                                            <button class="btn-rv-edit" onclick="showEditForm()"><i class="bi bi-pencil-fill"></i> Sửa</button>
+                                            <form method="POST" action="reviewController" style="margin:0;"
+                                                  onsubmit="return confirm('Xóa đánh giá này?')">
+                                                <input type="hidden" name="action"   value="delete">
+                                                <input type="hidden" name="reviewId" value="${MY_REVIEW.reviewId}">
+                                                <input type="hidden" name="courseId" value="${courseId}">
+                                                <button type="submit" class="btn-rv-delete"><i class="bi bi-trash3-fill"></i> Xóa</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <%-- Form sửa — ẩn ban đầu, toggle bằng JS (UI-only, hợp lý) --%>
+                                    <div class="review-form-box" id="editReviewForm" style="display:none;">
+                                        <div class="review-form-heading"><i class="bi bi-pencil-fill" style="color:var(--purple)"></i> Sửa đánh giá</div>
+                                        <form method="POST" action="reviewController">
+                                            <input type="hidden" name="action"   value="edit">
+                                            <input type="hidden" name="reviewId" value="${MY_REVIEW.reviewId}">
+                                            <input type="hidden" name="courseId" value="${courseId}">
+                                            <div class="star-picker">
+                                                <c:forEach begin="1" end="5" var="s">
+                                                    <input type="radio" name="rating" id="edit_star${s}" value="${s}"
+                                                           ${MY_REVIEW.rating == s ? 'checked' : ''}/>
+                                                    <label for="edit_star${s}">★</label>
+                                                </c:forEach>
+                                            </div>
+                                            <textarea name="comment" class="review-textarea"
+                                                      placeholder="Chia sẻ cảm nhận của bạn..." maxlength="1000">${MY_REVIEW.comment}</textarea>
+                                            <div class="review-form-actions">
+                                                <button type="submit" class="btn-rv-submit"><i class="bi bi-check-lg"></i> Lưu</button>
+                                                <button type="button" class="btn-rv-cancel" onclick="hideEditForm()">Hủy</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </c:when>
+                                <c:when test="${IS_COMPLETED}">
+                                    <div class="review-form-box">
+                                        <div class="review-form-heading"><i class="bi bi-star-fill" style="color:var(--gold)"></i> Viết đánh giá của bạn</div>
+                                        <form method="POST" action="reviewController">
+                                            <input type="hidden" name="action"   value="add">
+                                            <input type="hidden" name="courseId" value="${courseId}">
+                                            <div class="star-picker">
+                                                <c:forEach begin="1" end="5" var="s">
+                                                    <input type="radio" name="rating" id="star${s}" value="${s}" required/>
+                                                    <label for="star${s}">★</label>
+                                                </c:forEach>
+                                            </div>
+                                            <textarea name="comment" class="review-textarea"
+                                                      placeholder="Chia sẻ cảm nhận của bạn về khóa học này..." maxlength="1000"></textarea>
+                                            <div class="review-form-actions">
+                                                <button type="submit" class="btn-rv-submit"><i class="bi bi-send-fill"></i> Gửi đánh giá</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+
+                            <%-- Danh sách review --%>
+                            <div class="review-list">
+                                <c:choose>
+                                    <c:when test="${not empty REVIEWS}">
+                                        <c:forEach var="rv" items="${REVIEWS}">
+                                            <c:if test="${rv.userId != sessionScope.user.userId}">
+                                                <div class="review-card">
+                                                    <c:if test="${sessionScope.user.role == 1}">
+                                                        <form method="POST" action="reviewController" style="float:right;margin:0;"
+                                                              onsubmit="return confirm('Xóa đánh giá này?')">
+                                                            <input type="hidden" name="action"   value="delete">
+                                                            <input type="hidden" name="reviewId" value="${rv.reviewId}">
+                                                            <input type="hidden" name="courseId" value="${courseId}">
+                                                            <button type="submit" class="btn-rv-admin-delete"><i class="bi bi-trash3"></i></button>
+                                                        </form>
+                                                    </c:if>
+                                                    <div class="rv-card-top">
+                                                        <div class="rv-avatar">${fn:substring(rv.fullname, 0, 1)}</div>
+                                                        <span class="rv-name">${rv.fullname}</span>
+                                                        <span class="rv-time"><fmt:formatDate value="${rv.createdAt}" pattern="dd/MM/yyyy"/></span>
+                                                    </div>
+                                                    <div class="rv-stars">${rv.starString}</div>
+                                                    <c:if test="${not empty rv.comment}">
+                                                        <div class="rv-comment">${rv.comment}</div>
+                                                    </c:if>
+                                                </div>
+                                            </c:if>
+                                        </c:forEach>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <div class="no-reviews">
+                                            <i class="bi bi-star"></i>
+                                            <p>Chưa có đánh giá nào. Hãy là người đầu tiên!</p>
+                                        </div>
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                        </div>
+                    </c:if>
+                    <%-- ===== END REVIEW SECTION ===== --%>
+
+                    <!-- COMMENTS -->
                     <div class="comments-section" id="comments">
                         <div class="comments-header">
                             <div class="comments-title"><i class="bi bi-chat-dots-fill"></i> Bình luận</div>
@@ -415,7 +602,9 @@
                                         <input type="hidden" name="action"   value="addComment">
                                         <input type="hidden" name="courseId" value="${courseId}">
                                         <input type="hidden" name="lessonId" value="${currentLesson.lessonId}">
-                                        <textarea name="commentContent" class="comment-textarea" placeholder="Chia sẻ câu hỏi hoặc nhận xét của bạn về bài học này..." maxlength="1000" rows="3"></textarea>
+                                        <textarea name="commentContent" class="comment-textarea"
+                                                  placeholder="Chia sẻ câu hỏi hoặc nhận xét của bạn về bài học này..."
+                                                  maxlength="1000" rows="3"></textarea>
                                         <div class="comment-form-actions">
                                             <button type="submit" class="btn-comment-submit"><i class="bi bi-send-fill"></i> Gửi bình luận</button>
                                         </div>
@@ -442,7 +631,8 @@
                                                     <input type="hidden" name="commentId" value="${cm.commentId}">
                                                     <input type="hidden" name="lessonId"  value="${currentLesson.lessonId}">
                                                     <input type="hidden" name="courseId"  value="${courseId}">
-                                                    <button type="submit" class="btn-delete-comment" onclick="return confirm('Xóa bình luận này?')">
+                                                    <button type="submit" class="btn-delete-comment"
+                                                            onclick="return confirm('Xóa bình luận này?')">
                                                         <i class="bi bi-trash3"></i>
                                                     </button>
                                                 </form>
@@ -459,7 +649,8 @@
                             </c:choose>
                         </div>
                     </div>
-                </c:if>
+
+                </c:if><%-- end currentLesson not empty --%>
 
                 <c:if test="${empty currentLesson}">
                     <div class="no-lesson" style="padding:60px 36px;">
@@ -482,9 +673,7 @@
                                 <a href="lesson?courseId=${courseId}&lessonId=${l.lessonId}"
                                    class="lesson-item ${currentLesson.lessonId == l.lessonId ? 'active' : ''}"
                                    data-lesson-id="${l.lessonId}">
-                                    <div class="lesson-num">
-                                        ${st.index + 1}
-                                    </div>
+                                    <div class="lesson-num">${st.index + 1}</div>
                                     <div class="lesson-item-info">
                                         <div class="lesson-item-title">${l.title}</div>
                                         <div class="lesson-item-dur">
@@ -507,72 +696,9 @@
             </div>
         </div>
 
+        <%-- Chỉ giữ 2 hàm JS thực sự cần thiết cho UI interaction --%>
         <script>
-            // ── Video Player ─────────────────────────────────────────────────
-            function initVideoPlayer() {
-                var container = document.getElementById('videoContainer');
-                if (!container) return;
-
-                var videoUrl = container.getAttribute('data-video');
-                var ctx      = container.getAttribute('data-ctx');
-                if (!videoUrl || videoUrl.trim() === '') return;
-
-                // Nếu đã render iframe hoặc video rồi thì bỏ qua
-                if (container.querySelector('iframe') || container.querySelector('video')) return;
-
-                function getYouTubeId(url) {
-                    var m;
-                    m = url.match(/[?&]v=([^&#]+)/);   if (m) return m[1];
-                    m = url.match(/youtu\.be\/([^?&#]+)/); if (m) return m[1];
-                    m = url.match(/youtube\.com\/embed\/([^?&#]+)/); if (m) return m[1];
-                    return null;
-                }
-
-                var ytId = getYouTubeId(videoUrl);
-                if (ytId) {
-                    container.innerHTML =
-                        '<iframe src="https://www.youtube.com/embed/' + ytId +
-                        '?rel=0&modestbranding=1"' +
-                        ' style="width:100%;aspect-ratio:16/9;border:none;display:block;"' +
-                        ' allowfullscreen allow="autoplay; encrypted-media"></iframe>';
-                } else {
-                    var src = videoUrl.startsWith('http') ? videoUrl : ctx + '/' + videoUrl;
-                    container.innerHTML =
-                        '<video controls style="width:100%;aspect-ratio:16/9;background:#000;display:block;">' +
-                        '<source src="' + src + '">Trình duyệt không hỗ trợ video.</video>';
-                }
-            }
-
-            // Chạy ngay khi trang load
-            initVideoPlayer();
-
-            // ── Xử lý bfcache (browser back/forward cache) ──────────────────
-            // Khi user đăng ký xong rồi back lại, trang có thể được restore từ cache
-            // → force reload để lấy dữ liệu mới nhất từ server (có video)
-            window.addEventListener('pageshow', function (e) {
-                if (e.persisted) {
-                    window.location.reload();
-                }
-            });
-
-            // ── Topbar Progress ──────────────────────────────────────────────
-            (function () {
-                var items = document.querySelectorAll('.lesson-item');
-                var total = items.length;
-                if (!total) return;
-                var currentIdx = 0;
-                items.forEach(function (item, i) {
-                    if (item.classList.contains('active')) currentIdx = i;
-                });
-                var fill = document.getElementById('progressFill');
-                var txt  = document.getElementById('progressText');
-                if (fill) fill.style.width = Math.round(((currentIdx + 1) / total) * 100) + '%';
-                if (txt)  txt.textContent  = 'Bài ' + (currentIdx + 1) + ' / ' + total;
-                var activeItem = document.querySelector('.lesson-item.active');
-                if (activeItem) activeItem.scrollIntoView({ block: 'center', behavior: 'smooth' });
-            })();
-
-            // ── Upload UX ────────────────────────────────────────────────────
+            // Hiển thị tên file đã chọn (upload) — UI feedback thuần client
             function onFileChange(input) {
                 var label = document.getElementById('fileLabelText');
                 if (input.files && input.files[0]) {
@@ -581,25 +707,14 @@
                 }
             }
 
-            function startUpload() {
-                var fileInput = document.getElementById('videoFile');
-                if (!fileInput || !fileInput.files || fileInput.files.length === 0) return;
-                var progress = document.getElementById('uploadProgress');
-                var barFill  = document.getElementById('uploadBarFill');
-                var status   = document.getElementById('uploadStatus');
-                progress.style.display = 'block';
-                var pct = 0;
-                var interval = setInterval(function () {
-                    pct += Math.random() * 8;
-                    if (pct > 90) pct = 90;
-                    barFill.style.width = pct + '%';
-                    status.textContent  = 'Đang upload... ' + Math.round(pct) + '%';
-                }, 300);
-                document.getElementById('uploadForm').addEventListener('submit', function () {
-                    clearInterval(interval);
-                    barFill.style.width = '100%';
-                    status.textContent  = 'Hoàn tất!';
-                });
+            // Toggle form sửa review — UI-only, không liên quan data
+            function showEditForm() {
+                document.getElementById('myReviewBlock').style.display  = 'none';
+                document.getElementById('editReviewForm').style.display = 'block';
+            }
+            function hideEditForm() {
+                document.getElementById('editReviewForm').style.display = 'none';
+                document.getElementById('myReviewBlock').style.display  = 'block';
             }
         </script>
     </body>

@@ -22,7 +22,6 @@
         <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
         <link rel="icon" type="image/jpeg" href="img/page/favicon.jpg">
-
         <style>
             :root {
                 --purple:      #6C3FC5;
@@ -113,17 +112,6 @@
             .hero-stat-num { font-size: 1.75rem; font-weight: 700; color: var(--gold); }
             .hero-stat-lbl { font-size: 0.78rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
 
-            /* ── SEARCH ── */
-            .search-section { background: #fff; border-bottom: 1px solid var(--border); padding: 18px 72px; display: flex; align-items: center; gap: 14px; }
-            .search-wrap { flex: 1; max-width: 480px; position: relative; }
-            .search-wrap input { width: 100%; padding: 11px 18px 11px 44px; border: 1.5px solid var(--border); border-radius: 10px; font-size: 0.88rem; font-family: 'DM Sans', sans-serif; color: var(--text); outline: none; transition: border-color 0.15s; background: var(--bg); }
-            .search-wrap input:focus { border-color: var(--purple); background: #fff; }
-            .search-wrap i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; }
-            .filter-chips { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-            .chip { padding: 6px 16px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; border: 1.5px solid var(--border); background: #fff; color: var(--muted); cursor: pointer; transition: all 0.15s; }
-            .chip:hover { border-color: var(--purple); color: var(--purple); }
-            .chip.active { background: var(--purple); border-color: var(--purple); color: #fff; }
-
             /* ── FEATURED ── */
             .featured-section { padding: 60px 72px 0; }
             .section-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2.5px; color: var(--gold); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
@@ -156,8 +144,6 @@
             .instructor-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
             .instructor-card { background: #fff; border: 1px solid var(--border); border-radius: 18px; overflow: visible; transition: transform 0.22s, box-shadow 0.22s; cursor: pointer; animation: cardIn 0.4s ease both; }
             @keyframes cardIn { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
-            .instructor-card:nth-child(1){animation-delay:.05s} .instructor-card:nth-child(2){animation-delay:.10s} .instructor-card:nth-child(3){animation-delay:.15s} .instructor-card:nth-child(4){animation-delay:.20s}
-            .instructor-card:nth-child(5){animation-delay:.25s} .instructor-card:nth-child(6){animation-delay:.30s} .instructor-card:nth-child(7){animation-delay:.35s} .instructor-card:nth-child(8){animation-delay:.40s}
             .instructor-card:hover { transform: translateY(-6px); box-shadow: 0 18px 48px rgba(108,63,197,0.16); }
             .icard-inner { border-radius: 18px; overflow: hidden; }
             .icard-header { height: 100px; position: relative; }
@@ -206,7 +192,7 @@
             .modal-strip { height: 155px; position: relative; border-radius: 22px 22px 0 0; overflow: visible; }
             .modal-close { position: absolute; top: 14px; right: 16px; background: rgba(255,255,255,0.22); border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 1rem; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s; z-index: 2; }
             .modal-close:hover { background: rgba(255,255,255,0.38); }
-            .modal-photo { width: 114px; height: 114px; border-radius: 50%; border: 5px solid #fff; position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); overflow: hidden; box-shadow: 0 8px 28px rgba(108,63,197,0.3); display: flex; align-items: center; justify-content: center; font-size: 2.6rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, var(--purple-mid), var(--gold)); }
+            .modal-photo { width: 114px; height: 114px; border-radius: 50%; border: 5px solid #fff; position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); overflow: hidden; box-shadow: 0 8px 28px rgba(108,63,197,0.3); display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--purple-mid), var(--gold)); }
             .modal-photo img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
             .modal-photo img.err { display: none; }
             .modal-photo-initials { font-size: 2.6rem; font-weight: 700; color: #fff; }
@@ -231,7 +217,6 @@
                 .featured-row { justify-content: center; }
                 .hero { padding: 60px 24px 72px; }
                 .featured-section, .all-section, .cta-section { padding-left: 24px; padding-right: 24px; }
-                .search-section { padding: 14px 24px; }
                 .navbar-main { padding: 0 24px; }
                 .nav-links { display: none; }
                 .dropdown-nav { right: 24px; }
@@ -246,25 +231,20 @@
             <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>
             <ul class="nav-links">
                 <li><a href="homePage.jsp">Trang chủ</a></li>
-                <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
+                <li><a href="courseController?action=ExploreCourse">Khóa học</a></li>
                 <li><a href="instructors.jsp" class="active">Giảng viên</a></li>
                 <li><a href="dating.jsp">Study &amp; Date</a></li>
-                                            <c:if test="${sessionScope.user.role == 1}">
+                <c:if test="${sessionScope.user.role == 1}">
                     <li><a href="administrator.jsp">Administrator Manager</a></li>
-                    </c:if>
-                    <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
-                    <li>
-                        <a href="instructorDashboard.jsp">
-                            Instructor Manager
-                        </a>
-                    </li>
                 </c:if>
-                            <li><a href="about.jsp">Thông tin Chung</a></li>
+                <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
+                    <li><a href="instructorDashboard.jsp">Instructor Manager</a></li>
+                </c:if>
+                <li><a href="about.jsp">Thông tin Chung</a></li>
             </ul>
             <div class="nav-right">
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
-                        <%-- BALANCE PILL --%>
                         <a href="paymentController" class="balance-pill-nav">
                             <i class="bi bi-wallet2"></i>
                             <span class="balance-label-nav">Số dư</span>
@@ -272,8 +252,6 @@
                                 <%= fmtBal(session.getAttribute("user") != null ? ((model.UserDTO)session.getAttribute("user")).getBalance() : null) %> ₫
                             </span>
                         </a>
-
-                        <%-- WISHLIST PILL --%>
                         <div class="wishlist-pill-wrap" id="wishlistWrap">
                             <div class="wishlist-pill" onclick="toggleWishlistDD(event)">
                                 <i class="bi bi-heart-fill"></i>
@@ -291,8 +269,7 @@
                                             <c:forEach var="wc" items="${WISHLIST_COURSES}">
                                                 <div class="wishlist-dd-item" id="wish-item-${wc.courseId}">
                                                     <div class="wishlist-dd-thumb">
-                                                        <img src="${pageContext.request.contextPath}/img/courses/course${wc.courseId}.jpg"
-                                                             alt="${wc.courseName}" onerror="this.style.display='none';">
+                                                        <img src="${pageContext.request.contextPath}/img/courses/course${wc.courseId}.jpg" alt="${wc.courseName}" onerror="this.style.display='none';">
                                                     </div>
                                                     <div class="wishlist-dd-info">
                                                         <div class="wishlist-dd-name">${wc.courseName}</div>
@@ -303,25 +280,19 @@
                                                             </c:choose>
                                                         </div>
                                                     </div>
-                                                    <button class="wishlist-dd-remove" title="Xóa khỏi yêu thích"
-                                                            onclick="removeWishItem(event, '${wc.courseId}')">
+                                                    <button class="wishlist-dd-remove" title="Xóa" onclick="removeWishItem(event,'${wc.courseId}')">
                                                         <i class="bi bi-x"></i>
                                                     </button>
                                                 </div>
                                             </c:forEach>
                                         </c:when>
                                         <c:otherwise>
-                                            <div class="wishlist-dd-empty" id="wishEmptyMsg">
-                                                <i class="bi bi-heart"></i>
-                                                Chưa có khóa học yêu thích
-                                            </div>
+                                            <div class="wishlist-dd-empty"><i class="bi bi-heart"></i> Chưa có khóa học yêu thích</div>
                                         </c:otherwise>
                                     </c:choose>
                                 </div>
                             </div>
                         </div>
-
-                        <%-- USER MENU --%>
                         <div class="user-menu-nav" onclick="toggleDD()">
                             <div class="user-avatar-nav">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
                             <span class="user-name-nav">${sessionScope.user.fullname}</span>
@@ -338,7 +309,7 @@
                         </div>
                     </c:when>
                     <c:otherwise>
-                        <a href="mainController?action=ExploreCourse" class="nav-cta">
+                        <a href="courseController?action=ExploreCourse" class="nav-cta">
                             <i class="bi bi-compass-fill"></i> Khám phá khóa học
                         </a>
                     </c:otherwise>
@@ -361,23 +332,6 @@
                     <div><div class="hero-stat-num">50K+</div><div class="hero-stat-lbl">Học viên</div></div>
                     <div><div class="hero-stat-num">4.9 ★</div><div class="hero-stat-lbl">Đánh giá TB</div></div>
                 </div>
-            </div>
-        </div>
-
-        <!-- SEARCH + FILTER -->
-        <div class="search-section">
-            <div class="search-wrap">
-                <i class="bi bi-search"></i>
-                <input type="text" placeholder="Tìm kiếm giảng viên..." id="searchInput" oninput="filterInstructors()">
-            </div>
-            <div class="filter-chips">
-                <span class="chip active" onclick="filterByField(this, '')">Tất cả</span>
-                <span class="chip" onclick="filterByField(this, 'ai')">🤖 AI &amp; ML</span>
-                <span class="chip" onclick="filterByField(this, 'web')">💻 Web Dev</span>
-                <span class="chip" onclick="filterByField(this, 'data')">📊 Data</span>
-                <span class="chip" onclick="filterByField(this, 'design')">🎨 Design</span>
-                <span class="chip" onclick="filterByField(this, 'mobile')">📱 Mobile</span>
-                <span class="chip" onclick="filterByField(this, 'cloud')">☁️ Cloud</span>
             </div>
         </div>
 
@@ -422,24 +376,18 @@
         <div class="all-section">
             <div class="all-header">
                 <div class="all-title">Tất cả giảng viên</div>
-                <span class="count-badge" id="instructorCount">8 giảng viên</span>
+                <span class="count-badge">8 giảng viên</span>
             </div>
-            <div class="instructor-grid" id="instructorGrid">
-
+            <div class="instructor-grid">
                 <!-- Card 1 -->
-                <div class="instructor-card" data-field="ai" data-name="Lê Hoàng Khang"
-                     data-img="img/instructors/gv1.jpg" data-init="K" data-c1="#1E0A4A" data-c2="#6C3FC5"
+                <div class="instructor-card" data-img="img/instructors/gv1.jpg" data-init="K" data-c1="#1E0A4A" data-c2="#6C3FC5"
                      data-bio="Hơn 12 năm kinh nghiệm trong lĩnh vực AI và Machine Learning. Từng làm việc tại Google, Grab và VinAI."
                      data-role="Machine AI · Google" data-courses="18" data-students="511" data-rating="4.9"
-                     data-tags="AI,ML,Python,TensorFlow,Deep Learning"
-                     onclick="openModal(this)">
+                     data-tags="AI,ML,Python,TensorFlow,Deep Learning" data-name="Lê Hoàng Khang" onclick="openModal(this)">
                     <div class="icard-inner">
                         <div class="icard-header">
                             <svg class="icard-bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1E0A4A"/><stop offset="100%" stop-color="#6C3FC5"/></linearGradient></defs><rect width="300" height="100" fill="url(#g1)"/></svg>
-                            <div class="icard-avatar" style="background:linear-gradient(135deg,#6C3FC5,#1E0A4A)">
-                                <span>K</span>
-                                <img src="img/instructors/gv1.jpg" alt="Lê Hoàng Khang" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;">
-                            </div>
+                            <div class="icard-avatar" style="background:linear-gradient(135deg,#6C3FC5,#1E0A4A)"><span>K</span><img src="img/instructors/gv1.jpg" alt="" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;"></div>
                         </div>
                         <div class="icard-body">
                             <div class="icard-name">Lê Hoàng Khang</div>
@@ -447,29 +395,20 @@
                             <div class="icard-tags"><span class="icard-tag">AI</span><span class="icard-tag">ML</span><span class="icard-tag">Python</span></div>
                             <div class="icard-stars">★★★★★</div>
                             <div class="icard-divider"></div>
-                            <div class="icard-stats">
-                                <div><div class="icard-stat-num">18</div><div class="icard-stat-lbl">Khóa học</div></div>
-                                <div><div class="icard-stat-num">511</div><div class="icard-stat-lbl">Học viên</div></div>
-                            </div>
+                            <div class="icard-stats"><div><div class="icard-stat-num">18</div><div class="icard-stat-lbl">Khóa học</div></div><div><div class="icard-stat-num">511</div><div class="icard-stat-lbl">Học viên</div></div></div>
                         </div>
                         <div class="icard-footer"><button class="btn-view-profile"><i class="bi bi-person-circle"></i> Xem hồ sơ</button></div>
                     </div>
                 </div>
-
                 <!-- Card 2 -->
-                <div class="instructor-card" data-field="web" data-name="Trần Lê Phương Uyên"
-                     data-img="img/instructors/gv2.jpg" data-init="T" data-c1="#3A1A7A" data-c2="#9B72E8"
+                <div class="instructor-card" data-img="img/instructors/gv2.jpg" data-init="T" data-c1="#3A1A7A" data-c2="#9B72E8"
                      data-bio="Chuyên gia React và Node.js với 9 năm kinh nghiệm. Lead developer tại Shopee Việt Nam."
                      data-role="Full-Stack Lead · Shopee" data-courses="12" data-students="323" data-rating="4.8"
-                     data-tags="React,Node.js,TypeScript,MongoDB"
-                     onclick="openModal(this)">
+                     data-tags="React,Node.js,TypeScript,MongoDB" data-name="Trần Lê Phương Uyên" onclick="openModal(this)">
                     <div class="icard-inner">
                         <div class="icard-header">
                             <svg class="icard-bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3A1A7A"/><stop offset="100%" stop-color="#9B72E8"/></linearGradient></defs><rect width="300" height="100" fill="url(#g2)"/></svg>
-                            <div class="icard-avatar" style="background:linear-gradient(135deg,#9B72E8,#3A1A7A)">
-                                <span>T</span>
-                                <img src="img/instructors/gv2.jpg" alt="Trần Lê Phương Uyên" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;">
-                            </div>
+                            <div class="icard-avatar" style="background:linear-gradient(135deg,#9B72E8,#3A1A7A)"><span>T</span><img src="img/instructors/gv2.jpg" alt="" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;"></div>
                         </div>
                         <div class="icard-body">
                             <div class="icard-name">Trần Lê Phương Uyên</div>
@@ -477,29 +416,20 @@
                             <div class="icard-tags"><span class="icard-tag">React</span><span class="icard-tag">Node.js</span><span class="icard-tag">TS</span></div>
                             <div class="icard-stars">★★★★★</div>
                             <div class="icard-divider"></div>
-                            <div class="icard-stats">
-                                <div><div class="icard-stat-num">12</div><div class="icard-stat-lbl">Khóa học</div></div>
-                                <div><div class="icard-stat-num">323</div><div class="icard-stat-lbl">Học viên</div></div>
-                            </div>
+                            <div class="icard-stats"><div><div class="icard-stat-num">12</div><div class="icard-stat-lbl">Khóa học</div></div><div><div class="icard-stat-num">323</div><div class="icard-stat-lbl">Học viên</div></div></div>
                         </div>
                         <div class="icard-footer"><button class="btn-view-profile"><i class="bi bi-person-circle"></i> Xem hồ sơ</button></div>
                     </div>
                 </div>
-
                 <!-- Card 3 -->
-                <div class="instructor-card" data-field="data" data-name="Nguyễn Ngọc Huyền Diệu"
-                     data-img="img/instructors/gv3.jpg" data-init="Đ" data-c1="#4E2C96" data-c2="#D4A843"
+                <div class="instructor-card" data-img="img/instructors/gv3.jpg" data-init="Đ" data-c1="#4E2C96" data-c2="#D4A843"
                      data-bio="Tiến sĩ Toán học ứng dụng. 8 năm kinh nghiệm phân tích dữ liệu lớn và xây dựng mô hình dự đoán."
                      data-role="Data Scientist · VinAI" data-courses="10" data-students="158" data-rating="4.9"
-                     data-tags="Python,SQL,Tableau,Power BI"
-                     onclick="openModal(this)">
+                     data-tags="Python,SQL,Tableau,Power BI" data-name="Nguyễn Ngọc Huyền Diệu" onclick="openModal(this)">
                     <div class="icard-inner">
                         <div class="icard-header">
                             <svg class="icard-bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4E2C96"/><stop offset="100%" stop-color="#D4A843"/></linearGradient></defs><rect width="300" height="100" fill="url(#g3)"/></svg>
-                            <div class="icard-avatar" style="background:linear-gradient(135deg,#D4A843,#4E2C96)">
-                                <span>Đ</span>
-                                <img src="img/instructors/gv3.jpg" alt="Nguyễn Ngọc Huyền Diệu" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;">
-                            </div>
+                            <div class="icard-avatar" style="background:linear-gradient(135deg,#D4A843,#4E2C96)"><span>Đ</span><img src="img/instructors/gv3.jpg" alt="" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;"></div>
                         </div>
                         <div class="icard-body">
                             <div class="icard-name">Nguyễn Ngọc Huyền Diệu</div>
@@ -507,29 +437,20 @@
                             <div class="icard-tags"><span class="icard-tag">Data</span><span class="icard-tag">SQL</span><span class="icard-tag">Python</span></div>
                             <div class="icard-stars">★★★★★</div>
                             <div class="icard-divider"></div>
-                            <div class="icard-stats">
-                                <div><div class="icard-stat-num">10</div><div class="icard-stat-lbl">Khóa học</div></div>
-                                <div><div class="icard-stat-num">158</div><div class="icard-stat-lbl">Học viên</div></div>
-                            </div>
+                            <div class="icard-stats"><div><div class="icard-stat-num">10</div><div class="icard-stat-lbl">Khóa học</div></div><div><div class="icard-stat-num">158</div><div class="icard-stat-lbl">Học viên</div></div></div>
                         </div>
                         <div class="icard-footer"><button class="btn-view-profile"><i class="bi bi-person-circle"></i> Xem hồ sơ</button></div>
                     </div>
                 </div>
-
                 <!-- Card 4 -->
-                <div class="instructor-card" data-field="design" data-name="Nguyễn Ánh Hồng"
-                     data-img="img/instructors/gv4.jpg" data-init="P" data-c1="#0D47A1" data-c2="#42A5F5"
+                <div class="instructor-card" data-img="img/instructors/gv4.jpg" data-init="P" data-c1="#0D47A1" data-c2="#42A5F5"
                      data-bio="Hơn 10 năm thiết kế sản phẩm số. Từng hợp tác với các thương hiệu lớn tại Đông Nam Á."
                      data-role="UX Lead Designer · Tiki" data-courses="8" data-students="112" data-rating="4.8"
-                     data-tags="Figma,UI/UX,Sketch,Prototyping"
-                     onclick="openModal(this)">
+                     data-tags="Figma,UI/UX,Sketch,Prototyping" data-name="Nguyễn Ánh Hồng" onclick="openModal(this)">
                     <div class="icard-inner">
                         <div class="icard-header">
                             <svg class="icard-bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0D47A1"/><stop offset="100%" stop-color="#42A5F5"/></linearGradient></defs><rect width="300" height="100" fill="url(#g4)"/></svg>
-                            <div class="icard-avatar" style="background:linear-gradient(135deg,#42A5F5,#0D47A1)">
-                                <span>P</span>
-                                <img src="img/instructors/gv4.jpg" alt="Nguyễn Ánh Hồng" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;">
-                            </div>
+                            <div class="icard-avatar" style="background:linear-gradient(135deg,#42A5F5,#0D47A1)"><span>P</span><img src="img/instructors/gv4.jpg" alt="" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;"></div>
                         </div>
                         <div class="icard-body">
                             <div class="icard-name">Nguyễn Ánh Hồng</div>
@@ -537,29 +458,20 @@
                             <div class="icard-tags"><span class="icard-tag">Figma</span><span class="icard-tag">UI/UX</span><span class="icard-tag">Design</span></div>
                             <div class="icard-stars">★★★★★</div>
                             <div class="icard-divider"></div>
-                            <div class="icard-stats">
-                                <div><div class="icard-stat-num">8</div><div class="icard-stat-lbl">Khóa học</div></div>
-                                <div><div class="icard-stat-num">112</div><div class="icard-stat-lbl">Học viên</div></div>
-                            </div>
+                            <div class="icard-stats"><div><div class="icard-stat-num">8</div><div class="icard-stat-lbl">Khóa học</div></div><div><div class="icard-stat-num">112</div><div class="icard-stat-lbl">Học viên</div></div></div>
                         </div>
                         <div class="icard-footer"><button class="btn-view-profile"><i class="bi bi-person-circle"></i> Xem hồ sơ</button></div>
                     </div>
                 </div>
-
                 <!-- Card 5 -->
-                <div class="instructor-card" data-field="cloud" data-name="Phạm Nhật Vượng"
-                     data-img="img/instructors/gv5.webp" data-init="H" data-c1="#1B5E20" data-c2="#388E3C"
+                <div class="instructor-card" data-img="img/instructors/gv5.webp" data-init="H" data-c1="#1B5E20" data-c2="#388E3C"
                      data-bio="AWS Certified Solutions Architect với 11 năm kinh nghiệm triển khai hệ thống cloud quy mô lớn."
                      data-role="Cloud Architect · AWS Vietnam" data-courses="14" data-students="403" data-rating="4.9"
-                     data-tags="AWS,Docker,Kubernetes,DevOps"
-                     onclick="openModal(this)">
+                     data-tags="AWS,Docker,Kubernetes,DevOps" data-name="Phạm Nhật Vượng" onclick="openModal(this)">
                     <div class="icard-inner">
                         <div class="icard-header">
                             <svg class="icard-bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g5" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1B5E20"/><stop offset="100%" stop-color="#388E3C"/></linearGradient></defs><rect width="300" height="100" fill="url(#g5)"/></svg>
-                            <div class="icard-avatar" style="background:linear-gradient(135deg,#388E3C,#1B5E20)">
-                                <span>H</span>
-                                <img src="img/instructors/gv5.webp" alt="Phạm Nhật Vượng" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;">
-                            </div>
+                            <div class="icard-avatar" style="background:linear-gradient(135deg,#388E3C,#1B5E20)"><span>H</span><img src="img/instructors/gv5.webp" alt="" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;"></div>
                         </div>
                         <div class="icard-body">
                             <div class="icard-name">Phạm Nhật Vượng</div>
@@ -567,29 +479,20 @@
                             <div class="icard-tags"><span class="icard-tag">AWS</span><span class="icard-tag">DevOps</span><span class="icard-tag">K8s</span></div>
                             <div class="icard-stars">★★★★★</div>
                             <div class="icard-divider"></div>
-                            <div class="icard-stats">
-                                <div><div class="icard-stat-num">14</div><div class="icard-stat-lbl">Khóa học</div></div>
-                                <div><div class="icard-stat-num">403</div><div class="icard-stat-lbl">Học viên</div></div>
-                            </div>
+                            <div class="icard-stats"><div><div class="icard-stat-num">14</div><div class="icard-stat-lbl">Khóa học</div></div><div><div class="icard-stat-num">403</div><div class="icard-stat-lbl">Học viên</div></div></div>
                         </div>
                         <div class="icard-footer"><button class="btn-view-profile"><i class="bi bi-person-circle"></i> Xem hồ sơ</button></div>
                     </div>
                 </div>
-
                 <!-- Card 6 -->
-                <div class="instructor-card" data-field="mobile" data-name="Vũ Thị Hoa"
-                     data-img="img/instructors/instructor6.jpg" data-init="V" data-c1="#B71C1C" data-c2="#E53935"
+                <div class="instructor-card" data-img="img/instructors/instructor6.jpg" data-init="V" data-c1="#B71C1C" data-c2="#E53935"
                      data-bio="Chuyên gia Flutter và React Native. Lead developer tại ví điện tử MoMo với hơn 7 năm kinh nghiệm."
                      data-role="Mobile Lead · MoMo" data-courses="9" data-students="13500" data-rating="4.7"
-                     data-tags="Flutter,React Native,Swift,Kotlin"
-                     onclick="openModal(this)">
+                     data-tags="Flutter,React Native,Swift,Kotlin" data-name="Vũ Thị Hoa" onclick="openModal(this)">
                     <div class="icard-inner">
                         <div class="icard-header">
                             <svg class="icard-bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g6" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#B71C1C"/><stop offset="100%" stop-color="#E53935"/></linearGradient></defs><rect width="300" height="100" fill="url(#g6)"/></svg>
-                            <div class="icard-avatar" style="background:linear-gradient(135deg,#E53935,#B71C1C)">
-                                <span>V</span>
-                                <img src="img/instructors/instructor6.jpg" alt="Vũ Thị Hoa" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;">
-                            </div>
+                            <div class="icard-avatar" style="background:linear-gradient(135deg,#E53935,#B71C1C)"><span>V</span><img src="img/instructors/instructor6.jpg" alt="" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;"></div>
                         </div>
                         <div class="icard-body">
                             <div class="icard-name">Vũ Thị Hoa</div>
@@ -597,29 +500,20 @@
                             <div class="icard-tags"><span class="icard-tag">Flutter</span><span class="icard-tag">Swift</span><span class="icard-tag">Mobile</span></div>
                             <div class="icard-stars">★★★★½</div>
                             <div class="icard-divider"></div>
-                            <div class="icard-stats">
-                                <div><div class="icard-stat-num">9</div><div class="icard-stat-lbl">Khóa học</div></div>
-                                <div><div class="icard-stat-num">13.5K</div><div class="icard-stat-lbl">Học viên</div></div>
-                            </div>
+                            <div class="icard-stats"><div><div class="icard-stat-num">9</div><div class="icard-stat-lbl">Khóa học</div></div><div><div class="icard-stat-num">13.5K</div><div class="icard-stat-lbl">Học viên</div></div></div>
                         </div>
                         <div class="icard-footer"><button class="btn-view-profile"><i class="bi bi-person-circle"></i> Xem hồ sơ</button></div>
                     </div>
                 </div>
-
                 <!-- Card 7 -->
-                <div class="instructor-card" data-field="web" data-name="Đỗ Thanh Tùng"
-                     data-img="img/instructors/instructor7.jpg" data-init="Đ" data-c1="#4A148C" data-c2="#7B1FA2"
+                <div class="instructor-card" data-img="img/instructors/instructor7.jpg" data-init="Đ" data-c1="#4A148C" data-c2="#7B1FA2"
                      data-bio="Kiến trúc sư hệ thống backend với chuyên môn Java Spring Boot và microservices. 10 năm tại Zalo."
                      data-role="Backend Engineer · Zalo" data-courses="11" data-students="17300" data-rating="4.8"
-                     data-tags="Java,Spring,Microservices,Redis"
-                     onclick="openModal(this)">
+                     data-tags="Java,Spring,Microservices,Redis" data-name="Đỗ Thanh Tùng" onclick="openModal(this)">
                     <div class="icard-inner">
                         <div class="icard-header">
                             <svg class="icard-bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g7" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#4A148C"/><stop offset="100%" stop-color="#7B1FA2"/></linearGradient></defs><rect width="300" height="100" fill="url(#g7)"/></svg>
-                            <div class="icard-avatar" style="background:linear-gradient(135deg,#7B1FA2,#4A148C)">
-                                <span>Đ</span>
-                                <img src="img/instructors/instructor7.jpg" alt="Đỗ Thanh Tùng" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;">
-                            </div>
+                            <div class="icard-avatar" style="background:linear-gradient(135deg,#7B1FA2,#4A148C)"><span>Đ</span><img src="img/instructors/instructor7.jpg" alt="" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;"></div>
                         </div>
                         <div class="icard-body">
                             <div class="icard-name">Đỗ Thanh Tùng</div>
@@ -627,29 +521,20 @@
                             <div class="icard-tags"><span class="icard-tag">Java</span><span class="icard-tag">Spring</span><span class="icard-tag">Backend</span></div>
                             <div class="icard-stars">★★★★★</div>
                             <div class="icard-divider"></div>
-                            <div class="icard-stats">
-                                <div><div class="icard-stat-num">11</div><div class="icard-stat-lbl">Khóa học</div></div>
-                                <div><div class="icard-stat-num">17.3K</div><div class="icard-stat-lbl">Học viên</div></div>
-                            </div>
+                            <div class="icard-stats"><div><div class="icard-stat-num">11</div><div class="icard-stat-lbl">Khóa học</div></div><div><div class="icard-stat-num">17.3K</div><div class="icard-stat-lbl">Học viên</div></div></div>
                         </div>
                         <div class="icard-footer"><button class="btn-view-profile"><i class="bi bi-person-circle"></i> Xem hồ sơ</button></div>
                     </div>
                 </div>
-
                 <!-- Card 8 -->
-                <div class="instructor-card" data-field="data" data-name="Ngô Thị Mỹ Linh"
-                     data-img="img/instructors/instructor8.jpg" data-init="M" data-c1="#004D40" data-c2="#00897B"
+                <div class="instructor-card" data-img="img/instructors/instructor8.jpg" data-init="M" data-c1="#004D40" data-c2="#00897B"
                      data-bio="Chuyên gia bảo mật thông tin với chứng chỉ CISSP và CEH. 13 năm kinh nghiệm tại các tập đoàn lớn."
                      data-role="Cybersecurity Expert · VNPT" data-courses="7" data-students="9800" data-rating="4.9"
-                     data-tags="Security,Penetration Testing,Blockchain,Cryptography"
-                     onclick="openModal(this)">
+                     data-tags="Security,Penetration Testing,Blockchain,Cryptography" data-name="Ngô Thị Mỹ Linh" onclick="openModal(this)">
                     <div class="icard-inner">
                         <div class="icard-header">
                             <svg class="icard-bg" viewBox="0 0 300 100" preserveAspectRatio="xMidYMid slice"><defs><linearGradient id="g8" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#004D40"/><stop offset="100%" stop-color="#00897B"/></linearGradient></defs><rect width="300" height="100" fill="url(#g8)"/></svg>
-                            <div class="icard-avatar" style="background:linear-gradient(135deg,#00897B,#004D40)">
-                                <span>M</span>
-                                <img src="img/instructors/instructor8.jpg" alt="Ngô Thị Mỹ Linh" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;">
-                            </div>
+                            <div class="icard-avatar" style="background:linear-gradient(135deg,#00897B,#004D40)"><span>M</span><img src="img/instructors/instructor8.jpg" alt="" onload="this.style.zIndex='2';this.previousElementSibling.style.display='none';" onerror="this.classList.add('err')" style="z-index:1;"></div>
                         </div>
                         <div class="icard-body">
                             <div class="icard-name">Ngô Thị Mỹ Linh</div>
@@ -657,16 +542,12 @@
                             <div class="icard-tags"><span class="icard-tag">Security</span><span class="icard-tag">CISSP</span><span class="icard-tag">CEH</span></div>
                             <div class="icard-stars">★★★★★</div>
                             <div class="icard-divider"></div>
-                            <div class="icard-stats">
-                                <div><div class="icard-stat-num">7</div><div class="icard-stat-lbl">Khóa học</div></div>
-                                <div><div class="icard-stat-num">9.8K</div><div class="icard-stat-lbl">Học viên</div></div>
-                            </div>
+                            <div class="icard-stats"><div><div class="icard-stat-num">7</div><div class="icard-stat-lbl">Khóa học</div></div><div><div class="icard-stat-num">9.8K</div><div class="icard-stat-lbl">Học viên</div></div></div>
                         </div>
                         <div class="icard-footer"><button class="btn-view-profile"><i class="bi bi-person-circle"></i> Xem hồ sơ</button></div>
                     </div>
                 </div>
-
-            </div><!-- /instructor-grid -->
+            </div>
         </div>
 
         <!-- JOIN CTA -->
@@ -677,7 +558,7 @@
                     <div class="cta-title">Chia sẻ kiến thức, truyền cảm hứng</div>
                     <p class="cta-sub">Bạn là chuyên gia trong lĩnh vực của mình? Hãy cùng DUK Academy xây dựng thế hệ nhân tài tương lai và tạo thu nhập từ đam mê giảng dạy.</p>
                     <div class="cta-actions">
-                        <a href="mailto:lonhkim82@gmail.com?subject=Đăng ký giảng dạy tại DUK Academy&body=Xin chào,%0A%0ATôi muốn đăng ký trở thành giảng viên tại DUK Academy.%0A%0AThông tin của tôi:%0A- Họ tên:%0A- Lĩnh vực chuyên môn:%0A- Kinh nghiệm:%0A%0ATôi xin đính kèm CV theo email này.%0A%0AXin cảm ơn!" class="btn-cta-primary"><i class="bi bi-mortarboard-fill"></i> Đăng ký giảng dạy</a>
+                        <a href="mailto:lonhkim82@gmail.com?subject=Đăng ký giảng dạy tại DUK Academy" class="btn-cta-primary"><i class="bi bi-mortarboard-fill"></i> Đăng ký giảng dạy</a>
                         <a href="about.jsp" class="btn-cta-secondary"><i class="bi bi-info-circle"></i> Tìm hiểu thêm</a>
                     </div>
                 </div>
@@ -693,7 +574,7 @@
         </footer>
 
         <!-- INSTRUCTOR MODAL -->
-        <div class="modal-overlay" id="instructorModal" onclick="closeModalOutside(event)">
+        <div class="modal-overlay" id="instructorModal" onclick="if(event.target===this)closeModal()">
             <div class="modal-box">
                 <div class="modal-strip" id="modalStrip">
                     <button class="modal-close" onclick="closeModal()"><i class="bi bi-x-lg"></i></button>
@@ -715,88 +596,68 @@
                         <div class="modal-stat"><div class="modal-stat-num" id="mStudents"></div><div class="modal-stat-lbl">Học viên</div></div>
                         <div class="modal-stat"><div class="modal-stat-num" id="mRating"></div><div class="modal-stat-lbl">Đánh giá</div></div>
                     </div>
-                    <a href="mainController?action=ExploreCourse" class="btn-modal-courses">
+                    <a href="courseController?action=ExploreCourse" class="btn-modal-courses">
                         <i class="bi bi-collection-play-fill"></i> Xem khóa học của giảng viên
                     </a>
                 </div>
             </div>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            /* ── FILTER ── */
-            let currentField = '';
-            function filterByField(el, field) {
-                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-                el.classList.add('active');
-                currentField = field;
-                applyFilter();
-            }
-            function filterInstructors() { applyFilter(); }
-            function applyFilter() {
-                const q = (document.getElementById('searchInput').value || '').toLowerCase();
-                let count = 0;
-                document.querySelectorAll('.instructor-card').forEach(card => {
-                    const nm = (card.dataset.name || '').toLowerCase().includes(q);
-                    const fm = !currentField || card.dataset.field === currentField;
-                    const ok = (nm || !q) && fm;
-                    card.style.display = ok ? '' : 'none';
-                    if (ok) count++;
-                });
-                document.getElementById('instructorCount').textContent = count + ' giảng viên';
-            }
-
-            /* ── MODAL ── */
-            function fmt(n) { return Number(n) >= 1000 ? (Number(n)/1000).toFixed(1)+'K' : String(n); }
+            // MODAL
             function openModal(card) {
-                const d = card.dataset;
-                const c1 = d.c1||'#1E0A4A', c2 = d.c2||'#6C3FC5';
+                const d = card.dataset, c1 = d.c1||'#1E0A4A', c2 = d.c2||'#6C3FC5';
                 document.getElementById('modalStrip').style.background = 'linear-gradient(135deg,'+c1+','+c2+')';
-                const photoEl = document.getElementById('modalPhoto');
-                const imgEl = document.getElementById('modalPhotoImg');
-                const initEl = document.getElementById('modalInitials');
-                photoEl.style.background = 'linear-gradient(135deg,'+c2+','+c1+')';
-                initEl.textContent = d.init||'?';
-                initEl.style.display = 'flex';
-                imgEl.classList.remove('err');
-                imgEl.src = d.img||'';
-                imgEl.alt = d.name||'';
+                const photo = document.getElementById('modalPhoto');
+                const img = document.getElementById('modalPhotoImg');
+                const init = document.getElementById('modalInitials');
+                photo.style.background = 'linear-gradient(135deg,'+c2+','+c1+')';
+                init.textContent = d.init||'?'; init.style.display = 'flex';
+                img.classList.remove('err'); img.src = d.img||''; img.alt = d.name||'';
                 document.getElementById('modalName').textContent = d.name||'';
                 document.getElementById('modalRole').textContent = d.role||'';
                 document.getElementById('modalBio').textContent = d.bio||'';
                 document.getElementById('mCourses').textContent = d.courses||'—';
-                document.getElementById('mStudents').textContent = fmt(d.students||0);
+                const s = Number(d.students||0);
+                document.getElementById('mStudents').textContent = s >= 1000 ? (s/1000).toFixed(1)+'K' : s;
                 document.getElementById('mRating').textContent = (d.rating||'—')+' ★';
                 document.getElementById('modalTags').innerHTML = (d.tags||'').split(',').map(t=>'<span class="modal-tag">'+t.trim()+'</span>').join('');
                 document.getElementById('instructorModal').classList.add('show');
                 document.body.style.overflow = 'hidden';
             }
-            function closeModal() { document.getElementById('instructorModal').classList.remove('show'); document.body.style.overflow = ''; }
-            function closeModalOutside(e) { if (e.target===document.getElementById('instructorModal')) closeModal(); }
-            document.addEventListener('keydown', e => { if (e.key==='Escape') closeModal(); });
+            function closeModal() {
+                document.getElementById('instructorModal').classList.remove('show');
+                document.body.style.overflow = '';
+            }
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-            /* ── WISHLIST DROPDOWN ── */
+            // WISHLIST DROPDOWN
             function toggleWishlistDD(e) {
                 e.stopPropagation();
                 document.getElementById('wishlistDD').classList.toggle('show');
-                document.getElementById('userDD') && document.getElementById('userDD').classList.remove('show');
+                const ud = document.getElementById('userDD');
+                if (ud) ud.classList.remove('show');
             }
             function removeWishItem(e, courseId) {
                 e.stopPropagation();
-                const userId = '${sessionScope.user.userId}';
-                fetch('wishlistController?action=remove&courseId=' + courseId + '&userId=' + userId + '&ajax=1')
+                fetch('wishlistController?action=remove&courseId='+courseId+'&userId=${sessionScope.user.userId}&ajax=1')
                     .then(() => {
-                        const item = document.getElementById('wish-item-' + courseId);
+                        const item = document.getElementById('wish-item-'+courseId);
                         if (item) item.remove();
                         const el = document.getElementById('wishCount');
-                        if (el) el.textContent = Math.max(0, parseInt(el.textContent || '0') - 1);
+                        if (el) el.textContent = Math.max(0, parseInt(el.textContent||'0') - 1);
                         const list = document.getElementById('wishlistDDList');
-                        if (list && list.querySelectorAll('.wishlist-dd-item').length === 0)
-                            list.innerHTML = '<div class="wishlist-dd-empty"><i class="bi bi-heart"></i>Chưa có khóa học yêu thích</div>';
+                        if (list && !list.querySelector('.wishlist-dd-item'))
+                            list.innerHTML = '<div class="wishlist-dd-empty"><i class="bi bi-heart"></i> Chưa có khóa học yêu thích</div>';
                     });
             }
 
-            /* ── DROPDOWN USER ── */
-            function toggleDD() { document.getElementById('userDD').classList.toggle('show'); }
+            // USER DROPDOWN
+            function toggleDD() {
+                const d = document.getElementById('userDD');
+                if (d) d.classList.toggle('show');
+            }
             document.addEventListener('click', e => {
                 const m = document.querySelector('.user-menu-nav');
                 const d = document.getElementById('userDD');

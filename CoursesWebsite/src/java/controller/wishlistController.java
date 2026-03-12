@@ -6,14 +6,19 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.CourseDAO;
 import model.CourseDTO;
+import model.EnrollDAO;
 import model.WishlistDAO;
+import model.WishlistDTO;
 
 /**
  *
@@ -25,7 +30,7 @@ public class wishlistController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String action = request.getParameter("action");
-        String ajax = request.getParameter("ajax"); // "1" nếu gọi từ AJAX
+        String ajax = request.getParameter("ajax");
         WishlistDAO dao = new WishlistDAO();
 
         if (action == null) {
@@ -37,10 +42,7 @@ public class wishlistController extends HttpServlet {
             String userId = request.getParameter("userId");
             int courseId = Integer.parseInt(request.getParameter("courseId"));
             dao.addWishlist(userId, courseId);
-
-            // Cập nhật lại session sau khi thêm
             refreshWishlistSession(request, userId, dao);
-
             if ("1".equals(ajax)) {
                 response.setStatus(200);
                 return;
@@ -58,7 +60,6 @@ public class wishlistController extends HttpServlet {
                 dao.deleteByUserAndCourse(userId, Integer.parseInt(courseIdStr));
             }
 
-            // Cập nhật lại session sau khi xóa
             if (userId != null) {
                 refreshWishlistSession(request, userId, dao);
             }
@@ -76,15 +77,35 @@ public class wishlistController extends HttpServlet {
 
         } else if (action.equals("view")) {
             String userId = request.getParameter("userId");
-            request.setAttribute("wishlist", dao.getWishlistByUser(userId));
+            List<WishlistDTO> wishlist = dao.getWishlistByUser(userId);
+            request.setAttribute("wishlist", wishlist);
+
+            // feeMap
+            Map<Integer, Double> feeMap = new HashMap<>();
+            CourseDAO courseDAO = new CourseDAO();
+            for (WishlistDTO w : wishlist) {
+                try {
+                    CourseDTO c = courseDAO.searchByID(String.valueOf(w.getCourseId()));
+                    if (c != null) feeMap.put(w.getCourseId(), c.getFee());
+                } catch (Exception e) { e.printStackTrace(); }
+            }
+            request.setAttribute("feeMap", feeMap);
+
+            // enrolledIds
+            try {
+                EnrollDAO enrollDAO = new EnrollDAO();
+                List<Integer> enrolledIds = enrollDAO.getEnrolledCourseIds(userId);
+                request.setAttribute("enrolledIds", enrolledIds);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             request.getRequestDispatcher("wishlist.jsp").forward(request, response);
+            // QUAN TRỌNG: return sau forward để không chạy tiếp
+            return;
         }
     }
 
-    /**
-     * Load lại WISHLIST_IDS và WISHLIST_COURSES vào session. Gọi sau mỗi
-     * add/remove để navbar pill luôn đúng.
-     */
     private void refreshWishlistSession(HttpServletRequest request, String userId, WishlistDAO dao) {
         HttpSession session = request.getSession(false);
         if (session != null) {
