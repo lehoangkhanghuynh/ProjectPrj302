@@ -85,7 +85,7 @@ public class wishlistController extends HttpServlet {
             CourseDAO courseDAO = new CourseDAO();
             for (WishlistDTO w : wishlist) {
                 try {
-                    CourseDTO c = courseDAO.searchByID(String.valueOf(w.getCourseId()));
+                    CourseDTO c = courseDAO.searchByIDc(w.getCourseId());
                     if (c != null) feeMap.put(w.getCourseId(), c.getFee());
                 } catch (Exception e) { e.printStackTrace(); }
             }

@@ -129,7 +129,7 @@ public class lessonController extends HttpServlet {
             CourseDAO courseDAO = new CourseDAO();
  
             List<LessonDTO> lessons = lessonDAO.getLessonsByCourse(courseId);
-            CourseDTO course        = courseDAO.searchByID(String.valueOf(courseId));
+            CourseDTO course        = courseDAO.searchByIDc(courseId);
  
             // Xác định bài học hiện tại
             LessonDTO currentLesson = null;

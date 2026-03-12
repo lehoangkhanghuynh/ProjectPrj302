@@ -44,7 +44,7 @@ public class certificateController extends HttpServlet {
         }
 
         CourseDAO courseDAO = new CourseDAO();
-        CourseDTO course = courseDAO.searchByID(courseIdRaw);
+        CourseDTO course = courseDAO.searchByIDc(courseId);
 
         request.setAttribute("certificate", cert);
         request.setAttribute("course", course);

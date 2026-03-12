@@ -34,7 +34,7 @@ public class courseCompleteController extends HttpServlet {
             int courseId = Integer.parseInt(courseIdParam);
 
             CourseDAO courseDAO = new CourseDAO();
-            CourseDTO course = courseDAO.searchByID(String.valueOf(courseId));
+            CourseDTO course = courseDAO.searchByIDc(courseId);
 
             // Load review data
             ReviewDAO reviewDAO = new ReviewDAO();

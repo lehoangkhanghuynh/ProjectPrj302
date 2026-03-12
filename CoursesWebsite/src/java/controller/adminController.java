@@ -16,6 +16,7 @@ import model.CourseDAO;
 import model.CourseDTO;
 import model.EnrollDAO;
 import model.PaymentDAO;
+import model.PaymentDTO;
 import model.UserDAO;
 import model.UserDTO;
 
@@ -110,11 +111,13 @@ public class adminController extends HttpServlet {
     }
 
     // ================= PAYMENT (Enrollment) =================
-    // Giữ nguyên - dùng EnrollDAO để xem user có vào khóa học không
-    private String viewPayments(HttpServletRequest request) {
-        EnrollDAO dao = new EnrollDAO();
-        request.setAttribute("ENROLL_LIST", dao.getAllEnrollments());
-        return "adminPayments.jsp";
+    // Giữ nguyên - dùng xem lic su nap để xem user có vào khóa học không
+    private String viewPayments(HttpServletRequest request) throws Exception {
+        List<PaymentDTO> list = PaymentDAO.getAllPayments();
+
+        request.setAttribute("PAYMENT_LIST", list);
+
+        return "adminViewPayment.jsp";
     }
 
     // ================= TOPUP (Nạp ví) =================
@@ -138,6 +141,7 @@ public class adminController extends HttpServlet {
         return "redirect:adminController?action=viewTopups";
     }
 
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -154,4 +158,5 @@ public class adminController extends HttpServlet {
     public String getServletInfo() {
         return "Admin Controller";
     }
+    
 }

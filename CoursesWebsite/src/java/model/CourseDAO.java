@@ -71,13 +71,6 @@ public class CourseDAO {
     }
 
     // ================= SEARCH BY ID =================
-    public CourseDTO searchByID(String id) {
-        ArrayList<CourseDTO> list = searchByColumn("courseId", id);
-        if (list.size() > 0) {
-            return list.get(0);
-        }
-        return null;
-    }
 
     public CourseDTO searchByIDc(int id) {
         ArrayList<CourseDTO> list = searchByColumn("courseId", String.valueOf(id));
