@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +45,7 @@ public class courseController extends HttpServlet {
                 List<CourseDTO> list = dao.getAll();
                 request.setAttribute("COURSE_LIST", list);
 
-                // ── Rating stats (1 query cho toàn bộ) ──────────────────
+                // Rating stats
                 Map<Integer, double[]> courseStats = ReviewDAO.getAllCourseStats();
                 Map<Integer, Double>  avgRatingMap   = new HashMap<>();
                 Map<Integer, Integer> reviewCountMap = new HashMap<>();
@@ -57,42 +56,55 @@ public class courseController extends HttpServlet {
                 request.setAttribute("AVG_RATING_MAP",   avgRatingMap);
                 request.setAttribute("REVIEW_COUNT_MAP", reviewCountMap);
 
-                // ── Map courseId → categoryName để JSP gán data-topic ─────
+                // Category map
                 CategoryDAO catDAO = new CategoryDAO();
-                request.setAttribute("CATEGORY_LIST",        catDAO.getAll());
-                request.setAttribute("COURSE_CATEGORY_MAP",  catDAO.getCourseCategoryMap());
+                request.setAttribute("CATEGORY_LIST",       catDAO.getAll());
+                request.setAttribute("COURSE_CATEGORY_MAP", catDAO.getCourseCategoryMap());
 
                 HttpSession session = request.getSession();
                 UserDTO user = (UserDTO) session.getAttribute("user");
                 if (user != null) {
-                    EnrollDAO enrollDAO = new EnrollDAO();
-                    request.setAttribute("ENROLLED_IDS",  enrollDAO.getEnrolledCourseIds(user.getUserId()));
-                    request.setAttribute("COMPLETED_IDS", enrollDAO.getCompletedCourseIds(user.getUserId()));
+                    String userId = user.getUserId();
 
-                    // Wishlist: chỉ load lại nếu session chưa có
-                    if (session.getAttribute("WISHLIST_IDS") == null) {
-                        WishlistDAO wDao = new WishlistDAO();
-                        String userId = user.getUserId();
-                        session.setAttribute("WISHLIST_IDS",     wDao.getWishlistIds(userId));
-                        session.setAttribute("WISHLIST_COURSES", wDao.getWishlistCourses(userId));
-                    }
+                    EnrollDAO enrollDAO = new EnrollDAO();
+                    request.setAttribute("ENROLLED_IDS",  enrollDAO.getEnrolledCourseIds(userId));
+                    request.setAttribute("COMPLETED_IDS", enrollDAO.getCompletedCourseIds(userId));
+
+                    // FIX: luôn load lại wishlist từ DB, không cache
+                    WishlistDAO wDao = new WishlistDAO();
+                    List<Integer> wishIds     = wDao.getWishlistIds(userId);
+                    List<CourseDTO> wishCourses = wDao.getWishlistCourses(userId);
+                    session.setAttribute("WISHLIST_IDS",     wishIds);
+                    session.setAttribute("WISHLIST_COURSES", wishCourses);
                 }
 
                 request.getRequestDispatcher("listCourse.jsp").forward(request, response);
 
             } else if ("detail".equals(action)) {
 
-                int courseId = Integer.parseInt(request.getParameter("courseId"));
+                String courseIdStr = request.getParameter("courseId");
+                if (courseIdStr == null) {
+                    response.sendRedirect("courseController?action=ExploreCourse");
+                    return;
+                }
+
+                int courseId;
+                try { courseId = Integer.parseInt(courseIdStr); }
+                catch (NumberFormatException e) {
+                    response.sendRedirect("courseController?action=ExploreCourse");
+                    return;
+                }
+
                 CourseDTO course = dao.searchByIDc(courseId);
                 if (course == null) {
                     response.sendRedirect("courseController?action=ExploreCourse");
                     return;
                 }
 
-                List<ReviewDTO> reviews        = ReviewDAO.getByCourse(courseId);
-                double avgRating               = ReviewDAO.getAvgRating(courseId);
-                int    reviewCount             = ReviewDAO.countByCourse(courseId);
-                Map<Integer, Integer> dist     = ReviewDAO.getRatingDistribution(courseId);
+                List<ReviewDTO> reviews    = ReviewDAO.getByCourse(courseId);
+                double avgRating           = ReviewDAO.getAvgRating(courseId);
+                int    reviewCount         = ReviewDAO.countByCourse(courseId);
+                Map<Integer, Integer> dist = ReviewDAO.getRatingDistribution(courseId);
 
                 request.setAttribute("COURSE",       course);
                 request.setAttribute("REVIEWS",      reviews);

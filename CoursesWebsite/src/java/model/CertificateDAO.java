@@ -11,9 +11,13 @@ import utils.DbiUtils;
 public class CertificateDAO {
 
     public boolean createCertificate(CertificateDTO c) {
-        try ( Connection conn = DbiUtils.getConnection();  PreparedStatement ps = conn.prepareStatement(
-                "INSERT INTO Certificates(userId, courseId, issueDate, code) VALUES('?',?,?,'?')"
-        )) {
+
+        try {
+            Connection conn = DbiUtils.getConnection();
+
+            String sql = "INSERT INTO Certificates(userId, courseId, issueDate, code) VALUES(?,?,?,?)";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, c.getUserId());
             ps.setInt(2, c.getCourseId());
@@ -25,6 +29,7 @@ public class CertificateDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return false;
     }
 
@@ -63,10 +68,12 @@ public class CertificateDAO {
     public List<CertificateDTO> getCertificatesByUser(String userId) {
 
         List<CertificateDTO> list = new ArrayList<>();
+
         try {
+
             Connection conn = DbiUtils.getConnection();
 
-            String sql = "SELECT * FROM Certificates WHERE userId = ?";
+            String sql = "SELECT * FROM Certificates WHERE userId = ? ORDER BY issueDate DESC";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -90,6 +97,7 @@ public class CertificateDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return list;
     }
 }
