@@ -1015,7 +1015,7 @@
                             <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
                             <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
                             <a href="paymentController"><i class="bi bi-wallet2"></i> Nạp tiền</a>
-                            <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
+                            <a href="myCertificates"><i class="bi bi-award"></i> Chứng chỉ</a>
                             <a href="wishlistController?action=view&userId=${sessionScope.user.userId}"><i class="bi bi-heart"></i> Yêu thích</a>
                             <div class="divider-drop"></div>
                             <a href="mainController?action=logout" class="logout-link">

@@ -30,18 +30,7 @@
             body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); }
 
             /* NAVBAR */
-            .navbar-main {
-                background: var(--purple-deep);
-                padding: 0 48px;
-                height: 68px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                position: sticky;
-                top: 0;
-                z-index: 100;
-                box-shadow: 0 2px 20px rgba(0,0,0,0.25);
-            }
+            .navbar-main { background: var(--purple-deep); padding: 0 48px; height: 68px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
             .brand { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; color: #fff; text-decoration: none; }
             .brand span { color: var(--gold); }
             .nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
@@ -52,14 +41,10 @@
             .search-bar input { background: none; border: none; outline: none; color: #fff; font-size: 0.875rem; font-family: 'DM Sans', sans-serif; width: 180px; }
             .search-bar input::placeholder { color: rgba(255,255,255,0.5); }
             .search-bar i { color: rgba(255,255,255,0.6); }
-
-            /* BALANCE PILL */
             .balance-pill { display: flex; align-items: center; gap: 7px; background: rgba(212,168,67,0.12); border: 1px solid rgba(212,168,67,0.35); border-radius: 8px; padding: 7px 14px; text-decoration: none; }
             .balance-pill i { color: var(--gold); }
             .balance-label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.6); }
             .balance-amount { font-size: 0.875rem; font-weight: 700; color: var(--gold); }
-
-            /* WISHLIST PILL */
             .wishlist-pill-wrap { position: relative; }
             .wishlist-pill { display: flex; align-items: center; gap: 7px; background: rgba(229,57,53,0.12); border: 1px solid rgba(229,57,53,0.35); border-radius: 8px; padding: 7px 14px; cursor: pointer; transition: background 0.15s; user-select: none; }
             .wishlist-pill:hover { background: rgba(229,57,53,0.2); }
@@ -86,8 +71,6 @@
             .wishlist-dd-remove:hover { color: #E53935; background: #FFF3F3; }
             .wishlist-dd-empty { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 0.85rem; }
             .wishlist-dd-empty i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: 0.4; }
-
-            /* USER MENU */
             .user-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); transition: background 0.15s; }
             .user-menu:hover { background: rgba(255,255,255,0.08); }
             .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--purple-mid), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; color: #fff; flex-shrink: 0; }
@@ -99,14 +82,10 @@
             .dropdown-menu-custom .divider-drop { height: 1px; background: var(--border); margin: 6px 0; }
             .dropdown-menu-custom .logout-link { color: #CC0000; }
             .dropdown-menu-custom .logout-link:hover { background: #FFF3F3; color: #CC0000; }
-
-            /* TOAST */
             .toast-noti { position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(20px); background: #1E0A4A; color: #fff; padding: 13px 24px; border-radius: 50px; font-size: 0.875rem; font-weight: 600; display: flex; align-items: center; gap: 10px; box-shadow: 0 8px 32px rgba(0,0,0,0.25); z-index: 9999; opacity: 0; transition: opacity 0.3s, transform 0.3s; pointer-events: none; white-space: nowrap; }
             .toast-noti.show { opacity: 1; transform: translateX(-50%) translateY(0); }
             .toast-noti.add i { color: #FF6B6B; }
             .toast-noti.remove i { color: #aaa; }
-
-            /* PAGE HEADER */
             .page-header { background: linear-gradient(135deg, var(--purple-deep) 0%, #3A1A7A 60%, #5B2DC5 100%); padding: 48px 80px 52px; position: relative; overflow: hidden; }
             .page-header::before { content: ''; position: absolute; width: 400px; height: 400px; border-radius: 50%; background: rgba(212,168,67,0.06); top: -150px; right: -80px; }
             .page-header::after { content: ''; position: absolute; width: 200px; height: 200px; border-radius: 50%; background: rgba(155,114,232,0.1); bottom: -60px; left: 200px; }
@@ -130,8 +109,6 @@
             .alert-custom { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 10px; font-size: 0.875rem; font-weight: 500; margin-bottom: 24px; }
             .alert-error { background: #FFF3F3; border: 1px solid #FFCDD2; color: #C62828; }
             .alert-warn  { background: #FFF8E1; border: 1px solid #FFE082; color: #E65100; }
-
-            /* TRENDING */
             .trending-section { margin-bottom: 48px; }
             .trending-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
             .trending-title i { color: var(--purple); font-size: 1.3rem; }
@@ -152,7 +129,15 @@
             .mini-meta { font-size: 0.68rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
             .mini-price { font-size: 0.75rem; font-weight: 700; color: var(--purple); white-space: nowrap; flex-shrink: 0; }
 
-            /* ALL COURSES */
+            /* STAR ROWS */
+            .star-row { display: inline-flex; gap: 1px; }
+            .star-full  { color: #D4A843; }
+            .star-half  { color: #D4A843; }
+            .star-empty { color: #D4A843; opacity: 0.25; }
+            .rating-num { font-weight: 700; color: #D4A843; }
+            .rating-count { color: var(--muted); }
+            .rating-none { color: var(--muted); font-style: italic; }
+
             .all-courses-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
             .all-courses-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--text); }
             .course-count-badge { background: var(--purple-light); color: var(--purple); font-size: 0.78rem; font-weight: 700; padding: 4px 12px; border-radius: 20px; }
@@ -172,18 +157,7 @@
             .card-body { padding: 16px; flex: 1; display: flex; flex-direction: column; }
             .card-org { font-size: 0.68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
             .card-name { font-size: 0.88rem; font-weight: 700; line-height: 1.4; color: var(--text); margin-bottom: 10px; flex: 1; }
-
-            /* RATING STARS — dùng chung cho cả trending và card lưới */
             .card-meta { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--muted); margin-bottom: 12px; flex-wrap: wrap; }
-            .mini-meta { font-size: 0.68rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
-            .star-row { display: inline-flex; gap: 1px; }
-            .star-full  { color: #D4A843; }
-            .star-half  { color: #D4A843; }
-            .star-empty { color: #D4A843; opacity: 0.25; }
-            .rating-num { font-weight: 700; color: #D4A843; }
-            .rating-count { color: var(--muted); }
-            .rating-none { color: var(--muted); font-style: italic; }
-
             .card-footer-row { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); }
             .card-price { font-size: 1rem; font-weight: 700; color: var(--purple); }
             .card-price.free { color: #2E7D32; }
@@ -207,8 +181,6 @@
             .bg4 { background: linear-gradient(135deg, #1A0D35, #5B2DC5); }
             .bg5 { background: linear-gradient(135deg, #0D47A1, #1565C0); }
             .bg6 { background: linear-gradient(135deg, #1B5E20, #388E3C); }
-
-            /* MODAL */
             .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(10,5,30,0.65); backdrop-filter: blur(5px); z-index: 1000; align-items: center; justify-content: center; }
             .modal-overlay.show { display: flex; }
             .modal-box { background: #fff; border-radius: 20px; padding: 36px; width: 440px; max-width: 95vw; box-shadow: 0 24px 64px rgba(108,63,197,0.3); animation: modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1); }
@@ -248,7 +220,6 @@
             <i class="bi bi-heart-fill"></i>
             <span id="toastMsg">Đã thêm vào mục yêu thích</span>
         </div>
-
         <div class="enroll-loading" id="enrollLoading">
             <div class="enroll-spinner"></div>
             <div class="enroll-loading-text">Đang đăng ký khóa học...</div>
@@ -273,7 +244,7 @@
             <div class="nav-right">
                 <div class="search-bar">
                     <i class="bi bi-search"></i>
-                    <input type="text" placeholder="Tìm khóa học..." id="searchInput" oninput="filterCourses()">
+                    <input type="text" placeholder="Tìm khóa học..." id="searchInput" oninput="applyFilters()">
                 </div>
                 <c:if test="${not empty sessionScope.user}">
                     <a href="paymentController" class="balance-pill">
@@ -298,7 +269,8 @@
                                         <c:forEach var="wc" items="${WISHLIST_COURSES}">
                                             <div class="wishlist-dd-item" id="wish-item-${wc.courseId}">
                                                 <div class="wishlist-dd-thumb">
-                                                    <img src="${pageContext.request.contextPath}/img/courses/course${wc.courseId}.jpg" alt="${wc.courseName}" onerror="this.style.display='none';">
+                                                    <img src="${pageContext.request.contextPath}/img/courses/course${wc.courseId}.jpg"
+                                                         alt="${wc.courseName}" onerror="this.style.display='none';">
                                                 </div>
                                                 <div class="wishlist-dd-info">
                                                     <div class="wishlist-dd-name">${wc.courseName}</div>
@@ -367,20 +339,16 @@
             </div>
         </div>
 
-        <!-- FILTER BAR -->
+        <%-- FILTER BAR: chips từ CATEGORY_LIST (DB), không cần TOPIC_MAP JS --%>
         <div class="filter-bar">
             <span class="filter-label"><i class="bi bi-funnel"></i> Lọc:</span>
             <span class="filter-chip active" onclick="filterByTopic(this, '')">Tất cả</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'ai')">🤖 AI & ML</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'data')">📊 Data Science</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'web')">💻 Web Dev</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'design')">🎨 Design</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'business')">💼 Business</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'mobile')">📱 Mobile</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'cloud')">☁️ Cloud</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'security')">🔐 Security</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'language')">🌐 Ngôn ngữ</span>
-            <span class="filter-chip" onclick="filterByTopic(this, 'programming')">⌨️ Lập trình</span>
+            <c:forEach var="cat" items="${CATEGORY_LIST}">
+                <span class="filter-chip"
+                      onclick="filterByTopic(this, '${fn:escapeXml(fn:toLowerCase(cat.categoryName))}')">
+                    ${cat.categoryName}
+                </span>
+            </c:forEach>
         </div>
 
         <!-- MAIN CONTENT -->
@@ -397,7 +365,9 @@
                 <div class="trending-title"><i class="bi bi-fire"></i> Khóa học nổi bật</div>
                 <div class="trending-grid">
 
-                    <%-- ===== COL 1: PHỔ BIẾN NHẤT ===== --%>
+                    <%-- Helper macro: render star row bằng JSTL --%>
+                    <%-- Dùng lại cho cả trending và card lưới --%>
+
                     <div class="trending-col">
                         <div class="trending-col-header">
                             <span class="trending-col-title">🏆 Phổ biến nhất</span>
@@ -408,7 +378,8 @@
                             <c:set var="tCount" value="${REVIEW_COUNT_MAP[course.courseId]}"/>
                             <div class="mini-course-card">
                                 <div class="mini-thumb bg1">
-                                    <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg" alt="${course.courseName}" onerror="this.style.display='none';">
+                                    <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg"
+                                         alt="${course.courseName}" onerror="this.style.display='none';">
                                 </div>
                                 <div class="mini-info">
                                     <div class="mini-org"><i class="bi bi-building"></i> DUK Academy</div>
@@ -416,8 +387,17 @@
                                     <div class="mini-meta">
                                         <c:choose>
                                             <c:when test="${tCount > 0}">
-                                                <span class="star-row" data-avg="${tAvg}"></span>
-                                                <span style="color:#D4A843; font-weight:700;"><fmt:formatNumber value="${tAvg}" minFractionDigits="1" maxFractionDigits="1"/></span>
+                                                <%-- Stars bằng JSTL, không cần JS renderStars() --%>
+                                                <span class="star-row">
+                                                    <c:forEach begin="1" end="5" var="i">
+                                                        <c:choose>
+                                                            <c:when test="${tAvg >= i}"><span class="star-full">★</span></c:when>
+                                                            <c:when test="${tAvg + 0.5 >= i}"><span class="star-half">½</span></c:when>
+                                                            <c:otherwise><span class="star-empty">★</span></c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </span>
+                                                <span class="rating-num"><fmt:formatNumber value="${tAvg}" minFractionDigits="1" maxFractionDigits="1"/></span>
                                                 <span>(${tCount})</span>
                                             </c:when>
                                             <c:otherwise><span class="rating-none">Chưa có đánh giá</span></c:otherwise>
@@ -434,7 +414,6 @@
                         </c:forEach>
                     </div>
 
-                    <%-- ===== COL 2: MỚI NHẤT ===== --%>
                     <div class="trending-col">
                         <div class="trending-col-header">
                             <span class="trending-col-title">✨ Mới nhất</span>
@@ -445,7 +424,8 @@
                             <c:set var="tCount" value="${REVIEW_COUNT_MAP[course.courseId]}"/>
                             <div class="mini-course-card">
                                 <div class="mini-thumb bg2">
-                                    <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg" alt="${course.courseName}" onerror="this.style.display='none';">
+                                    <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg"
+                                         alt="${course.courseName}" onerror="this.style.display='none';">
                                 </div>
                                 <div class="mini-info">
                                     <div class="mini-org"><i class="bi bi-building"></i> DUK Academy</div>
@@ -453,8 +433,16 @@
                                     <div class="mini-meta">
                                         <c:choose>
                                             <c:when test="${tCount > 0}">
-                                                <span class="star-row" data-avg="${tAvg}"></span>
-                                                <span style="color:#D4A843; font-weight:700;"><fmt:formatNumber value="${tAvg}" minFractionDigits="1" maxFractionDigits="1"/></span>
+                                                <span class="star-row">
+                                                    <c:forEach begin="1" end="5" var="i">
+                                                        <c:choose>
+                                                            <c:when test="${tAvg >= i}"><span class="star-full">★</span></c:when>
+                                                            <c:when test="${tAvg + 0.5 >= i}"><span class="star-half">½</span></c:when>
+                                                            <c:otherwise><span class="star-empty">★</span></c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </span>
+                                                <span class="rating-num"><fmt:formatNumber value="${tAvg}" minFractionDigits="1" maxFractionDigits="1"/></span>
                                                 <span>(${tCount})</span>
                                             </c:when>
                                             <c:otherwise><span class="rating-none">Chưa có đánh giá</span></c:otherwise>
@@ -471,7 +459,6 @@
                         </c:forEach>
                     </div>
 
-                    <%-- ===== COL 3: KỸ NĂNG AI HOT ===== --%>
                     <div class="trending-col">
                         <div class="trending-col-header">
                             <span class="trending-col-title">🤖 Kỹ năng AI hot</span>
@@ -482,7 +469,8 @@
                             <c:set var="tCount" value="${REVIEW_COUNT_MAP[course.courseId]}"/>
                             <div class="mini-course-card">
                                 <div class="mini-thumb bg3">
-                                    <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg" alt="${course.courseName}" onerror="this.style.display='none';">
+                                    <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg"
+                                         alt="${course.courseName}" onerror="this.style.display='none';">
                                 </div>
                                 <div class="mini-info">
                                     <div class="mini-org"><i class="bi bi-building"></i> DUK Academy</div>
@@ -490,8 +478,16 @@
                                     <div class="mini-meta">
                                         <c:choose>
                                             <c:when test="${tCount > 0}">
-                                                <span class="star-row" data-avg="${tAvg}"></span>
-                                                <span style="color:#D4A843; font-weight:700;"><fmt:formatNumber value="${tAvg}" minFractionDigits="1" maxFractionDigits="1"/></span>
+                                                <span class="star-row">
+                                                    <c:forEach begin="1" end="5" var="i">
+                                                        <c:choose>
+                                                            <c:when test="${tAvg >= i}"><span class="star-full">★</span></c:when>
+                                                            <c:when test="${tAvg + 0.5 >= i}"><span class="star-half">½</span></c:when>
+                                                            <c:otherwise><span class="star-empty">★</span></c:otherwise>
+                                                        </c:choose>
+                                                    </c:forEach>
+                                                </span>
+                                                <span class="rating-num"><fmt:formatNumber value="${tAvg}" minFractionDigits="1" maxFractionDigits="1"/></span>
                                                 <span>(${tCount})</span>
                                             </c:when>
                                             <c:otherwise><span class="rating-none">Chưa có đánh giá</span></c:otherwise>
@@ -532,13 +528,16 @@
                                 <c:set var="avgRating"   value="${AVG_RATING_MAP[course.courseId]}"/>
                                 <c:set var="reviewCount" value="${REVIEW_COUNT_MAP[course.courseId]}"/>
 
+                                <%-- data-topic lấy từ Course_Category map, filter JS so sánh trực tiếp --%>
+                                <c:set var="cardTopic" value="${COURSE_CATEGORY_MAP[course.courseId]}"/>
                                 <div class="course-card-full ${isCompleted ? 'completed' : ''}"
-                                     data-topic="${course.topic}" data-name="${course.courseName}">
+                                     data-topic="${not empty cardTopic ? cardTopic : ''}"
+                                     data-name="${fn:toLowerCase(course.courseName)}">
                                     <div class="card-thumb bg${(st.index % 6) + 1}">
                                         <img src="${pageContext.request.contextPath}/img/courses/course${course.courseId}.jpg"
                                              alt="${course.courseName}" onerror="this.style.display='none';">
                                         <div class="card-thumb-overlay"></div>
-                                        <span class="card-topic-badge">${course.topic}</span>
+                                        <span class="card-topic-badge">${not empty cardTopic ? cardTopic : course.topic}</span>
                                         <c:if test="${isCompleted}">
                                             <span class="card-completed-overlay"><i class="bi bi-trophy-fill"></i> Hoàn thành</span>
                                         </c:if>
@@ -563,7 +562,15 @@
                                         <div class="card-meta">
                                             <c:choose>
                                                 <c:when test="${reviewCount > 0}">
-                                                    <span class="star-row" data-avg="${avgRating}"></span>
+                                                    <span class="star-row">
+                                                        <c:forEach begin="1" end="5" var="i">
+                                                            <c:choose>
+                                                                <c:when test="${avgRating >= i}"><span class="star-full">★</span></c:when>
+                                                                <c:when test="${avgRating + 0.5 >= i}"><span class="star-half">½</span></c:when>
+                                                                <c:otherwise><span class="star-empty">★</span></c:otherwise>
+                                                            </c:choose>
+                                                        </c:forEach>
+                                                    </span>
                                                     <span class="rating-num">
                                                         <fmt:formatNumber value="${avgRating}" minFractionDigits="1" maxFractionDigits="1"/>
                                                     </span>
@@ -627,7 +634,7 @@
             </div>
         </footer>
 
-        <!-- MODAL XÁC NHẬN ĐĂNG KÝ -->
+        <!-- MODAL -->
         <div class="modal-overlay" id="enrollModal" onclick="closeModalOutside(event)">
             <div class="modal-box">
                 <div class="modal-icon">🎓</div>
@@ -655,195 +662,122 @@
         <script>
             const USER_ID = '${sessionScope.user.userId}';
 
-            /* ===== RENDER SAO — dùng chung cho trending và card lưới ===== */
-            function renderStars() {
-                document.querySelectorAll('.star-row[data-avg]').forEach(el => {
-                    const avg = parseFloat(el.dataset.avg) || 0;
-                    let html = '';
-                    for (let i = 1; i <= 5; i++) {
-                        if (avg >= i - 0.25)
-                            html += '<span class="star-full">★</span>';
-                        else if (avg >= i - 0.75)
-                            html += '<span class="star-half">½</span>';
-                        else
-                            html += '<span class="star-empty">★</span>';
-                    }
-                    el.innerHTML = html;
-                });
-            }
-            renderStars();
+            // ── Cache DOM elements dùng nhiều lần ───────────────────────
+            const elUserDD  = document.getElementById('userDropdown');
+            const elWishDD  = document.getElementById('wishlistDD');
+            const elWishList= document.getElementById('wishlistDDList');
+            const elWishCnt = document.getElementById('wishCount');
+            const elModal   = document.getElementById('enrollModal');
+            const elToast   = document.getElementById('toastNoti');
+            const fmt = val => Number(val).toLocaleString('vi-VN') + ' ₫';
 
-            /* ===== DROPDOWN USER ===== */
-            function toggleDropdown() {
-                document.getElementById('userDropdown').classList.toggle('show');
-            }
-
-            /* ===== DROPDOWN WISHLIST ===== */
+            // ── Dropdown: đóng khi click ngoài ──────────────────────────
+            document.addEventListener('click', e => {
+                if (!document.querySelector('.user-menu')?.contains(e.target)) elUserDD?.classList.remove('show');
+                if (!document.getElementById('wishlistWrap')?.contains(e.target)) elWishDD?.classList.remove('show');
+            });
+            const toggleDropdown  = () => elUserDD.classList.toggle('show');
             function toggleWishlistDD(e) {
                 e.stopPropagation();
-                document.getElementById('wishlistDD').classList.toggle('show');
-                document.getElementById('userDropdown') && document.getElementById('userDropdown').classList.remove('show');
+                elWishDD.classList.toggle('show');
+                elUserDD?.classList.remove('show');
             }
 
-            document.addEventListener('click', function(e) {
-                const ud = document.getElementById('userDropdown');
-                const um = document.querySelector('.user-menu');
-                const wd = document.getElementById('wishlistDD');
-                const ww = document.getElementById('wishlistWrap');
-                if (ud && um && !um.contains(e.target) && !ud.contains(e.target)) ud.classList.remove('show');
-                if (wd && ww && !ww.contains(e.target)) wd.classList.remove('show');
-            });
-
-            /* ===== TOAST ===== */
+            // ── Toast ────────────────────────────────────────────────────
             let toastTimer;
             function showToast(msg, type) {
-                const el = document.getElementById('toastNoti');
-                document.getElementById('toastMsg').textContent = msg;
-                el.querySelector('i').className = type === 'add' ? 'bi bi-heart-fill' : 'bi bi-heart';
-                el.className = 'toast-noti ' + type + ' show';
+                elToast.querySelector('#toastMsg').textContent = msg;
+                elToast.querySelector('i').className = type === 'add' ? 'bi bi-heart-fill' : 'bi bi-heart';
+                elToast.className = `toast-noti ${type} show`;
                 clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+                toastTimer = setTimeout(() => elToast.classList.remove('show'), 2800);
             }
 
-            /* ===== WISHLIST AJAX ===== */
+            // ── Wishlist AJAX ─────────────────────────────────────────────
             function toggleWishlist(e, courseId, courseName, fee) {
-                e.preventDefault();
-                e.stopPropagation();
-                if (!USER_ID) { window.location.href = 'login.jsp'; return; }
+                e.preventDefault(); e.stopPropagation();
+                if (!USER_ID) { location.href = 'login.jsp'; return; }
                 const btn = document.getElementById('wish-btn-' + courseId);
-                const isIn = btn && btn.classList.contains('in-wish');
-                const url = 'wishlistController?action=' + (isIn ? 'remove' : 'add') + '&courseId=' + courseId + '&userId=' + USER_ID + '&ajax=1';
-                fetch(url).then(() => {
-                    if (!isIn) {
-                        if (btn) { btn.classList.add('in-wish'); btn.querySelector('i').className = 'bi bi-heart-fill'; btn.title = 'Bỏ yêu thích'; }
-                        addToWishlistDD(courseId, courseName, fee);
-                        updateWishCount(1);
-                        showToast('Đã thêm vào mục yêu thích ❤️', 'add');
-                    } else {
-                        if (btn) { btn.classList.remove('in-wish'); btn.querySelector('i').className = 'bi bi-heart'; btn.title = 'Thêm yêu thích'; }
-                        const item = document.getElementById('wish-item-' + courseId);
-                        if (item) item.remove();
-                        updateWishCount(-1);
-                        checkWishlistEmpty();
-                        showToast('Đã xóa khỏi mục yêu thích', 'remove');
-                    }
-                }).catch(() => showToast('Có lỗi xảy ra, thử lại sau', 'remove'));
+                const isIn = btn?.classList.contains('in-wish');
+                fetch(`wishlistController?action=${isIn ? 'remove' : 'add'}&courseId=${courseId}&userId=${USER_ID}&ajax=1`)
+                    .then(() => {
+                        if (!isIn) {
+                            btn?.classList.add('in-wish');
+                            if (btn) { btn.querySelector('i').className = 'bi bi-heart-fill'; btn.title = 'Bỏ yêu thích'; }
+                            // Thêm vào dropdown
+                            document.getElementById('wishEmptyMsg')?.remove();
+                            if (!document.getElementById('wish-item-' + courseId)) {
+                                const feeText = parseFloat(fee) === 0 ? 'Miễn phí' : fmt(fee);
+                                const div = document.createElement('div');
+                                div.className = 'wishlist-dd-item'; div.id = 'wish-item-' + courseId;
+                                div.innerHTML = `<div class="wishlist-dd-thumb">📚</div>
+                                    <div class="wishlist-dd-info">
+                                        <div class="wishlist-dd-name">${courseName}</div>
+                                        <div class="wishlist-dd-price">${feeText}</div>
+                                    </div>
+                                    <button class="wishlist-dd-remove" title="Xóa"><i class="bi bi-x"></i></button>`;
+                                div.querySelector('button').addEventListener('click', e => toggleWishlist(e, courseId, courseName, fee));
+                                elWishList.insertBefore(div, elWishList.firstChild);
+                            }
+                            elWishCnt.textContent = +elWishCnt.textContent + 1;
+                            showToast('Đã thêm vào mục yêu thích ❤️', 'add');
+                        } else {
+                            btn?.classList.remove('in-wish');
+                            if (btn) { btn.querySelector('i').className = 'bi bi-heart'; btn.title = 'Thêm yêu thích'; }
+                            document.getElementById('wish-item-' + courseId)?.remove();
+                            const newCount = Math.max(0, +elWishCnt.textContent - 1);
+                            elWishCnt.textContent = newCount;
+                            // Hiện empty state nếu hết item
+                            if (!elWishList.querySelector('.wishlist-dd-item'))
+                                elWishList.innerHTML = '<div class="wishlist-dd-empty" id="wishEmptyMsg"><i class="bi bi-heart"></i> Chưa có khóa học yêu thích</div>';
+                            showToast('Đã xóa khỏi mục yêu thích', 'remove');
+                        }
+                    }).catch(() => showToast('Có lỗi xảy ra, thử lại sau', 'remove'));
             }
 
-            function addToWishlistDD(courseId, courseName, fee) {
-                const list = document.getElementById('wishlistDDList');
-                const empty = document.getElementById('wishEmptyMsg');
-                if (empty) empty.remove();
-                if (document.getElementById('wish-item-' + courseId)) return;
-                const feeText = (parseFloat(fee) === 0) ? 'Miễn phí' : Number(fee).toLocaleString('vi-VN') + ' \u20ab';
-                const div = document.createElement('div');
-                div.className = 'wishlist-dd-item';
-                div.id = 'wish-item-' + courseId;
-                div.innerHTML = '<div class="wishlist-dd-thumb">\uD83D\uDCDA</div>' +
-                    '<div class="wishlist-dd-info"><div class="wishlist-dd-name">' + courseName + '</div>' +
-                    '<div class="wishlist-dd-price">' + feeText + '</div></div>' +
-                    '<button class="wishlist-dd-remove" title="X\u00f3a"><i class="bi bi-x"></i></button>';
-                div.querySelector('button').addEventListener('click', e => toggleWishlist(e, courseId, courseName, fee));
-                list.insertBefore(div, list.firstChild);
-            }
-
-            function updateWishCount(delta) {
-                const el = document.getElementById('wishCount');
-                if (el) el.textContent = Math.max(0, parseInt(el.textContent || '0') + delta);
-            }
-
-            function checkWishlistEmpty() {
-                const list = document.getElementById('wishlistDDList');
-                if (list && list.querySelectorAll('.wishlist-dd-item').length === 0)
-                    list.innerHTML = '<div class="wishlist-dd-empty" id="wishEmptyMsg"><i class="bi bi-heart"></i> Chưa có khóa học yêu thích</div>';
-            }
-
-            /* ===== MODAL ===== */
-            function fmt(val) { return Number(val).toLocaleString('vi-VN') + ' ₫'; }
-
+            // ── Modal đăng ký ─────────────────────────────────────────────
             function openModal(courseId, courseName, fee, balance) {
                 const feeNum = parseFloat(fee) || 0, balNum = parseFloat(balance) || 0, after = balNum - feeNum;
-                document.getElementById('modalCourseId').value = courseId;
+                document.getElementById('modalCourseId').value       = courseId;
                 document.getElementById('modalCourseName').textContent = courseName;
-                document.getElementById('modalFee').textContent = fmt(feeNum);
-                document.getElementById('modalBalance').textContent = fmt(balNum);
+                document.getElementById('modalFee').textContent      = fmt(feeNum);
+                document.getElementById('modalBalance').textContent  = fmt(balNum);
+                const insufficient = after < 0;
                 const afterEl = document.getElementById('modalAfter');
-                const warnEl = document.getElementById('modalWarning');
-                const confirmEl = document.getElementById('btnConfirm');
-                if (after < 0) {
-                    afterEl.textContent = 'Không đủ số dư!';
-                    afterEl.className = 'modal-info-value danger-val';
-                    warnEl.style.display = 'block';
-                    confirmEl.disabled = true;
-                } else {
-                    afterEl.textContent = fmt(after);
-                    afterEl.className = 'modal-info-value after-val';
-                    warnEl.style.display = 'none';
-                    confirmEl.disabled = false;
-                }
-                document.getElementById('enrollModal').classList.add('show');
+                afterEl.textContent = insufficient ? 'Không đủ số dư!' : fmt(after);
+                afterEl.className   = `modal-info-value ${insufficient ? 'danger-val' : 'after-val'}`;
+                document.getElementById('modalWarning').style.display = insufficient ? 'block' : 'none';
+                document.getElementById('btnConfirm').disabled        = insufficient;
+                elModal.classList.add('show');
                 document.body.style.overflow = 'hidden';
             }
-
-            function closeModal() {
-                document.getElementById('enrollModal').classList.remove('show');
-                document.body.style.overflow = '';
-            }
-            function closeModalOutside(e) {
-                if (e.target === document.getElementById('enrollModal')) closeModal();
-            }
+            const closeModal = () => { elModal.classList.remove('show'); document.body.style.overflow = ''; };
+            elModal.addEventListener('click', e => { if (e.target === elModal) closeModal(); });
             document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
             function onEnrollSubmit() {
-                document.getElementById('enrollModal').classList.remove('show');
-                document.body.style.overflow = '';
+                closeModal();
                 document.getElementById('enrollLoading').classList.add('show');
             }
 
-            /* ===== FILTER ===== */
-            const TOPIC_MAP = {
-                ai:          ['ai', 'machine learning', 'ml', 'deep learning', 'neural', 'nlp', 'computer vision', 'tensorflow', 'pytorch', 'chatgpt', 'llm', 'generative', 'prompt'],
-                data:        ['data', 'python', 'pandas', 'sql', 'analytics', 'statistics', 'tableau', 'power bi', 'excel', 'bi', 'hadoop', 'spark', 'etl'],
-                web:         ['web', 'html', 'css', 'javascript', 'js', 'react', 'vue', 'angular', 'nodejs', 'php', 'laravel', 'django', 'flask', 'frontend', 'backend', 'fullstack', 'typescript', 'next.js', 'api', 'rest', 'java'],
-                design:      ['design', 'ui', 'ux', 'figma', 'photoshop', 'illustrator', 'graphic', 'adobe', 'canva', 'sketch', 'prototype', 'wireframe'],
-                mobile:      ['mobile', 'android', 'ios', 'flutter', 'react native', 'swift', 'kotlin', 'app'],
-                cloud:       ['cloud', 'aws', 'azure', 'gcp', 'google cloud', 'devops', 'docker', 'kubernetes', 'ci/cd', 'linux', 'server', 'network'],
-                security:    ['security', 'cybersecurity', 'hacking', 'ethical', 'pentest', 'firewall', 'encryption', 'blockchain', 'crypto'],
-                language:    ['english', 'tiếng anh', 'giao tiếp', 'ielts', 'toeic', 'toefl', 'japanese', 'tiếng nhật', 'korean', 'tiếng hàn', 'chinese', 'tiếng trung', 'french', 'tiếng pháp', 'german', 'language', 'ngôn ngữ', 'communication', 'speaking', 'writing', 'grammar'],
-                programming: ['java', 'c++', 'c#', 'golang', 'go lang', 'rust', 'ruby', 'scala', 'kotlin', 'swift', 'algorithm', 'data structure', 'cấu trúc dữ liệu', 'lập trình', 'programming', 'oop', 'design pattern', 'clean code'],
-                business:    ['business', 'marketing', 'management', 'finance', 'accounting', 'hr', 'leadership', 'project management', 'scrum', 'agile', 'pmp', 'mba'],
-            };
-
-            function getTopicGroup(t) {
-                t = (t || '').toLowerCase();
-                for (const [g, kws] of Object.entries(TOPIC_MAP))
-                    if (kws.some(kw => t.includes(kw))) return g;
-                return t;
-            }
-
-            document.querySelectorAll('.course-card-full').forEach(c => {
-                c.dataset.group = getTopicGroup(c.dataset.topic || '');
-            });
-
-            let currentGroup = '';
-            function filterByTopic(el, group) {
+            // ── Filter + Search ───────────────────────────────────────────
+            let currentTopic = '';
+            function filterByTopic(el, topic) {
                 document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
                 el.classList.add('active');
-                currentGroup = group;
+                currentTopic = topic.toLowerCase();
                 applyFilters();
             }
-            function filterCourses() { applyFilters(); }
             function applyFilters() {
-                const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+                const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
                 let visible = 0;
                 document.querySelectorAll('.course-card-full').forEach(card => {
-                    const ok = (!search || ((card.dataset.name || '').toLowerCase().includes(search) || (card.dataset.topic || '').toLowerCase().includes(search)))
-                            && (!currentGroup || card.dataset.group === currentGroup);
+                    const ok = (!currentTopic || card.dataset.topic === currentTopic)
+                            && (!search || card.dataset.name.includes(search) || card.dataset.topic.includes(search));
                     card.style.display = ok ? '' : 'none';
                     if (ok) visible++;
                 });
-                const b = document.getElementById('courseCount');
-                if (b) b.textContent = visible + ' khóa học';
+                const badge = document.getElementById('courseCount');
+                if (badge) badge.textContent = visible + ' khóa học';
             }
         </script>
     </body>
