@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 
 import model.CourseDAO;
 import model.CourseDTO;
-import model.UserCourseDAO;
 import model.UserDTO;
 
 public class mainController extends HttpServlet {

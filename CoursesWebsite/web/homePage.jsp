@@ -7,25 +7,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-    Object userObj = session.getAttribute("user");
-    if (userObj == null) {
-        response.sendRedirect(request.getContextPath() + "/login.jsp");
-        return;
-    }
-%>
-<%!
-    public String fmtBal(Object bal) {
-    if (bal == null) return "0";
-    try {
-        double d = Double.parseDouble(bal.toString().trim());
-        long v = (long) d;
-        return String.format("%,d", v).replace(',', '.');
-    } catch (Exception e) {
-        return "0";
-    }
-}
-%>
+<fmt:setLocale value="vi_VN"/>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -109,35 +91,7 @@
                 gap: 12px;
             }
 
-            .search-bar {
-                display: flex;
-                align-items: center;
-                background: rgba(255,255,255,0.1);
-                border: 1px solid rgba(255,255,255,0.15);
-                border-radius: 8px;
-                padding: 7px 14px;
-                gap: 8px;
-                transition: background 0.15s;
-            }
-            .search-bar:hover {
-                background: rgba(255,255,255,0.15);
-            }
-            .search-bar input {
-                background: none;
-                border: none;
-                outline: none;
-                color: #fff;
-                font-size: 0.875rem;
-                font-family: 'DM Sans', sans-serif;
-                width: 180px;
-            }
-            .search-bar input::placeholder {
-                color: rgba(255,255,255,0.5);
-            }
-            .search-bar i {
-                color: rgba(255,255,255,0.6);
-                font-size: 0.9rem;
-            }
+
 
             /* ===== BALANCE PILL ===== */
             .balance-pill {
@@ -223,14 +177,8 @@
                 animation: ddIn 0.18s ease;
             }
             @keyframes ddIn {
-                from {
-                    opacity:0;
-                    transform:translateY(-8px);
-                }
-                to {
-                    opacity:1;
-                    transform:translateY(0);
-                }
+                from { opacity:0; transform:translateY(-8px); }
+                to   { opacity:1; transform:translateY(0); }
             }
             .wishlist-dd-header {
                 padding: 14px 18px 10px;
@@ -247,18 +195,14 @@
                 align-items: center;
                 gap: 7px;
             }
-            .wishlist-dd-title i {
-                color: #E53935;
-            }
+            .wishlist-dd-title i { color: #E53935; }
             .wishlist-dd-link {
                 font-size: 0.75rem;
                 font-weight: 600;
                 color: var(--purple);
                 text-decoration: none;
             }
-            .wishlist-dd-link:hover {
-                text-decoration: underline;
-            }
+            .wishlist-dd-link:hover { text-decoration: underline; }
             .wishlist-dd-list {
                 max-height: 320px;
                 overflow-y: auto;
@@ -272,9 +216,7 @@
                 border-radius: 10px;
                 transition: background 0.12s;
             }
-            .wishlist-dd-item:hover {
-                background: var(--purple-light);
-            }
+            .wishlist-dd-item:hover { background: var(--purple-light); }
             .wishlist-dd-thumb {
                 width: 44px;
                 height: 44px;
@@ -287,15 +229,8 @@
                 flex-shrink: 0;
                 overflow: hidden;
             }
-            .wishlist-dd-thumb img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-            .wishlist-dd-info {
-                flex: 1;
-                min-width: 0;
-            }
+            .wishlist-dd-thumb img { width: 100%; height: 100%; object-fit: cover; }
+            .wishlist-dd-info { flex: 1; min-width: 0; }
             .wishlist-dd-name {
                 font-size: 0.8rem;
                 font-weight: 700;
@@ -321,10 +256,7 @@
                 transition: color 0.15s, background 0.15s;
                 flex-shrink: 0;
             }
-            .wishlist-dd-remove:hover {
-                color: #E53935;
-                background: #FFF3F3;
-            }
+            .wishlist-dd-remove:hover { color: #E53935; background: #FFF3F3; }
             .wishlist-dd-empty {
                 padding: 32px 16px;
                 text-align: center;
@@ -348,9 +280,7 @@
                 transition: background 0.15s;
                 border: 1px solid rgba(255,255,255,0.15);
             }
-            .user-menu:hover {
-                background: rgba(255,255,255,0.08);
-            }
+            .user-menu:hover { background: rgba(255,255,255,0.08); }
             .user-avatar {
                 width: 34px;
                 height: 34px;
@@ -387,9 +317,7 @@
                 display: none;
                 z-index: 200;
             }
-            .dropdown-menu-custom.show {
-                display: block;
-            }
+            .dropdown-menu-custom.show { display: block; }
             .dropdown-menu-custom a {
                 display: flex;
                 align-items: center;
@@ -402,22 +330,10 @@
                 font-weight: 500;
                 transition: background 0.12s;
             }
-            .dropdown-menu-custom a:hover {
-                background: var(--purple-light);
-                color: var(--purple);
-            }
-            .dropdown-menu-custom .divider-drop {
-                height: 1px;
-                background: var(--border);
-                margin: 6px 0;
-            }
-            .dropdown-menu-custom .logout-link {
-                color: #CC0000;
-            }
-            .dropdown-menu-custom .logout-link:hover {
-                background: #FFF3F3;
-                color: #CC0000;
-            }
+            .dropdown-menu-custom a:hover { background: var(--purple-light); color: var(--purple); }
+            .dropdown-menu-custom .divider-drop { height: 1px; background: var(--border); margin: 6px 0; }
+            .dropdown-menu-custom .logout-link { color: #CC0000; }
+            .dropdown-menu-custom .logout-link:hover { background: #FFF3F3; color: #CC0000; }
 
             /* ===== HERO ===== */
             .hero {
@@ -480,9 +396,7 @@
                 font-weight: 500;
                 align-self: flex-start;
             }
-            .welcome-badge strong {
-                color: var(--gold);
-            }
+            .welcome-badge strong { color: var(--gold); }
             .hero h1 {
                 font-family: 'Playfair Display', serif;
                 font-size: 3.4rem;
@@ -491,10 +405,7 @@
                 line-height: 1.15;
                 margin-bottom: 20px;
             }
-            .hero h1 em {
-                font-style: normal;
-                color: var(--gold);
-            }
+            .hero h1 em { font-style: normal; color: var(--gold); }
             .hero p {
                 font-size: 1.05rem;
                 color: rgba(255,255,255,0.78);
@@ -502,11 +413,7 @@
                 line-height: 1.7;
                 margin-bottom: 36px;
             }
-            .hero-actions {
-                display: flex;
-                gap: 14px;
-                flex-wrap: wrap;
-            }
+            .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
             .btn-hero-primary {
                 background: var(--gold);
                 color: var(--purple-deep);
@@ -522,11 +429,7 @@
                 align-items: center;
                 gap: 8px;
             }
-            .btn-hero-primary:hover {
-                opacity: 0.9;
-                transform: translateY(-1px);
-                color: var(--purple-deep);
-            }
+            .btn-hero-primary:hover { opacity: 0.9; transform: translateY(-1px); color: var(--purple-deep); }
             .btn-hero-secondary {
                 background: transparent;
                 color: #fff;
@@ -541,11 +444,7 @@
                 align-items: center;
                 gap: 8px;
             }
-            .btn-hero-secondary:hover {
-                border-color: #fff;
-                background: rgba(255,255,255,0.06);
-                color: #fff;
-            }
+            .btn-hero-secondary:hover { border-color: #fff; background: rgba(255,255,255,0.06); color: #fff; }
 
             .hero-right {
                 flex: 0 0 360px;
@@ -583,329 +482,132 @@
                 gap: 12px;
                 transition: transform 0.15s;
             }
-            .instructor-card:last-child {
-                margin-bottom: 0;
-            }
-            .instructor-card:hover {
-                transform: translateX(3px);
-            }
+            .instructor-card:last-child { margin-bottom: 0; }
+            .instructor-card:hover { transform: translateX(3px); }
             .instructor-avatar {
-                width: 46px;
-                height: 46px;
-                min-width: 46px;
+                width: 46px; height: 46px; min-width: 46px;
                 border-radius: 50%;
-                object-fit: cover;
-                object-position: center top;
+                object-fit: cover; object-position: center top;
                 flex-shrink: 0;
                 border: 2px solid var(--border);
                 display: block;
             }
             .instructor-avatar-placeholder {
-                width: 46px;
-                height: 46px;
-                min-width: 46px;
-                border-radius: 50%;
-                flex-shrink: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1.1rem;
-                font-weight: 700;
-                color: #fff;
+                width: 46px; height: 46px; min-width: 46px;
+                border-radius: 50%; flex-shrink: 0;
+                display: flex; align-items: center; justify-content: center;
+                font-size: 1.1rem; font-weight: 700; color: #fff;
                 border: 2px solid rgba(255,255,255,0.3);
             }
-            .av1 {
-                background: linear-gradient(135deg, #6C3FC5, #9B72E8);
-            }
-            .av2 {
-                background: linear-gradient(135deg, #D4A843, #F5CC6A);
-                color: #1E0A4A;
-            }
-            .av3 {
-                background: linear-gradient(135deg, #1B5E20, #43A047);
-            }
-            .instructor-info {
-                flex: 1;
-                min-width: 0;
-            }
+            .av1 { background: linear-gradient(135deg, #6C3FC5, #9B72E8); }
+            .av2 { background: linear-gradient(135deg, #D4A843, #F5CC6A); color: #1E0A4A; }
+            .av3 { background: linear-gradient(135deg, #1B5E20, #43A047); }
+            .instructor-info { flex: 1; min-width: 0; }
             .instructor-info h4 {
-                font-size: 0.84rem;
-                font-weight: 700;
-                color: var(--text);
-                margin-bottom: 2px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                font-size: 0.84rem; font-weight: 700; color: var(--text);
+                margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             }
-            .instructor-info .ins-subject {
-                font-size: 0.72rem;
-                color: var(--purple);
-                font-weight: 600;
-                margin-bottom: 3px;
-            }
-            .instructor-info .ins-meta {
-                font-size: 0.7rem;
-                color: var(--muted);
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-            .ins-stars {
-                color: var(--gold);
-                font-size: 0.68rem;
-            }
+            .instructor-info .ins-subject { font-size: 0.72rem; color: var(--purple); font-weight: 600; margin-bottom: 3px; }
+            .instructor-info .ins-meta { font-size: 0.7rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+            .ins-stars { color: var(--gold); font-size: 0.68rem; }
             .ins-badge {
-                background: var(--purple-light);
-                color: var(--purple);
-                font-size: 0.6rem;
-                font-weight: 700;
-                padding: 2px 7px;
-                border-radius: 4px;
-                text-transform: uppercase;
-                letter-spacing: 0.3px;
-                flex-shrink: 0;
+                background: var(--purple-light); color: var(--purple);
+                font-size: 0.6rem; font-weight: 700;
+                padding: 2px 7px; border-radius: 4px;
+                text-transform: uppercase; letter-spacing: 0.3px; flex-shrink: 0;
             }
 
             /* ===== COURSES ===== */
-            .courses {
-                background: #F8F5FF;
-                padding: 72px 80px;
-            }
+            .courses { background: #F8F5FF; padding: 72px 80px; }
             .section-eyebrow {
-                font-size: 0.75rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 2px;
-                color: var(--purple);
-                margin-bottom: 8px;
+                font-size: 0.75rem; font-weight: 700;
+                text-transform: uppercase; letter-spacing: 2px;
+                color: var(--purple); margin-bottom: 8px;
             }
             .section-title {
                 font-family: 'Playfair Display', serif;
-                font-size: 2rem;
-                font-weight: 700;
-                color: var(--text);
-                margin-bottom: 8px;
+                font-size: 2rem; font-weight: 700; color: var(--text); margin-bottom: 8px;
             }
-            .section-sub {
-                font-size: 0.95rem;
-                color: var(--muted);
-                margin-bottom: 40px;
-                max-width: 520px;
-            }
-            .course-grid {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                gap: 20px;
-            }
+            .section-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 40px; max-width: 520px; }
+            .course-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
             .course-card {
-                background: #fff;
-                border: 1px solid var(--border);
-                border-radius: 12px;
-                overflow: hidden;
-                text-decoration: none;
-                color: var(--text);
-                transition: box-shadow 0.2s, transform 0.2s;
-                display: block;
+                background: #fff; border: 1px solid var(--border); border-radius: 12px;
+                overflow: hidden; text-decoration: none; color: var(--text);
+                transition: box-shadow 0.2s, transform 0.2s; display: block;
             }
-            .course-card:hover {
-                box-shadow: 0 10px 32px rgba(108,63,197,0.14);
-                transform: translateY(-4px);
-                color: var(--text);
-            }
+            .course-card:hover { box-shadow: 0 10px 32px rgba(108,63,197,0.14); transform: translateY(-4px); color: var(--text); }
             .course-thumb {
-                height: 148px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 3rem;
-                overflow: hidden;
-                position: relative;
+                height: 148px; display: flex; align-items: center; justify-content: center;
+                font-size: 3rem; overflow: hidden; position: relative;
             }
             .course-thumb img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: center;
-                display: block;
-                position: absolute;
-                top: 0;
-                left: 0;
+                width: 100%; height: 100%; object-fit: cover; object-position: center;
+                display: block; position: absolute; top: 0; left: 0;
             }
-            .th1 {
-                background: linear-gradient(135deg, #1E0A4A, #6C3FC5);
-            }
-            .th2 {
-                background: linear-gradient(135deg, #3A1A7A, #9B72E8);
-            }
-            .th3 {
-                background: linear-gradient(135deg, #4E2C96, #D4A843);
-            }
-            .th4 {
-                background: linear-gradient(135deg, #1A0D35, #5B2DC5);
-            }
-            .course-body {
-                padding: 16px 18px 18px;
-            }
-            .course-org {
-                font-size: 0.72rem;
-                font-weight: 700;
-                color: var(--purple);
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                margin-bottom: 6px;
-            }
-            .course-body h3 {
-                font-size: 0.9rem;
-                font-weight: 700;
-                line-height: 1.45;
-                margin-bottom: 10px;
-                color: var(--text);
-            }
-            .course-meta {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 0.78rem;
-            }
-            .course-stars {
-                color: var(--gold);
-            }
-            .course-score {
-                font-weight: 700;
-                color: var(--text);
-            }
-            .course-count {
-                color: var(--muted);
-            }
+            .th1 { background: linear-gradient(135deg, #1E0A4A, #6C3FC5); }
+            .th2 { background: linear-gradient(135deg, #3A1A7A, #9B72E8); }
+            .th3 { background: linear-gradient(135deg, #4E2C96, #D4A843); }
+            .th4 { background: linear-gradient(135deg, #1A0D35, #5B2DC5); }
+            .course-body { padding: 16px 18px 18px; }
+            .course-org { font-size: 0.72rem; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+            .course-body h3 { font-size: 0.9rem; font-weight: 700; line-height: 1.45; margin-bottom: 10px; color: var(--text); }
+            .course-meta { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; }
+            .course-stars { color: var(--gold); }
+            .course-score { font-weight: 700; color: var(--text); }
+            .course-count { color: var(--muted); }
             .course-tag {
-                display: inline-block;
-                background: var(--purple-light);
-                color: var(--purple);
-                font-size: 0.68rem;
-                font-weight: 700;
-                padding: 3px 9px;
-                border-radius: 4px;
-                margin-top: 10px;
+                display: inline-block; background: var(--purple-light); color: var(--purple);
+                font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 4px; margin-top: 10px;
             }
 
             /* ===== FOOTER ===== */
-            footer {
-                background: var(--purple-deep);
-                padding: 56px 80px 24px;
-            }
-            .footer-grid {
-                display: grid;
-                grid-template-columns: 2fr 1fr 1fr 1fr;
-                gap: 48px;
-                margin-bottom: 40px;
-            }
+            footer { background: var(--purple-deep); padding: 56px 80px 24px; }
+            .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 40px; }
             .footer-brand-text {
-                font-family: 'Playfair Display', serif;
-                font-size: 1.5rem;
-                font-weight: 700;
-                color: #fff;
-                display: block;
-                margin-bottom: 10px;
+                font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700;
+                color: #fff; display: block; margin-bottom: 10px;
             }
-            .footer-brand-text span {
-                color: var(--gold);
-            }
-            .footer-desc {
-                font-size: 0.875rem;
-                color: rgba(255,255,255,0.5);
-                line-height: 1.7;
-                margin-bottom: 20px;
-            }
-            .footer-social {
-                display: flex;
-                gap: 10px;
-            }
+            .footer-brand-text span { color: var(--gold); }
+            .footer-desc { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 20px; }
+            .footer-social { display: flex; gap: 10px; }
             .footer-social a {
-                width: 34px;
-                height: 34px;
-                border-radius: 8px;
-                background: rgba(255,255,255,0.07);
-                border: 1px solid rgba(255,255,255,0.1);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: rgba(255,255,255,0.6);
-                font-size: 0.9rem;
-                text-decoration: none;
+                width: 34px; height: 34px; border-radius: 8px;
+                background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+                display: flex; align-items: center; justify-content: center;
+                color: rgba(255,255,255,0.6); font-size: 0.9rem; text-decoration: none;
                 transition: background 0.15s, color 0.15s;
             }
-            .footer-social a:hover {
-                background: var(--purple);
-                color: #fff;
-                border-color: var(--purple);
-            }
+            .footer-social a:hover { background: var(--purple); color: #fff; border-color: var(--purple); }
             .footer-col h4 {
-                font-size: 0.8rem;
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                color: rgba(255,255,255,0.5);
-                margin-bottom: 16px;
+                font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+                letter-spacing: 1px; color: rgba(255,255,255,0.5); margin-bottom: 16px;
             }
             .footer-col a {
-                display: block;
-                font-size: 0.875rem;
-                color: rgba(255,255,255,0.65);
-                text-decoration: none;
-                margin-bottom: 10px;
-                transition: color 0.15s;
+                display: block; font-size: 0.875rem; color: rgba(255,255,255,0.65);
+                text-decoration: none; margin-bottom: 10px; transition: color 0.15s;
             }
-            .footer-col a:hover {
-                color: var(--gold);
-            }
+            .footer-col a:hover { color: var(--gold); }
             .footer-bottom {
-                border-top: 1px solid rgba(255,255,255,0.08);
-                padding-top: 20px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                font-size: 0.78rem;
-                color: rgba(255,255,255,0.35);
+                border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;
+                display: flex; justify-content: space-between; align-items: center;
+                font-size: 0.78rem; color: rgba(255,255,255,0.35);
             }
 
             @keyframes fadeUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(28px);
-                }
-                to   {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+                from { opacity: 0; transform: translateY(28px); }
+                to   { opacity: 1; transform: translateY(0); }
             }
 
             @media (max-width: 1100px) {
-                .course-grid {
-                    grid-template-columns: repeat(2, 1fr);
-                }
+                .course-grid { grid-template-columns: repeat(2, 1fr); }
             }
             @media (max-width: 900px) {
-                .hero {
-                    flex-direction: column;
-                    padding: 48px 24px 0;
-                }
-                .hero-right {
-                    flex: none;
-                    width: 100%;
-                }
-                .courses, footer {
-                    padding: 48px 24px;
-                }
-                .footer-grid {
-                    grid-template-columns: 1fr;
-                    gap: 32px;
-                }
-                .navbar-main {
-                    padding: 0 20px;
-                }
-                .search-bar, .balance-pill {
-                    display: none;
-                }
+                .hero { flex-direction: column; padding: 48px 24px 0; }
+                .hero-right { flex: none; width: 100%; }
+                .courses, footer { padding: 48px 24px; }
+                .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+                .navbar-main { padding: 0 20px; }
+                .balance-pill { display: none; }
             }
             .nav-links a:hover, .nav-links a.active {
                 background: rgba(255,255,255,0.08);
@@ -922,37 +624,23 @@
                 <li><a href="homePage.jsp" class="active">Trang chủ</a></li>
                 <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
                 <li><a href="instructors.jsp">Giảng viên</a></li>
-           
                 <li><a href="dating.jsp">study and date</a></li>
-                                                <c:if test="${sessionScope.user.role == 1}">
+                <c:if test="${sessionScope.user.role == 1}">
                     <li><a href="administrator.jsp">Administrator Manager</a></li>
-                    </c:if>
-                    <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
-                    <li>
-                        <a href="instructorDashboard.jsp">
-                            Instructor Manager
-                        </a>
-                    </li>
                 </c:if>
-                            <li><a href="about.jsp">Thông tin Chung</a></li>
+                <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
+                    <li><a href="instructorDashboard.jsp">Instructor Manager</a></li>
+                </c:if>
+                <li><a href="about.jsp">Thông tin Chung</a></li>
             </ul>
 
             <div class="nav-right">
-                <form action="search.jsp" method="GET">
-                    <div class="search-bar">
-                        <i class="bi bi-search"></i>
-                        <input type="text" name="q" placeholder="Tìm khóa học..." />
-                    </div>
-                </form>
-
                 <c:if test="${not empty sessionScope.user}">
-                    <%-- BALANCE PILL --%>
+                    <%-- BALANCE PILL — dùng ${formattedBalance} do Controller đã chuẩn bị sẵn --%>
                     <a href="paymentController" class="balance-pill">
                         <i class="bi bi-wallet2"></i>
                         <span class="balance-label">Số dư</span>
-                        <span class="balance-amount">
-                            <%= fmtBal(session.getAttribute("user") != null ? ((model.UserDTO) session.getAttribute("user")).getBalance() : null)%> ₫
-                        </span>
+                        <span class="balance-amount"><fmt:formatNumber value="${sessionScope.user.balance}" type="number" groupingUsed="true" maxFractionDigits="0"/> ₫</span>
                     </a>
 
                     <%-- WISHLIST PILL --%>
@@ -1007,7 +695,7 @@
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <div class="user-menu" onclick="toggleDropdown()">
-                            <div class="user-avatar">${fn:substring(user.fullname, 0, 1)}</div>
+                            <div class="user-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
                             <span class="user-name">${sessionScope.user.fullname}</span>
                             <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6); font-size:0.75rem;"></i>
                         </div>
@@ -1036,7 +724,7 @@
                 <c:if test="${not empty sessionScope.user}">
                     <div class="welcome-badge">
                         <i class="bi bi-hand-wave" style="color:var(--gold);"></i>
-                        Chào mừng trở lại, <strong>${user.fullname}</strong>!
+                        Chào mừng trở lại, <strong>${sessionScope.user.fullname}</strong>!
                     </div>
                 </c:if>
                 <div class="hero-eyebrow">✦ Nền tảng học trực tuyến hàng đầu</div>
@@ -1216,43 +904,41 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                            function toggleDropdown() {
-                                document.getElementById('userDropdown').classList.toggle('show');
-                            }
+            function toggleDropdown() {
+                document.getElementById('userDropdown').classList.toggle('show');
+            }
 
-                            /* WISHLIST */
-                            function toggleWishlistDD(e) {
-                                e.stopPropagation();
-                                document.getElementById('wishlistDD').classList.toggle('show');
-                                document.getElementById('userDropdown') && document.getElementById('userDropdown').classList.remove('show');
-                            }
-                            function removeWishItem(e, courseId) {
-                                e.stopPropagation();
-                                const userId = '${sessionScope.user.userId}';
-                                fetch('wishlistController?action=remove&courseId=' + courseId + '&userId=' + userId + '&ajax=1')
-                                        .then(() => {
-                                            const item = document.getElementById('wish-item-' + courseId);
-                                            if (item)
-                                                item.remove();
-                                            const el = document.getElementById('wishCount');
-                                            if (el)
-                                                el.textContent = Math.max(0, parseInt(el.textContent || '0') - 1);
-                                            const list = document.getElementById('wishlistDDList');
-                                            if (list && list.querySelectorAll('.wishlist-dd-item').length === 0)
-                                                list.innerHTML = '<div class="wishlist-dd-empty"><i class="bi bi-heart"></i>Chưa có khóa học yêu thích</div>';
-                                        });
-                            }
+            function toggleWishlistDD(e) {
+                e.stopPropagation();
+                document.getElementById('wishlistDD').classList.toggle('show');
+                document.getElementById('userDropdown') && document.getElementById('userDropdown').classList.remove('show');
+            }
 
-                            document.addEventListener('click', function (e) {
-                                const menu = document.querySelector('.user-menu');
-                                const dd = document.getElementById('userDropdown');
-                                const ww = document.getElementById('wishlistWrap');
-                                const wd = document.getElementById('wishlistDD');
-                                if (dd && menu && !menu.contains(e.target) && !dd.contains(e.target))
-                                    dd.classList.remove('show');
-                                if (wd && ww && !ww.contains(e.target))
-                                    wd.classList.remove('show');
-                            });
+            function removeWishItem(e, courseId) {
+                e.stopPropagation();
+                const userId = '${sessionScope.user.userId}';
+                fetch('wishlistController?action=remove&courseId=' + courseId + '&userId=' + userId + '&ajax=1')
+                    .then(() => {
+                        const item = document.getElementById('wish-item-' + courseId);
+                        if (item) item.remove();
+                        const el = document.getElementById('wishCount');
+                        if (el) el.textContent = Math.max(0, parseInt(el.textContent || '0') - 1);
+                        const list = document.getElementById('wishlistDDList');
+                        if (list && list.querySelectorAll('.wishlist-dd-item').length === 0)
+                            list.innerHTML = '<div class="wishlist-dd-empty"><i class="bi bi-heart"></i>Chưa có khóa học yêu thích</div>';
+                    });
+            }
+
+            document.addEventListener('click', function(e) {
+                const menu = document.querySelector('.user-menu');
+                const dd   = document.getElementById('userDropdown');
+                const ww   = document.getElementById('wishlistWrap');
+                const wd   = document.getElementById('wishlistDD');
+                if (dd && menu && !menu.contains(e.target) && !dd.contains(e.target))
+                    dd.classList.remove('show');
+                if (wd && ww && !ww.contains(e.target))
+                    wd.classList.remove('show');
+            });
         </script>
     </body>
 </html>

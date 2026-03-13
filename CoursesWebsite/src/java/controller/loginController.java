@@ -5,16 +5,16 @@
 package controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import model.LoginHistoryDAO;
 import model.UserDAO;
 import model.UserDTO;
 import model.WishlistDAO;
+import utils.EmailService;
 
 /**
  *
@@ -33,36 +33,61 @@ public class loginController extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession();
+
         String userName = request.getParameter("userName");
         String password = request.getParameter("password");
+
         UserDAO udao = new UserDAO();
         UserDTO user = udao.login(userName, password);
-        
+
         if (user != null) {
-            // Kiểm tra account lock
+            // 1. Kiểm tra account bị khóa
             if (!user.isStatus()) {
                 request.setAttribute("message", "Account is locked!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
                 return;
             }
 
+            // 2. Lấy IP + UserAgent
+            String ip = getClientIP(request);
+            String userAgent = request.getHeader("User-Agent");
+            String userId = user.getUserId();
+
+            // 3. Kiểm tra thiết bị lạ → gửi mail cảnh báo
+            try {
+                LoginHistoryDAO historyDAO = new LoginHistoryDAO();
+                if (historyDAO.isNewDevice(userId, ip, userAgent)) {
+                    String loginAt = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy").format(new Date());
+                    String logoPath = getServletContext().getRealPath("/img/logo/DUK.png");
+                    EmailService.sendNewDeviceAlert(
+                            user.getEmail(),
+                            user.getFullname(),
+                            ip, userAgent, loginAt, logoPath
+                    );
+                }
+                // 4. Lưu lịch sử login
+                historyDAO.insertLogin(userId, ip, userAgent);
+            } catch (Exception e) {
+                e.printStackTrace(); // Lỗi gửi mail không chặn login
+            }
+
+            // 5. Lưu session
             session.setAttribute("user", user);
 
-            // ✅ Load wishlist vào session ngay khi login
-            // → navbar pill hiện đúng count từ mọi trang ngay lập tức
+            // 6. Load wishlist
             WishlistDAO wDao = new WishlistDAO();
-            String userId = user.getUserId();
             session.setAttribute("WISHLIST_IDS", wDao.getWishlistIds(userId));
             session.setAttribute("WISHLIST_COURSES", wDao.getWishlistCourses(userId));
 
-            // Phân quyền
+            // 7. Phân quyền
             if (user.getRole() == 1) {
                 response.sendRedirect("homePage.jsp");
             } else if (user.getRole() == 2) {
                 response.sendRedirect("homePage.jsp");
-            } else if (user.getRole() == 3) {
+            } else {
                 response.sendRedirect("homePage.jsp");
             }
 
@@ -72,43 +97,32 @@ public class loginController extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    // Lấy IP thật kể cả khi dùng proxy/VPN
+    private String getClientIP(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null || ip.isEmpty()) {
+            ip = request.getHeader("X-Real-IP");
+        }
+        if (ip == null || ip.isEmpty()) {
+            ip = request.getRemoteAddr();
+        }
+        return ip.split(",")[0].trim();
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }
 }

@@ -37,9 +37,26 @@
         .nav-links a { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; padding: 7px 14px; border-radius: 6px; transition: background 0.15s, color 0.15s; }
         .nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
         .nav-right { display: flex; align-items: center; gap: 12px; }
-        .user-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); }
-        .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--purple-mid), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; color: #fff; }
-        .user-name { font-size: 0.875rem; font-weight: 600; color: #fff; }
+
+        /* BALANCE PILL - matching homepage */
+        .balance-pill { display: flex; align-items: center; gap: 7px; background: rgba(212,168,67,0.12); border: 1px solid rgba(212,168,67,0.35); border-radius: 8px; padding: 7px 14px; text-decoration: none; transition: background 0.15s; cursor: pointer; }
+        .balance-pill:hover { background: rgba(212,168,67,0.22); }
+        .balance-pill i { color: var(--gold); font-size: 0.95rem; }
+        .balance-label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.6); }
+        .balance-amount { font-size: 0.875rem; font-weight: 700; color: var(--gold); letter-spacing: 0.2px; }
+
+        .user-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 8px; transition: background 0.15s; border: 1px solid rgba(255,255,255,0.15); }
+        .user-menu:hover { background: rgba(255,255,255,0.08); }
+        .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--purple-mid), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+        .user-name { font-size: 0.875rem; font-weight: 600; color: #fff; max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .dropdown-menu-custom { position: absolute; top: 76px; right: 48px; background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 8px; min-width: 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); display: none; z-index: 200; }
+        .dropdown-menu-custom.show { display: block; }
+        .dropdown-menu-custom a { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-radius: 7px; font-size: 0.875rem; color: var(--text); text-decoration: none; font-weight: 500; transition: background 0.12s; }
+        .dropdown-menu-custom a:hover { background: var(--purple-light); color: var(--purple); }
+        .dropdown-menu-custom .divider-drop { height: 1px; background: var(--border); margin: 6px 0; }
+        .dropdown-menu-custom .logout-link { color: #CC0000; }
+        .dropdown-menu-custom .logout-link:hover { background: #FFF3F3; color: #CC0000; }
 
         /* HERO */
         .course-hero {
@@ -151,6 +168,7 @@
             .navbar-main { padding: 0 20px; }
             .detail-main { padding: 0 16px 40px; }
             .rating-summary-card { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .balance-pill { display: none; }
         }
     </style>
 </head>
@@ -174,28 +192,38 @@
         </ul>
         <div class="nav-right">
             <c:if test="${not empty sessionScope.user}">
-                <a href="paymentController" style="display:flex;align-items:center;gap:7px;background:rgba(212,168,67,0.12);border:1px solid rgba(212,168,67,0.35);border-radius:8px;padding:7px 14px;text-decoration:none;">
-                    <i class="bi bi-wallet2" style="color:var(--gold);"></i>
-                    <span style="font-size:0.75rem;color:rgba(255,255,255,0.6);">Số dư</span>
-                    <span style="font-size:0.875rem;font-weight:700;color:var(--gold);"><fmt:formatNumber value="${sessionScope.user.balance}" type="number"/> ₫</span>
+                <%-- BALANCE PILL - matching homepage style --%>
+                <a href="paymentController" class="balance-pill">
+                    <i class="bi bi-wallet2"></i>
+                    <span class="balance-label">Số dư</span>
+                    <span class="balance-amount">
+                        <fmt:formatNumber value="${sessionScope.user.balance}" type="number"/> ₫
+                    </span>
                 </a>
-                <div class="user-menu" data-bs-toggle="dropdown">
-                    <div class="user-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
-                    <span class="user-name">${sessionScope.user.fullname}</span>
-                    <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6);font-size:0.75rem;"></i>
-                </div>
-                <ul class="dropdown-menu dropdown-menu-end" style="border-radius:10px;border:1px solid var(--border);padding:8px;min-width:200px;">
-                    <li><a class="dropdown-item" href="myprofile.jsp" style="border-radius:7px;"><i class="bi bi-person me-2"></i>Hồ sơ của tôi</a></li>
-                    <li><a class="dropdown-item" href="myCourses" style="border-radius:7px;"><i class="bi bi-book me-2"></i>Khóa học của tôi</a></li>
-                    <li><a class="dropdown-item" href="paymentController" style="border-radius:7px;"><i class="bi bi-wallet2 me-2"></i>Nạp tiền</a></li>
-                    <li><a class="dropdown-item" href="Certificates.jsp" style="border-radius:7px;"><i class="bi bi-award me-2"></i>Chứng chỉ</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="mainController?action=logout" style="border-radius:7px;"><i class="bi bi-box-arrow-right me-2"></i>Đăng xuất</a></li>
-                </ul>
             </c:if>
-            <c:if test="${empty sessionScope.user}">
-                <a href="login.jsp" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.875rem;font-weight:500;">Đăng nhập</a>
-            </c:if>
+
+            <c:choose>
+                <c:when test="${not empty sessionScope.user}">
+                    <div class="user-menu" onclick="toggleDropdown()">
+                        <div class="user-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
+                        <span class="user-name">${sessionScope.user.fullname}</span>
+                        <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6);font-size:0.75rem;"></i>
+                    </div>
+                    <div class="dropdown-menu-custom" id="userDropdown">
+                        <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
+                        <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
+                        <a href="paymentController"><i class="bi bi-wallet2"></i> Nạp tiền</a>
+                        <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
+                        <div class="divider-drop"></div>
+                        <a href="mainController?action=logout" class="logout-link">
+                            <i class="bi bi-box-arrow-right"></i> Đăng xuất
+                        </a>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <a href="login.jsp" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.875rem;font-weight:500;">Đăng nhập</a>
+                </c:otherwise>
+            </c:choose>
         </div>
     </nav>
 
@@ -291,7 +319,6 @@
                 <div>
                     <div class="rating-big-num"><fmt:formatNumber value="${AVG_RATING}" minFractionDigits="1" maxFractionDigits="1"/></div>
                     <div class="rating-big-stars">
-                        <%-- Render sao tĩnh từ server --%>
                         <c:set var="avgFloor" value="${AVG_RATING}"/>
                         <c:forEach begin="1" end="5" var="s">
                             <c:choose>
@@ -304,52 +331,18 @@
                     <div class="rating-big-count">${REVIEW_COUNT} đánh giá</div>
                 </div>
                 <div class="rating-dist">
-                    <%
-                        java.util.Map<Integer,Integer> distMap = (java.util.Map<Integer,Integer>) request.getAttribute("DIST");
-                        int rc = distMap == null ? 0 : ((Number)request.getAttribute("REVIEW_COUNT")).intValue();
-                        int[] starCounts = new int[6];
-                        if (distMap != null) {
-                            for (int i = 1; i <= 5; i++) {
-                                Integer v = distMap.get(i);
-                                starCounts[i] = (v == null) ? 0 : v;
-                            }
-                        }
-                        request.setAttribute("SC5", starCounts[5]);
-                        request.setAttribute("SC4", starCounts[4]);
-                        request.setAttribute("SC3", starCounts[3]);
-                        request.setAttribute("SC2", starCounts[2]);
-                        request.setAttribute("SC1", starCounts[1]);
-                    %>
-                    <c:set var="pct5" value="${REVIEW_COUNT > 0 ? SC5 * 100 / REVIEW_COUNT : 0}"/>
-                    <div class="dist-row">
-                        <span class="dist-label">5 <i class="bi bi-star-fill" style="color:var(--gold);font-size:0.6rem;"></i></span>
-                        <div class="dist-bar-wrap"><div class="dist-bar-fill" style="width:${pct5}%;"></div></div>
-                        <span class="dist-count">${SC5}</span>
-                    </div>
-                    <c:set var="pct4" value="${REVIEW_COUNT > 0 ? SC4 * 100 / REVIEW_COUNT : 0}"/>
-                    <div class="dist-row">
-                        <span class="dist-label">4 <i class="bi bi-star-fill" style="color:var(--gold);font-size:0.6rem;"></i></span>
-                        <div class="dist-bar-wrap"><div class="dist-bar-fill" style="width:${pct4}%;"></div></div>
-                        <span class="dist-count">${SC4}</span>
-                    </div>
-                    <c:set var="pct3" value="${REVIEW_COUNT > 0 ? SC3 * 100 / REVIEW_COUNT : 0}"/>
-                    <div class="dist-row">
-                        <span class="dist-label">3 <i class="bi bi-star-fill" style="color:var(--gold);font-size:0.6rem;"></i></span>
-                        <div class="dist-bar-wrap"><div class="dist-bar-fill" style="width:${pct3}%;"></div></div>
-                        <span class="dist-count">${SC3}</span>
-                    </div>
-                    <c:set var="pct2" value="${REVIEW_COUNT > 0 ? SC2 * 100 / REVIEW_COUNT : 0}"/>
-                    <div class="dist-row">
-                        <span class="dist-label">2 <i class="bi bi-star-fill" style="color:var(--gold);font-size:0.6rem;"></i></span>
-                        <div class="dist-bar-wrap"><div class="dist-bar-fill" style="width:${pct2}%;"></div></div>
-                        <span class="dist-count">${SC2}</span>
-                    </div>
-                    <c:set var="pct1" value="${REVIEW_COUNT > 0 ? SC1 * 100 / REVIEW_COUNT : 0}"/>
-                    <div class="dist-row">
-                        <span class="dist-label">1 <i class="bi bi-star-fill" style="color:var(--gold);font-size:0.6rem;"></i></span>
-                        <div class="dist-bar-wrap"><div class="dist-bar-fill" style="width:${pct1}%;"></div></div>
-                        <span class="dist-count">${SC1}</span>
-                    </div>
+                    <c:forEach var="star" items="5,4,3,2,1">
+                        <c:set var="starCount" value="${DIST[star]}"/>
+                        <c:if test="${starCount == null}"><c:set var="starCount" value="0"/></c:if>
+                        <c:set var="pct" value="${REVIEW_COUNT > 0 ? starCount * 100 / REVIEW_COUNT : 0}"/>
+                        <div class="dist-row">
+                            <span class="dist-label">${star} <i class="bi bi-star-fill" style="color:var(--gold);font-size:0.6rem;"></i></span>
+                            <div class="dist-bar-wrap">
+                                <div class="dist-bar-fill" style="width:${pct}%;"></div>
+                            </div>
+                            <span class="dist-count">${starCount}</span>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
         </c:if>
@@ -493,5 +486,17 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleDropdown() {
+            document.getElementById('userDropdown').classList.toggle('show');
+        }
+
+        document.addEventListener('click', function(e) {
+            const menu = document.querySelector('.user-menu');
+            const dd   = document.getElementById('userDropdown');
+            if (dd && menu && !menu.contains(e.target) && !dd.contains(e.target))
+                dd.classList.remove('show');
+        });
+    </script>
 </body>
 </html>

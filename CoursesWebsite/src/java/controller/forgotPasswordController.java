@@ -13,10 +13,6 @@ import javax.servlet.http.*;
 import model.PasswordResetDAO;
 import model.UserDAO;
 
-/**
- *
- * @author HOANG KHANG PC
- */
 @WebServlet("/forgotPasswordController")
 public class forgotPasswordController extends HttpServlet {
 
@@ -29,7 +25,6 @@ public class forgotPasswordController extends HttpServlet {
         UserDAO udao = new UserDAO();
 
         try {
-
             // 1. kiểm tra email có tồn tại
             if (!udao.checkEmailExist(email)) {
                 request.setAttribute("msg", "Email không tồn tại!");
@@ -40,14 +35,17 @@ public class forgotPasswordController extends HttpServlet {
             // 2. tạo token
             String token = UUID.randomUUID().toString();
 
-            // 3. lưu token
-            PasswordResetDAO dao = new PasswordResetDAO();
-            dao.insertToken(token, email);
+            // 3. lấy userId
+            String userId = udao.getUserIdByEmail(email);
 
-            // 4. link reset
+            // 4. lưu token
+            PasswordResetDAO dao = new PasswordResetDAO();
+            dao.insertToken(token, userId, email);
+
+            // 5. link reset
             String link = "http://localhost:8080/CoursesWebsite/resetPassword.jsp?token=" + token;
 
-            // 5. cấu hình SMTP
+            // 6. cấu hình SMTP
             Properties props = new Properties();
             props.put("mail.smtp.host", "smtp.gmail.com");
             props.put("mail.smtp.port", "587");
@@ -64,21 +62,15 @@ public class forgotPasswordController extends HttpServlet {
                 }
             });
 
-            // 6. tạo email
+            // 7. tạo email
             Message message = new MimeMessage(session);
-
             message.setFrom(new InternetAddress("lonhkim85@gmail.com"));
-
-            message.setRecipients(
-                    Message.RecipientType.TO,
-                    InternetAddress.parse(email)
-            );
-
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
             message.setSubject("Reset Password");
+
             String fullname = udao.getFullnameByEmail(email);
             MimeMultipart multipart = new MimeMultipart("related");
 
-// HTML content
             MimeBodyPart htmlPart = new MimeBodyPart();
             htmlPart.setContent(
                     "<div style='font-family:Arial;max-width:500px;margin:auto;'>"
@@ -99,31 +91,24 @@ public class forgotPasswordController extends HttpServlet {
                     "text/html; charset=UTF-8"
             );
 
-// Logo image
             MimeBodyPart imagePart = new MimeBodyPart();
             String path = getServletContext().getRealPath("/img/logo/DUK.png");
             imagePart.attachFile(path);
             imagePart.setContentID("<logo>");
             imagePart.setDisposition(MimeBodyPart.INLINE);
 
-// add vào multipart
             multipart.addBodyPart(htmlPart);
             multipart.addBodyPart(imagePart);
-
-// set content
             message.setContent(multipart);
 
-            // 7. gửi mail
+            // 8. gửi mail
             Transport.send(message);
-
-            System.out.println("Email sent!");
 
             request.setAttribute("msg", "Đã gửi link reset qua email!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-
             request.setAttribute("msg", "Lỗi gửi email!");
             request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
         }

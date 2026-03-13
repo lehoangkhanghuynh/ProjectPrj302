@@ -1,20 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%!
-    public String fmtBal(Object bal) {
-        if (bal == null) return "0";
-        try {
-            double d = Double.parseDouble(bal.toString().trim());
-            long v = (long) d;
-            return String.format("%,d", v).replace(',', '.');
-        } catch (Exception e) { return "0"; }
-    }
-%>
-<%-- Chưa đăng nhập → về login --%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="login.jsp"/>
 </c:if>
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -152,26 +144,27 @@
         <li><a href="homePage.jsp">Trang chủ</a></li>
         <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
         <li><a href="instructors.jsp">Giảng viên</a></li>
-                            <c:if test="${sessionScope.user.role == 1}">
-                    <li><a href="administrator.jsp">Administrator Manager</a></li>
-                    </c:if>
-                    <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
-                    <li>
-                        <a href="instructorDashboard.jsp">
-                            Instructor Manager
-                        </a>
-                    </li>
-                </c:if>
-                            <li><a href="about.jsp">Thông tin Chung</a></li>
+        <c:if test="${sessionScope.user.role == 1}">
+            <li><a href="administrator.jsp">Administrator Manager</a></li>
+        </c:if>
+        <c:if test="${sessionScope.user.role == 2}">
+            <li><a href="instructorDashboard.jsp">Instructor Manager</a></li>
+        </c:if>
+        <li><a href="about.jsp">Thông tin Chung</a></li>
     </ul>
+
     <div class="nav-right">
+        <%-- SỐ DƯ --%>
         <a href="paymentController" class="balance-pill">
             <i class="bi bi-wallet2"></i>
             <span class="balance-label">Số dư</span>
             <span class="balance-amount">
-                <%= fmtBal(((model.UserDTO)session.getAttribute("user")).getBalance()) %> ₫
+                <fmt:formatNumber value="${sessionScope.user.balance}"
+                                  type="number" maxFractionDigits="0"/> ₫
             </span>
         </a>
+
+        <%-- USER MENU --%>
         <div class="user-menu" onclick="toggleDD()">
             <div class="user-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
             <span class="user-name">${sessionScope.user.fullname}</span>
@@ -183,7 +176,9 @@
             <a href="paymentController"><i class="bi bi-wallet2"></i> Nạp tiền</a>
             <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
             <div class="divider-drop"></div>
-            <a href="mainController?action=logout" class="logout-link"><i class="bi bi-box-arrow-right"></i> Đăng xuất</a>
+            <a href="mainController?action=logout" class="logout-link">
+                <i class="bi bi-box-arrow-right"></i> Đăng xuất
+            </a>
         </div>
     </div>
 </nav>
@@ -199,7 +194,8 @@
             <div>
                 <div class="balance-hero-label">Số dư hiện tại</div>
                 <div class="balance-hero-val">
-                    <%= fmtBal(((model.UserDTO)session.getAttribute("user")).getBalance()) %> ₫
+                    <fmt:formatNumber value="${sessionScope.user.balance}"
+                                      type="number" maxFractionDigits="0"/> ₫
                 </div>
             </div>
         </div>
@@ -217,7 +213,6 @@
                 <i class="bi bi-qr-code"></i> Chuyển khoản QR
             </button>
         </div>
-
         <div class="tab-body">
             <!-- TAB MOMO -->
             <div class="tab-pane active" id="tab-momo">
@@ -252,7 +247,6 @@
             <!-- TAB VIETQR -->
             <div class="tab-pane" id="tab-qr">
                 <div class="qr-layout">
-                    <!-- LEFT -->
                     <div>
                         <p class="sec-label">Chọn ngân hàng</p>
                         <div class="bank-grid">
@@ -269,7 +263,6 @@
                                 <div class="bank-tag">MB</div> MB Bank
                             </div>
                         </div>
-
                         <p class="sec-label">Số tiền nạp</p>
                         <div class="amount-grid" style="grid-template-columns:repeat(2,1fr);">
                             <div class="amount-chip" onclick="pickAmt('qr',100000,this)">100.000 ₫</div>
@@ -282,11 +275,9 @@
                             <input type="number" id="qrAmt" placeholder="Nhập số tiền..." min="10000" step="1000" oninput="clearChips('qr')">
                             <span class="inp-suf">VNĐ</span>
                         </div>
-
                         <button class="btn-genqr" id="btnGenQR" onclick="genQR()">
                             <i class="bi bi-qr-code-scan"></i> Tạo mã QR
                         </button>
-
                         <div class="info-box">
                             <div class="info-row">
                                 <span class="info-key"><i class="bi bi-bank"></i> Ngân hàng</span>
@@ -302,8 +293,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- RIGHT -->
                     <div style="display:flex;flex-direction:column;align-items:center;">
                         <div class="qr-box">
                             <div id="qrPlaceholder">
@@ -316,18 +305,15 @@
                                 <div class="qr-oid" id="qrOid"></div>
                             </div>
                         </div>
-
                         <button class="btn-paid" id="btnPaid" style="display:none;" onclick="confirmPaid()">
                             <i class="bi bi-check-circle-fill"></i> Tôi đã thanh toán
                         </button>
-
                         <div class="waiting-box" id="waitingBox">
                             <div class="w-icon">⏳</div>
                             <div class="w-title">Đang chờ admin xác nhận</div>
                             <div class="w-sub">Số dư sẽ được cộng sau khi admin duyệt.<br>Thường trong 5–15 phút.</div>
                             <div class="w-oid" id="waitOid"></div>
                         </div>
-
                         <p style="font-size:0.75rem;color:var(--muted);text-align:center;margin-top:12px;line-height:1.7;">
                             <i class="bi bi-shield-check" style="color:var(--purple);"></i>
                             Quét QR bằng app ngân hàng, sau đó bấm<br><strong>"Tôi đã thanh toán"</strong> để thông báo admin.
@@ -352,10 +338,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     const BANKS = {
-        BIDV: { id:'BIDV', acc:'1234567890',  name:'DUK ACADEMY' },
-        VCB:  { id:'VCB',  acc:'9876543210',  name:'DUK ACADEMY' },
-        TCB:  { id:'TCB',  acc:'1122334455',  name:'DUK ACADEMY' },
-        MB:   { id:'MB',   acc:'5566778899',  name:'DUK ACADEMY' },
+        BIDV: { id:'BIDV', acc:'1234567890', name:'DUK ACADEMY' },
+        VCB:  { id:'VCB',  acc:'9876543210', name:'DUK ACADEMY' },
+        TCB:  { id:'TCB',  acc:'1122334455', name:'DUK ACADEMY' },
+        MB:   { id:'MB',   acc:'5566778899', name:'DUK ACADEMY' },
     };
     let selBank = 'BIDV';
     let curOrderId = null;
@@ -366,10 +352,9 @@
         el.classList.add('active');
         document.getElementById('tab-' + t).classList.add('active');
     }
-
     function pickAmt(type, amt, el) {
         document.querySelectorAll(type === 'momo' ? '#tab-momo .amount-chip' : '#tab-qr .amount-chip')
-                .forEach(c => c.classList.remove('selected'));
+            .forEach(c => c.classList.remove('selected'));
         el.classList.add('selected');
         const inp = document.getElementById(type === 'momo' ? 'momoAmt' : 'qrAmt');
         if (amt > 0) inp.value = amt;
@@ -377,9 +362,8 @@
     }
     function clearChips(type) {
         document.querySelectorAll(type === 'momo' ? '#tab-momo .amount-chip' : '#tab-qr .amount-chip')
-                .forEach(c => c.classList.remove('selected'));
+            .forEach(c => c.classList.remove('selected'));
     }
-
     function pickBank(b, el) {
         document.querySelectorAll('.bank-opt').forEach(x => x.classList.remove('selected'));
         el.classList.add('selected');
@@ -387,13 +371,11 @@
         document.getElementById('dispBank').textContent = b;
         resetQR();
     }
-
     function payMomo() {
         const amt = parseInt(document.getElementById('momoAmt').value);
         if (!amt || amt < 10000) { alert('Vui lòng nhập số tiền tối thiểu 10.000 ₫'); return; }
         alert('Tính năng MoMo đang được phát triển. Vui lòng dùng chuyển khoản QR.');
     }
-
     async function genQR() {
         const amt = parseInt(document.getElementById('qrAmt').value);
         if (!amt || amt < 10000) { alert('Vui lòng nhập số tiền tối thiểu 10.000 ₫'); return; }
@@ -408,16 +390,12 @@
                 body: 'amount=' + amt
             });
             const data = await res.json();
-            if (data.status !== 'success') {
-                alert('Lỗi: ' + (data.message || 'Không thể tạo QR'));
-                return;
-            }
+            if (data.status !== 'success') { alert('Lỗi: ' + (data.message || 'Không thể tạo QR')); return; }
             curOrderId = data.orderId;
             const bank = BANKS[selBank];
             const note = encodeURIComponent('NAP TIEN DUK ' + data.orderId);
             const qrUrl = 'https://img.vietqr.io/image/' + bank.id + '-' + bank.acc + '-qr_only.png'
-                        + '?amount=' + amt
-                        + '&addInfo=' + note
+                        + '?amount=' + amt + '&addInfo=' + note
                         + '&accountName=' + encodeURIComponent(bank.name);
             const img = document.getElementById('qrImage');
             img.onload = () => {
@@ -436,7 +414,6 @@
             btn.innerHTML = '<i class="bi bi-qr-code-scan"></i> Tạo mã QR';
         }
     }
-
     async function confirmPaid() {
         if (!curOrderId) return;
         const btn = document.getElementById('btnPaid');
@@ -464,7 +441,6 @@
             btn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Tôi đã thanh toán';
         }
     }
-
     function resetQR() {
         curOrderId = null;
         document.getElementById('qrPlaceholder').style.display = 'block';
@@ -474,11 +450,20 @@
         document.getElementById('qrImage').src = '';
     }
 
+    // User dropdown
     function toggleDD() { document.getElementById('userDD').classList.toggle('show'); }
+
+    // Click ngoài đóng cả 2 dropdown
     document.addEventListener('click', e => {
-        const m = document.querySelector('.user-menu');
-        const d = document.getElementById('userDD');
-        if (d && m && !m.contains(e.target) && !d.contains(e.target)) d.classList.remove('show');
+        const userMenu = document.querySelector('.user-menu');
+        const userDD = document.getElementById('userDD');
+        if (userDD && userMenu && !userMenu.contains(e.target) && !userDD.contains(e.target))
+            userDD.classList.remove('show');
+
+        const notifWrap = document.getElementById('notifWrap');
+        const notifDD = document.getElementById('notifDD');
+        if (notifDD && notifWrap && !notifWrap.contains(e.target))
+            notifDD.classList.remove('show');
     });
 </script>
 </body>

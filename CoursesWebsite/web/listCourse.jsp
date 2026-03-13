@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<fmt:setLocale value="vi_VN"/>
+<fmt:setLocale value="vi_VN" scope="session"/>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -662,124 +662,104 @@
         <script>
             const USER_ID = '${sessionScope.user.userId}';
 
-            /* ===== DROPDOWN USER ===== */
-            function toggleDropdown() {
-                document.getElementById('userDropdown').classList.toggle('show');
-            }
+            // ── Cache DOM elements dùng nhiều lần ───────────────────────
+            const elUserDD  = document.getElementById('userDropdown');
+            const elWishDD  = document.getElementById('wishlistDD');
+            const elWishList= document.getElementById('wishlistDDList');
+            const elWishCnt = document.getElementById('wishCount');
+            const elModal   = document.getElementById('enrollModal');
+            const elToast   = document.getElementById('toastNoti');
+            const fmt = val => Number(val).toLocaleString('vi-VN') + ' ₫';
 
-            /* ===== DROPDOWN WISHLIST ===== */
+            // ── Dropdown: đóng khi click ngoài ──────────────────────────
+            document.addEventListener('click', e => {
+                if (!document.querySelector('.user-menu')?.contains(e.target)) elUserDD?.classList.remove('show');
+                if (!document.getElementById('wishlistWrap')?.contains(e.target)) elWishDD?.classList.remove('show');
+            });
+            const toggleDropdown  = () => elUserDD.classList.toggle('show');
             function toggleWishlistDD(e) {
                 e.stopPropagation();
-                document.getElementById('wishlistDD').classList.toggle('show');
-                const ud = document.getElementById('userDropdown');
-                if (ud) ud.classList.remove('show');
+                elWishDD.classList.toggle('show');
+                elUserDD?.classList.remove('show');
             }
-            document.addEventListener('click', function(e) {
-                const ud = document.getElementById('userDropdown');
-                const um = document.querySelector('.user-menu');
-                const wd = document.getElementById('wishlistDD');
-                const ww = document.getElementById('wishlistWrap');
-                if (ud && um && !um.contains(e.target) && !ud.contains(e.target)) ud.classList.remove('show');
-                if (wd && ww && !ww.contains(e.target)) wd.classList.remove('show');
-            });
 
-            /* ===== TOAST ===== */
+            // ── Toast ────────────────────────────────────────────────────
             let toastTimer;
             function showToast(msg, type) {
-                const el = document.getElementById('toastNoti');
-                document.getElementById('toastMsg').textContent = msg;
-                el.querySelector('i').className = type === 'add' ? 'bi bi-heart-fill' : 'bi bi-heart';
-                el.className = 'toast-noti ' + type + ' show';
+                elToast.querySelector('#toastMsg').textContent = msg;
+                elToast.querySelector('i').className = type === 'add' ? 'bi bi-heart-fill' : 'bi bi-heart';
+                elToast.className = `toast-noti ${type} show`;
                 clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+                toastTimer = setTimeout(() => elToast.classList.remove('show'), 2800);
             }
 
-            /* ===== WISHLIST AJAX ===== */
+            // ── Wishlist AJAX ─────────────────────────────────────────────
             function toggleWishlist(e, courseId, courseName, fee) {
                 e.preventDefault(); e.stopPropagation();
-                if (!USER_ID) { window.location.href = 'login.jsp'; return; }
+                if (!USER_ID) { location.href = 'login.jsp'; return; }
                 const btn = document.getElementById('wish-btn-' + courseId);
-                const isIn = btn && btn.classList.contains('in-wish');
-                fetch('wishlistController?action=' + (isIn ? 'remove' : 'add') + '&courseId=' + courseId + '&userId=' + USER_ID + '&ajax=1')
+                const isIn = btn?.classList.contains('in-wish');
+                fetch(`wishlistController?action=${isIn ? 'remove' : 'add'}&courseId=${courseId}&userId=${USER_ID}&ajax=1`)
                     .then(() => {
                         if (!isIn) {
-                            if (btn) { btn.classList.add('in-wish'); btn.querySelector('i').className = 'bi bi-heart-fill'; btn.title = 'Bỏ yêu thích'; }
-                            addToWishlistDD(courseId, courseName, fee);
-                            updateWishCount(1);
+                            btn?.classList.add('in-wish');
+                            if (btn) { btn.querySelector('i').className = 'bi bi-heart-fill'; btn.title = 'Bỏ yêu thích'; }
+                            // Thêm vào dropdown
+                            document.getElementById('wishEmptyMsg')?.remove();
+                            if (!document.getElementById('wish-item-' + courseId)) {
+                                const feeText = parseFloat(fee) === 0 ? 'Miễn phí' : fmt(fee);
+                                const div = document.createElement('div');
+                                div.className = 'wishlist-dd-item'; div.id = 'wish-item-' + courseId;
+                                div.innerHTML = `<div class="wishlist-dd-thumb">📚</div>
+                                    <div class="wishlist-dd-info">
+                                        <div class="wishlist-dd-name">${courseName}</div>
+                                        <div class="wishlist-dd-price">${feeText}</div>
+                                    </div>
+                                    <button class="wishlist-dd-remove" title="Xóa"><i class="bi bi-x"></i></button>`;
+                                div.querySelector('button').addEventListener('click', e => toggleWishlist(e, courseId, courseName, fee));
+                                elWishList.insertBefore(div, elWishList.firstChild);
+                            }
+                            elWishCnt.textContent = +elWishCnt.textContent + 1;
                             showToast('Đã thêm vào mục yêu thích ❤️', 'add');
                         } else {
-                            if (btn) { btn.classList.remove('in-wish'); btn.querySelector('i').className = 'bi bi-heart'; btn.title = 'Thêm yêu thích'; }
-                            const item = document.getElementById('wish-item-' + courseId);
-                            if (item) item.remove();
-                            updateWishCount(-1);
-                            checkWishlistEmpty();
+                            btn?.classList.remove('in-wish');
+                            if (btn) { btn.querySelector('i').className = 'bi bi-heart'; btn.title = 'Thêm yêu thích'; }
+                            document.getElementById('wish-item-' + courseId)?.remove();
+                            const newCount = Math.max(0, +elWishCnt.textContent - 1);
+                            elWishCnt.textContent = newCount;
+                            // Hiện empty state nếu hết item
+                            if (!elWishList.querySelector('.wishlist-dd-item'))
+                                elWishList.innerHTML = '<div class="wishlist-dd-empty" id="wishEmptyMsg"><i class="bi bi-heart"></i> Chưa có khóa học yêu thích</div>';
                             showToast('Đã xóa khỏi mục yêu thích', 'remove');
                         }
                     }).catch(() => showToast('Có lỗi xảy ra, thử lại sau', 'remove'));
             }
-            function addToWishlistDD(courseId, courseName, fee) {
-                const list = document.getElementById('wishlistDDList');
-                const empty = document.getElementById('wishEmptyMsg');
-                if (empty) empty.remove();
-                if (document.getElementById('wish-item-' + courseId)) return;
-                const feeText = (parseFloat(fee) === 0) ? 'Miễn phí' : Number(fee).toLocaleString('vi-VN') + ' ₫';
-                const div = document.createElement('div');
-                div.className = 'wishlist-dd-item'; div.id = 'wish-item-' + courseId;
-                div.innerHTML = '<div class="wishlist-dd-thumb">📚</div>' +
-                    '<div class="wishlist-dd-info"><div class="wishlist-dd-name">' + courseName + '</div>' +
-                    '<div class="wishlist-dd-price">' + feeText + '</div></div>' +
-                    '<button class="wishlist-dd-remove" title="Xóa"><i class="bi bi-x"></i></button>';
-                div.querySelector('button').addEventListener('click', e => toggleWishlist(e, courseId, courseName, fee));
-                list.insertBefore(div, list.firstChild);
-            }
-            function updateWishCount(delta) {
-                const el = document.getElementById('wishCount');
-                if (el) el.textContent = Math.max(0, parseInt(el.textContent || '0') + delta);
-            }
-            function checkWishlistEmpty() {
-                const list = document.getElementById('wishlistDDList');
-                if (list && list.querySelectorAll('.wishlist-dd-item').length === 0)
-                    list.innerHTML = '<div class="wishlist-dd-empty" id="wishEmptyMsg"><i class="bi bi-heart"></i> Chưa có khóa học yêu thích</div>';
-            }
 
-            /* ===== MODAL ===== */
-            function fmt(val) { return Number(val).toLocaleString('vi-VN') + ' ₫'; }
+            // ── Modal đăng ký ─────────────────────────────────────────────
             function openModal(courseId, courseName, fee, balance) {
                 const feeNum = parseFloat(fee) || 0, balNum = parseFloat(balance) || 0, after = balNum - feeNum;
-                document.getElementById('modalCourseId').value  = courseId;
+                document.getElementById('modalCourseId').value       = courseId;
                 document.getElementById('modalCourseName').textContent = courseName;
-                document.getElementById('modalFee').textContent     = fmt(feeNum);
+                document.getElementById('modalFee').textContent      = fmt(feeNum);
                 document.getElementById('modalBalance').textContent  = fmt(balNum);
+                const insufficient = after < 0;
                 const afterEl = document.getElementById('modalAfter');
-                const warnEl  = document.getElementById('modalWarning');
-                const confirmEl = document.getElementById('btnConfirm');
-                if (after < 0) {
-                    afterEl.textContent = 'Không đủ số dư!';
-                    afterEl.className = 'modal-info-value danger-val';
-                    warnEl.style.display = 'block';
-                    confirmEl.disabled = true;
-                } else {
-                    afterEl.textContent = fmt(after);
-                    afterEl.className = 'modal-info-value after-val';
-                    warnEl.style.display = 'none';
-                    confirmEl.disabled = false;
-                }
-                document.getElementById('enrollModal').classList.add('show');
+                afterEl.textContent = insufficient ? 'Không đủ số dư!' : fmt(after);
+                afterEl.className   = `modal-info-value ${insufficient ? 'danger-val' : 'after-val'}`;
+                document.getElementById('modalWarning').style.display = insufficient ? 'block' : 'none';
+                document.getElementById('btnConfirm').disabled        = insufficient;
+                elModal.classList.add('show');
                 document.body.style.overflow = 'hidden';
             }
-            function closeModal() {
-                document.getElementById('enrollModal').classList.remove('show');
-                document.body.style.overflow = '';
-            }
-            function closeModalOutside(e) { if (e.target === document.getElementById('enrollModal')) closeModal(); }
+            const closeModal = () => { elModal.classList.remove('show'); document.body.style.overflow = ''; };
+            elModal.addEventListener('click', e => { if (e.target === elModal) closeModal(); });
             document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
             function onEnrollSubmit() {
-                document.getElementById('enrollModal').classList.remove('show');
-                document.body.style.overflow = '';
+                closeModal();
                 document.getElementById('enrollLoading').classList.add('show');
             }
 
-            /* ===== FILTER — so sánh topic trực tiếp, bỏ TOPIC_MAP ===== */
+            // ── Filter + Search ───────────────────────────────────────────
             let currentTopic = '';
             function filterByTopic(el, topic) {
                 document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
@@ -788,12 +768,11 @@
                 applyFilters();
             }
             function applyFilters() {
-                const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
+                const search = document.getElementById('searchInput')?.value.toLowerCase() || '';
                 let visible = 0;
                 document.querySelectorAll('.course-card-full').forEach(card => {
-                    const topicMatch = !currentTopic || card.dataset.topic === currentTopic;
-                    const searchMatch = !search || card.dataset.name.includes(search) || card.dataset.topic.includes(search);
-                    const ok = topicMatch && searchMatch;
+                    const ok = (!currentTopic || card.dataset.topic === currentTopic)
+                            && (!search || card.dataset.name.includes(search) || card.dataset.topic.includes(search));
                     card.style.display = ok ? '' : 'none';
                     if (ok) visible++;
                 });

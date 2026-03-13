@@ -914,7 +914,7 @@
 
         <!-- NAVBAR -->
         <nav class="navbar-main">
-            <a href="welcome.jsp" class="brand">DUK<span>Academy</span></a>
+            <a href="administrator.jsp" class="brand">DUK<span>Academy</span></a>
             <ul class="nav-links">
                 <li><a href="about.jsp">Giới Thiệu Chung</a></li>
                 <li><a href="#">Khóa học</a></li>

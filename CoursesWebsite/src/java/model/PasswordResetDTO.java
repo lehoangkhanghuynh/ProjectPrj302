@@ -1,26 +1,19 @@
 
 import java.sql.Timestamp;
 
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author HOANG KHANG PC
- */
 public class PasswordResetDTO {
 
     private String token;
+    private String userId;
     private String email;
     private Timestamp expireTime;
 
     public PasswordResetDTO() {
     }
 
-    public PasswordResetDTO(String token, String email, Timestamp expireTime) {
+    public PasswordResetDTO(String token, String userId, String email, Timestamp expireTime) {
         this.token = token;
+        this.userId = userId;
         this.email = email;
         this.expireTime = expireTime;
     }
@@ -31,6 +24,14 @@ public class PasswordResetDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {

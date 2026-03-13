@@ -32,6 +32,7 @@ public class ResetPasswordController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+   @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -39,29 +40,34 @@ public class ResetPasswordController extends HttpServlet {
         String password = request.getParameter("password");
         String confirm = request.getParameter("confirmPassword");
 
-        if (!password.equals(confirm)) {
-            request.setAttribute("msg", "Mật khẩu xác nhận không khớp!");
+        // 1. null check
+        if (token == null || password == null || confirm == null) {
+            request.setAttribute("msg", "Dữ liệu không hợp lệ!");
             request.getRequestDispatcher("resetPassword.jsp").forward(request, response);
             return;
         }
 
+        // 2. kiểm tra mật khẩu khớp
+        if (!password.equals(confirm)) {
+            request.setAttribute("msg", "Mật khẩu xác nhận không khớp!");
+            request.getRequestDispatcher("resetPassword.jsp?token=" + token).forward(request, response);
+            return;
+        }
+
+        // 3. lấy email từ token
         PasswordResetDAO dao = new PasswordResetDAO();
         String email = dao.getEmailByToken(token);
 
         if (email != null) {
-
             UserDAO userDao = new UserDAO();
             userDao.updatePasswordByEmail(email, password);
-
             dao.deleteToken(token);
-
             request.setAttribute("msg", "Đổi mật khẩu thành công!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
-
         } else {
-
+            // SỬA: forward về resetPassword thay vì login
             request.setAttribute("msg", "Token không hợp lệ hoặc đã hết hạn!");
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("forgotPassword.jsp").forward(request, response);
         }
     }
 }

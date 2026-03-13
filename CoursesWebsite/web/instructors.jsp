@@ -2,16 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%!
-    public String fmtBal(Object bal) {
-        if (bal == null) return "0";
-        try {
-            double d = Double.parseDouble(bal.toString().trim());
-            long v = (long) d;
-            return String.format("%,d", v).replace(',', '.');
-        } catch (Exception e) { return "0"; }
-    }
-%>
+<fmt:setLocale value="vi_VN" scope="session"/>
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -245,11 +236,12 @@
             <div class="nav-right">
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
+                        <%-- BALANCE PILL — fmt:formatNumber, không scriptlet --%>
                         <a href="paymentController" class="balance-pill-nav">
                             <i class="bi bi-wallet2"></i>
                             <span class="balance-label-nav">Số dư</span>
                             <span class="balance-amount-nav">
-                                <%= fmtBal(session.getAttribute("user") != null ? ((model.UserDTO)session.getAttribute("user")).getBalance() : null) %> ₫
+                                <fmt:formatNumber value="${sessionScope.user.balance}" type="number" maxFractionDigits="0"/> ₫
                             </span>
                         </a>
                         <div class="wishlist-pill-wrap" id="wishlistWrap">
@@ -276,7 +268,7 @@
                                                         <div class="wishlist-dd-price">
                                                             <c:choose>
                                                                 <c:when test="${wc.fee == 0}">Miễn phí</c:when>
-                                                                <c:otherwise>${wc.fee} ₫</c:otherwise>
+                                                                <c:otherwise><fmt:formatNumber value="${wc.fee}" type="number" maxFractionDigits="0"/> ₫</c:otherwise>
                                                             </c:choose>
                                                         </div>
                                                     </div>
@@ -605,7 +597,6 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-            // MODAL
             function openModal(card) {
                 const d = card.dataset, c1 = d.c1||'#1E0A4A', c2 = d.c2||'#6C3FC5';
                 document.getElementById('modalStrip').style.background = 'linear-gradient(135deg,'+c1+','+c2+')';
@@ -632,7 +623,6 @@
             }
             document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-            // WISHLIST DROPDOWN
             function toggleWishlistDD(e) {
                 e.stopPropagation();
                 document.getElementById('wishlistDD').classList.toggle('show');
@@ -652,8 +642,6 @@
                             list.innerHTML = '<div class="wishlist-dd-empty"><i class="bi bi-heart"></i> Chưa có khóa học yêu thích</div>';
                     });
             }
-
-            // USER DROPDOWN
             function toggleDD() {
                 const d = document.getElementById('userDD');
                 if (d) d.classList.toggle('show');
