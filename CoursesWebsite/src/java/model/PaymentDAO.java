@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package model;
 
 import java.sql.*;
 import java.util.*;
 import utils.DbiUtils;
 
-/**
- *
- * @author HOANG KHANG PC
- */
 public class PaymentDAO {
 
     // ===== CREATE =====
@@ -19,16 +11,15 @@ public class PaymentDAO {
         String sql = "INSERT INTO Payment(userId, amount, paymentMethod, paymentStatus, isTopup) "
                 + "OUTPUT INSERTED.paymentId "
                 + "VALUES (?, ?, ?, ?, ?)";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, p.getUserId());
             ps.setInt(2, p.getAmount());
             ps.setString(3, p.getPaymentMethod());
             ps.setString(4, p.getPaymentStatus());
             ps.setBoolean(5, p.isTopup());
-            try ( ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
             }
         }
         return -1;
@@ -37,32 +28,83 @@ public class PaymentDAO {
     // ===== GET BY ID =====
     public static PaymentDTO getById(int id) throws Exception {
         String sql = "SELECT * FROM Payment WHERE paymentId = ?";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
-            try ( ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return map(rs);
-                }
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return map(rs);
             }
         }
         return null;
     }
 
-    // ===== USER CLICKS "ĐÃ THANH TOÁN" =====
+    // ===== USER CLICKS "ĐÃ THANH TOÁN" (chờ admin) =====
     public static void setPendingConfirm(int id) throws Exception {
         String sql = "UPDATE Payment SET paymentStatus='PENDING_CONFIRM' "
                 + "WHERE paymentId=? AND paymentStatus='PENDING'";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
     }
 
-    // ===== ADMIN CONFIRMS → SUCCESS =====
+    // ===== SEPAY WEBHOOK: cộng balance + SUCCESS trong 1 transaction =====
+    public static void confirmAndAddBalance(int paymentId, String userId, int amount) throws Exception {
+        String sqlPayment = "UPDATE Payment SET paymentStatus='SUCCESS', paymentDate=GETDATE() "
+                          + "WHERE paymentId=? AND paymentStatus IN ('PENDING','PENDING_CONFIRM')";
+        String sqlBalance = "UPDATE Users SET balance = balance + ? WHERE userId = ?";
+
+        Connection con = null;
+        try {
+            con = DbiUtils.getConnection();
+            con.setAutoCommit(false); // ── BẮT ĐẦU TRANSACTION ──
+
+            // 1. Update payment status
+            try (PreparedStatement ps = con.prepareStatement(sqlPayment)) {
+                ps.setInt(1, paymentId);
+                int rows = ps.executeUpdate();
+                if (rows == 0) {
+                    // Đã được xử lý rồi (duplicate webhook) — rollback an toàn
+                    con.rollback();
+                    return;
+                }
+            }
+
+            // 2. Cộng balance vào user
+            try (PreparedStatement ps = con.prepareStatement(sqlBalance)) {
+                ps.setInt(1, amount);
+                ps.setString(2, userId);
+                ps.executeUpdate();
+            }
+
+            con.commit(); // ── COMMIT ──
+
+        } catch (Exception e) {
+            if (con != null) con.rollback();
+            throw e;
+        } finally {
+            if (con != null) {
+                con.setAutoCommit(true);
+                con.close();
+            }
+        }
+    }
+
+    // ===== ADMIN CONFIRMS THỦ CÔNG → SUCCESS =====
     public static void confirm(int id) throws Exception {
-        String sql = "UPDATE Payment SET paymentStatus='SUCCESS', paymentDate=GETDATE() "
-                + "WHERE paymentId=?";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
+        // Lấy payment trước để biết userId + amount
+        PaymentDTO p = getById(id);
+        if (p == null) throw new Exception("Payment not found: " + id);
+        confirmAndAddBalance(id, p.getUserId(), p.getAmount());
+    }
+
+    // ===== ADMIN HỦY GIAO DỊCH =====
+    public static void cancel(int id) throws Exception {
+        String sql = "UPDATE Payment SET paymentStatus='CANCELLED' "
+                + "WHERE paymentId=? AND paymentStatus IN ('PENDING','PENDING_CONFIRM')";
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, id);
             ps.executeUpdate();
         }
@@ -72,10 +114,10 @@ public class PaymentDAO {
     public static List<PaymentDTO> getPendingConfirm() throws Exception {
         List<PaymentDTO> list = new ArrayList<>();
         String sql = "SELECT * FROM Payment WHERE paymentStatus='PENDING_CONFIRM' ORDER BY paymentId DESC";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                list.add(map(rs));
-            }
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) list.add(map(rs));
         }
         return list;
     }
@@ -84,21 +126,35 @@ public class PaymentDAO {
     public static List<PaymentDTO> getPendingVietQR() throws Exception {
         List<PaymentDTO> list = new ArrayList<>();
         String sql = "SELECT * FROM Payment WHERE paymentStatus='PENDING' AND paymentMethod='VIETQR'";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                list.add(map(rs));
-            }
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) list.add(map(rs));
         }
         return list;
     }
 
-    // ===== ADMIN HUY GIAO DICH =====
-    public static void cancel(int id) throws Exception {
-        String sql = "UPDATE Payment SET paymentStatus='CANCELLED' WHERE paymentId=? AND paymentStatus IN ('PENDING','PENDING_CONFIRM')";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, id);
+    // ===== ADD BALANCE (giữ lại để tương thích code cũ) =====
+    public static void addBalanceToUser(String userId, int amount) throws Exception {
+        String sql = "UPDATE Users SET balance = balance + ? WHERE userId = ?";
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, amount);
+            ps.setString(2, userId);
             ps.executeUpdate();
         }
+    }
+
+    // ===== ALL PAYMENTS (admin) =====
+    public static List<PaymentDTO> getAllPayments() throws Exception {
+        List<PaymentDTO> list = new ArrayList<>();
+        String sql = "SELECT * FROM Payment ORDER BY paymentDate DESC";
+        try (Connection con = DbiUtils.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) list.add(map(rs));
+        }
+        return list;
     }
 
     // ===== MAP ResultSet → DTO =====
@@ -113,40 +169,4 @@ public class PaymentDAO {
                 rs.getBoolean("isTopup")
         );
     }
-
-    public static void addBalanceToUser(String userId, int amount) throws Exception {
-        String sql = "UPDATE Users SET balance = balance + ? WHERE userId = ?";
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, amount);
-            ps.setString(2, userId);
-            ps.executeUpdate();
-        }
-    }
-
-    public static List<PaymentDTO> getAllPayments() throws Exception {
-
-        List<PaymentDTO> list = new ArrayList<>();
-
-        String sql = "SELECT * FROM Payment ORDER BY paymentDate DESC";
-
-        try ( Connection con = DbiUtils.getConnection();  PreparedStatement ps = con.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
-
-            while (rs.next()) {
-                PaymentDTO p = new PaymentDTO(
-                        rs.getInt("paymentId"),
-                        rs.getString("userId"),
-                        rs.getInt("amount"),
-                        rs.getString("paymentMethod"),
-                        rs.getTimestamp("paymentDate"),
-                        rs.getString("paymentStatus"),
-                        rs.getBoolean("isTopup")
-                );
-
-                list.add(p);
-            }
-        }
-
-        return list;
-    }
-    
 }

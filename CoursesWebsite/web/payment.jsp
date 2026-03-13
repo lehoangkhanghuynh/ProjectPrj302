@@ -342,13 +342,13 @@
                         <p class="sec-label">Ngân hàng nhận</p>
                         <div class="bank-grid">
                             <div class="bank-opt selected">
-                                <div class="bank-tag">VTB</div> VietinBank
+                                <div class="bank-tag">MB</div> MB Bank
                             </div>
                         </div>
 
                         <form action="paymentController" method="post" id="formGenQR">
                             <input type="hidden" name="action" value="createQR"/>
-                            <input type="hidden" name="bank"   value="ICB"/>
+                            <input type="hidden" name="bank"   value="MB"/>
 
                             <p class="sec-label">Số tiền nạp</p>
                             <div class="amount-grid" style="grid-template-columns:repeat(2,1fr);">
@@ -384,15 +384,15 @@
                         <div class="info-box">
                             <div class="info-row">
                                 <span class="info-key"><i class="bi bi-bank"></i> Ngân hàng</span>
-                                <span class="info-val">VietinBank</span>
+                                <span class="info-val">MB Bank</span>
                             </div>
                             <div class="info-row">
                                 <span class="info-key"><i class="bi bi-credit-card"></i> Số tài khoản</span>
-                                <span class="info-val">106879806456</span>
+                                <span class="info-val">0332144439</span>
                             </div>
                             <div class="info-row">
                                 <span class="info-key"><i class="bi bi-person"></i> Chủ TK</span>
-                                <span class="info-val">DUK ACADEMY</span>
+                                <span class="info-val">LE HOANG KHANG</span>
                             </div>
                         </div>
                     </div>
@@ -402,7 +402,7 @@
                         <div class="qr-box">
                             <c:choose>
                                 <c:when test="${not empty qrUrl}">
-                                    <img src="${qrUrl}" alt="QR VietinBank"
+                                    <img src="${qrUrl}" alt="QR MB Bank"
                                          style="width:200px;height:200px;border-radius:10px;"/>
                                     <div class="qr-amt">
                                         <fmt:formatNumber value="${qrAmount}" type="number"

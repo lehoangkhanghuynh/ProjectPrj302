@@ -15,10 +15,11 @@ import java.util.Map;
 public class paymentController extends HttpServlet {
 
     private static final Map<String, String[]> BANK_MAP = new LinkedHashMap<>();
+
     static {
-        BANK_MAP.put("ICB", new String[]{"ICB", "106879806456", "DUK ACADEMY"});
+        BANK_MAP.put("MB", new String[]{"MB", "0332144439", "LE HOANG KHANG"});
     }
-    private static final String DEFAULT_BANK = "ICB";
+    private static final String DEFAULT_BANK = "MB";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -29,6 +30,17 @@ public class paymentController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/login.jsp");
             return;
         }
+        // Reload user từ DB để balance luôn mới nhất
+        try {
+            UserDTO freshUser = new model.UserDAO().searchById(String.valueOf(user.getUserId()));
+            if (freshUser != null) {
+                session.setAttribute("user", freshUser);
+                user = freshUser;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         String action = request.getParameter("action");
         if ("createQR".equals(action)) {
             handleCreateQR(request, response, user);
@@ -49,13 +61,15 @@ public class paymentController extends HttpServlet {
     private void handleCreateQR(HttpServletRequest request, HttpServletResponse response, UserDTO user)
             throws ServletException, IOException {
 
-        String amtStr  = request.getParameter("amount");
+        String amtStr = request.getParameter("amount");
         String bankKey = request.getParameter("bank");
 
         // Validate amount
         int amount;
         try {
-            if (amtStr == null || amtStr.trim().isEmpty()) throw new NumberFormatException();
+            if (amtStr == null || amtStr.trim().isEmpty()) {
+                throw new NumberFormatException();
+            }
             amount = Integer.parseInt(amtStr.trim());
             if (amount < 10000) {
                 request.setAttribute("payError", "So tien toi thieu la 10.000 d");
@@ -76,7 +90,7 @@ public class paymentController extends HttpServlet {
         // Bọc toàn bộ DB + QR logic trong try-catch
         try {
             PaymentDTO p = new PaymentDTO(0, String.valueOf(user.getUserId()), amount,
-                                          "VIETQR", null, "PENDING", true);
+                    "VIETQR", null, "PENDING", true);
             int paymentId = PaymentDAO.create(p);
             if (paymentId == -1) {
                 request.setAttribute("payError", "Loi he thong, vui long thu lai.");
@@ -85,18 +99,18 @@ public class paymentController extends HttpServlet {
             }
 
             String orderId = "QR" + paymentId;
-            String note    = URLEncoder.encode("NAP TIEN DUK " + orderId, StandardCharsets.UTF_8.name());
+            String note = URLEncoder.encode("NAP TIEN DUK " + orderId, StandardCharsets.UTF_8.name());
             String accName = URLEncoder.encode(bankInfo[2], StandardCharsets.UTF_8.name());
-            String qrUrl   = "https://img.vietqr.io/image/"
-                           + bankInfo[0] + "-" + bankInfo[1] + "-qr_only.png"
-                           + "?amount=" + amount
-                           + "&addInfo=" + note
-                           + "&accountName=" + accName;
+            String qrUrl = "https://img.vietqr.io/image/"
+                    + bankInfo[0] + "-" + bankInfo[1] + "-qr_only.png"
+                    + "?amount=" + amount
+                    + "&addInfo=" + note
+                    + "&accountName=" + accName;
 
-            request.setAttribute("qrUrl",    qrUrl);
-            request.setAttribute("orderId",  orderId);
+            request.setAttribute("qrUrl", qrUrl);
+            request.setAttribute("orderId", orderId);
             request.setAttribute("qrAmount", amount);
-            request.setAttribute("selBank",  bankKey);
+            request.setAttribute("selBank", bankKey);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,7 +134,7 @@ public class paymentController extends HttpServlet {
 
         try {
             int paymentId = Integer.parseInt(orderIdStr.substring(2));
-            PaymentDTO p  = PaymentDAO.getById(paymentId);
+            PaymentDTO p = PaymentDAO.getById(paymentId);
 
             if (p == null) {
                 request.setAttribute("payError", "Khong tim thay giao dich.");
@@ -137,7 +151,7 @@ public class paymentController extends HttpServlet {
                 PaymentDAO.setPendingConfirm(paymentId);
             }
 
-            request.setAttribute("waitingConfirm",   true);
+            request.setAttribute("waitingConfirm", true);
             request.setAttribute("confirmedOrderId", orderIdStr);
 
         } catch (Exception e) {
