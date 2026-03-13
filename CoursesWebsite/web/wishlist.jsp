@@ -4,7 +4,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <fmt:setLocale value="vi_VN"/>
 
-<%-- FIX: kiểm tra session trước khi render bất cứ thứ gì --%>
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="login.jsp"/>
 </c:if>
@@ -37,7 +36,7 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'DM Sans', sans-serif; color: var(--text); background: var(--bg); min-height: 100vh; }
 
-        /* NAVBAR */
+        /* ── NAVBAR ── */
         .navbar-main { background: var(--purple-deep); padding: 0 48px; height: 68px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 20px rgba(0,0,0,0.25); }
         .brand { font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700; color: #fff; text-decoration: none; }
         .brand span { color: var(--gold); }
@@ -45,6 +44,43 @@
         .nav-links a { font-size: 0.9rem; font-weight: 500; color: rgba(255,255,255,0.75); text-decoration: none; padding: 7px 14px; border-radius: 6px; transition: background 0.15s, color 0.15s; }
         .nav-links a:hover { background: rgba(255,255,255,0.1); color: #fff; }
         .nav-right { display: flex; align-items: center; gap: 12px; }
+
+        /* BALANCE PILL */
+        .balance-pill { display: flex; align-items: center; gap: 7px; background: rgba(212,168,67,0.12); border: 1px solid rgba(212,168,67,0.35); border-radius: 8px; padding: 7px 14px; text-decoration: none; transition: background 0.15s; }
+        .balance-pill:hover { background: rgba(212,168,67,0.22); }
+        .balance-pill i { color: var(--gold); }
+        .balance-label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.6); }
+        .balance-amount { font-size: 0.875rem; font-weight: 700; color: var(--gold); }
+
+        /* WISHLIST PILL */
+        .wishlist-pill-wrap { position: relative; }
+        .wishlist-pill { display: flex; align-items: center; gap: 7px; background: rgba(229,57,53,0.12); border: 1px solid rgba(229,57,53,0.35); border-radius: 8px; padding: 7px 14px; cursor: pointer; transition: background 0.15s; user-select: none; }
+        .wishlist-pill:hover { background: rgba(229,57,53,0.2); }
+        .wishlist-pill i { color: #FF6B6B; font-size: 1rem; }
+        .wishlist-pill-label { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.6); }
+        .wishlist-pill-count { font-size: 0.875rem; font-weight: 700; color: #FF6B6B; }
+        .wishlist-dropdown { position: absolute; top: calc(100% + 10px); right: 0; background: #fff; border: 1px solid var(--border); border-radius: 14px; min-width: 320px; max-width: 360px; box-shadow: 0 12px 40px rgba(0,0,0,0.18); display: none; z-index: 300; overflow: hidden; }
+        .wishlist-dropdown.show { display: block; animation: ddIn 0.18s ease; }
+        @keyframes ddIn { from { opacity:0; transform:translateY(-8px); } to { opacity:1; transform:translateY(0); } }
+        .wishlist-dd-header { padding: 14px 18px 10px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+        .wishlist-dd-title { font-size: 0.9rem; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 7px; }
+        .wishlist-dd-title i { color: #E53935; }
+        .wishlist-dd-link { font-size: 0.75rem; font-weight: 600; color: var(--purple); text-decoration: none; }
+        .wishlist-dd-link:hover { text-decoration: underline; }
+        .wishlist-dd-list { max-height: 320px; overflow-y: auto; padding: 8px; }
+        .wishlist-dd-item { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 10px; transition: background 0.12s; }
+        .wishlist-dd-item:hover { background: var(--purple-light); }
+        .wishlist-dd-thumb { width: 44px; height: 44px; border-radius: 8px; background: linear-gradient(135deg, var(--purple-deep), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; overflow: hidden; }
+        .wishlist-dd-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        .wishlist-dd-info { flex: 1; min-width: 0; }
+        .wishlist-dd-name { font-size: 0.8rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .wishlist-dd-price { font-size: 0.72rem; color: var(--purple); font-weight: 600; margin-top: 2px; }
+        .wishlist-dd-remove { background: none; border: none; color: #ccc; cursor: pointer; font-size: 1rem; padding: 4px 6px; border-radius: 50%; transition: color 0.15s, background 0.15s; flex-shrink: 0; }
+        .wishlist-dd-remove:hover { color: #E53935; background: #FFF3F3; }
+        .wishlist-dd-empty { padding: 32px 16px; text-align: center; color: var(--muted); font-size: 0.85rem; }
+        .wishlist-dd-empty i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: 0.4; }
+
+        /* USER MENU */
         .user-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.15); transition: background 0.15s; }
         .user-menu:hover { background: rgba(255,255,255,0.08); }
         .user-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--purple-mid), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; color: #fff; }
@@ -110,7 +146,7 @@
         .btn-remove { display: inline-flex; align-items: center; gap: 6px; background: var(--red-light); color: var(--red); border: 1.5px solid rgba(229,57,53,0.2); font-size: 0.78rem; font-weight: 700; padding: 8px 16px; border-radius: 8px; text-decoration: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
         .btn-remove:hover { background: var(--red); color: #fff; border-color: var(--red); transform: translateY(-1px); }
 
-        /* EMPTY STATE */
+        /* EMPTY */
         .empty-wrap { text-align: center; padding: 80px 20px; background: #fff; border-radius: 20px; border: 1px solid var(--border); }
         .empty-heart { font-size: 5rem; margin-bottom: 20px; animation: heartbeat 2s ease-in-out infinite; display: block; }
         .empty-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
@@ -157,6 +193,8 @@
             .main-wrap   { padding: 32px 16px 60px; }
             .wish-card   { flex-wrap: wrap; }
             .wish-card-actions { width: 100%; justify-content: flex-end; }
+            .nav-links { display: none; }
+            .dropdown-menu-custom { right: 16px; }
             footer { padding: 24px 20px; }
         }
     </style>
@@ -174,39 +212,104 @@
     <a href="homePage.jsp" class="brand">DUK<span>Academy</span></a>
     <ul class="nav-links">
         <li><a href="homePage.jsp">Trang chủ</a></li>
-        <li><a href="courseController?action=ExploreCourse">Khóa học</a></li>
+        <li><a href="mainController?action=ExploreCourse">Khóa học</a></li>
         <li><a href="instructors.jsp">Giảng viên</a></li>
-        <li><a href="about.jsp">Về chúng tôi</a></li>
         <c:if test="${sessionScope.user.role == 1}">
             <li><a href="administrator.jsp">Administrator Manager</a></li>
         </c:if>
         <c:if test="${sessionScope.user != null && sessionScope.user.role == 2}">
             <li><a href="instructorDashboard.jsp">Instructor Manager</a></li>
         </c:if>
+        <li><a href="about.jsp">Thông tin Chung</a></li>
     </ul>
+
     <div class="nav-right">
-        <c:if test="${not empty sessionScope.user}">
-            <div class="user-menu" onclick="toggleDropdown()">
-                <div class="user-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
-                <span class="user-name">${sessionScope.user.fullname}</span>
-                <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6);font-size:0.75rem;"></i>
+
+        <%-- BALANCE PILL --%>
+        <a href="paymentController" class="balance-pill">
+            <i class="bi bi-wallet2"></i>
+            <span class="balance-label">Số dư</span>
+            <span class="balance-amount">
+                <fmt:formatNumber value="${sessionScope.user.balance != null ? sessionScope.user.balance : 0}"
+                                  type="number" maxFractionDigits="0"/> ₫
+            </span>
+        </a>
+
+        <%-- WISHLIST PILL --%>
+        <div class="wishlist-pill-wrap" id="wishlistWrap">
+            <div class="wishlist-pill" onclick="toggleWishlistDD(event)">
+                <i class="bi bi-heart-fill"></i>
+                <span class="wishlist-pill-label">Yêu thích</span>
+                <span class="wishlist-pill-count" id="wishCount">
+                    ${not empty WISHLIST_IDS ? WISHLIST_IDS.size() : 0}
+                </span>
             </div>
-            <div class="dropdown-menu-custom" id="userDropdown">
-                <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
-                <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
-                <a href="paymentController"><i class="bi bi-wallet2"></i> Nạp tiền</a>
-                <a href="Certificates.jsp"><i class="bi bi-award"></i> Chứng chỉ</a>
-                <div class="divider-drop"></div>
-                <a href="mainController?action=logout" class="logout-link">
-                    <i class="bi bi-box-arrow-right"></i> Đăng xuất
-                </a>
+            <div class="wishlist-dropdown" id="wishlistDD">
+                <div class="wishlist-dd-header">
+                    <span class="wishlist-dd-title">
+                        <i class="bi bi-heart-fill"></i> Khóa học yêu thích
+                    </span>
+                    <a href="wishlistController?action=view&userId=${sessionScope.user.userId}"
+                       class="wishlist-dd-link">Xem tất cả</a>
+                </div>
+                <div class="wishlist-dd-list" id="wishlistDDList">
+                    <c:choose>
+                        <c:when test="${not empty WISHLIST_COURSES}">
+                            <c:forEach var="wc" items="${WISHLIST_COURSES}">
+                                <div class="wishlist-dd-item" id="wish-item-${wc.courseId}">
+                                    <div class="wishlist-dd-thumb">
+                                        <img src="${pageContext.request.contextPath}/img/courses/course${wc.courseId}.jpg"
+                                             alt="${wc.courseName}" onerror="this.style.display='none';">
+                                    </div>
+                                    <div class="wishlist-dd-info">
+                                        <div class="wishlist-dd-name">${wc.courseName}</div>
+                                        <div class="wishlist-dd-price">
+                                            <c:choose>
+                                                <c:when test="${wc.fee == 0}">Miễn phí</c:when>
+                                                <c:otherwise>
+                                                    <fmt:formatNumber value="${wc.fee}" type="number"
+                                                                      maxFractionDigits="0"/> ₫
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                    </div>
+                                    <button class="wishlist-dd-remove" title="Xóa khỏi yêu thích"
+                                            onclick="removeWishItem(event, '${wc.courseId}')">
+                                        <i class="bi bi-x"></i>
+                                    </button>
+                                </div>
+                            </c:forEach>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="wishlist-dd-empty" id="wishEmptyMsg">
+                                <i class="bi bi-heart"></i>
+                                Chưa có khóa học yêu thích
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
             </div>
-        </c:if>
-        <c:if test="${empty sessionScope.user}">
-            <a href="login.jsp" style="color:rgba(255,255,255,0.75);text-decoration:none;font-size:0.875rem;font-weight:500;">
-                Đăng nhập
+        </div>
+
+        <%-- USER MENU --%>
+        <div class="user-menu" onclick="toggleDD()">
+            <div class="user-avatar">${fn:substring(sessionScope.user.fullname, 0, 1)}</div>
+            <span class="user-name">${sessionScope.user.fullname}</span>
+            <i class="bi bi-chevron-down" style="color:rgba(255,255,255,0.6);font-size:0.75rem;"></i>
+        </div>
+        <div class="dropdown-menu-custom" id="userDD">
+            <a href="myprofile.jsp"><i class="bi bi-person"></i> Hồ sơ của tôi</a>
+            <a href="myCourses"><i class="bi bi-book"></i> Khóa học của tôi</a>
+            <a href="paymentController"><i class="bi bi-wallet2"></i> Nạp tiền</a>
+            <a href="myCertificates"><i class="bi bi-award"></i> Chứng chỉ</a>
+            <a href="wishlistController?action=view&userId=${sessionScope.user.userId}">
+                <i class="bi bi-heart"></i> Yêu thích
             </a>
-        </c:if>
+            <div class="divider-drop"></div>
+            <a href="mainController?action=logout" class="logout-link">
+                <i class="bi bi-box-arrow-right"></i> Đăng xuất
+            </a>
+        </div>
     </div>
 </nav>
 
@@ -249,7 +352,6 @@
             <div class="wishlist-list" id="wishlistList">
                 <c:forEach var="w" items="${wishlist}" varStatus="st">
 
-                    <%-- FIX: so sánh Integer đúng cách bằng JSTL, không dùng .toString() --%>
                     <c:set var="isEnrolled" value="false"/>
                     <c:forEach var="eid" items="${enrolledIds}">
                         <c:if test="${eid == w.courseId}">
@@ -257,7 +359,6 @@
                         </c:if>
                     </c:forEach>
 
-                    <%-- Lấy fee từ feeMap, mặc định 0 nếu null --%>
                     <c:set var="courseFee" value="${not empty feeMap[w.courseId] ? feeMap[w.courseId] : 0}"/>
 
                     <div class="wish-card" id="card-${w.wishlistId}"
@@ -276,16 +377,15 @@
                             <div class="wish-card-meta">
                                 <i class="bi bi-building"></i> DUK Academy
                             </div>
-                            <%-- FIX: hiển thị tên khóa học thực sự từ feeMap/Course nếu có,
-                                 fallback về ID --%>
-<div class="wish-card-name">
-    <c:choose>
-        <c:when test="${not empty courseNameMap[w.courseId]}">
-            ${courseNameMap[w.courseId]}
-        </c:when>
-        <c:otherwise>Khóa học #${w.courseId}</c:otherwise>
-    </c:choose>
-</div>                            <div class="wish-card-details">
+                            <div class="wish-card-name">
+                                <c:choose>
+                                    <c:when test="${not empty courseNameMap[w.courseId]}">
+                                        ${courseNameMap[w.courseId]}
+                                    </c:when>
+                                    <c:otherwise>Khóa học #${w.courseId}</c:otherwise>
+                                </c:choose>
+                            </div>
+                            <div class="wish-card-details">
                                 <span class="wish-card-badge badge-id">
                                     <i class="bi bi-hash"></i> ID: ${w.wishlistId}
                                 </span>
@@ -298,14 +398,14 @@
                                     <i class="bi bi-clock"></i>
                                     <fmt:formatDate value="${w.createdAt}" pattern="HH:mm"/>
                                 </span>
-                                <%-- Hiển thị học phí --%>
                                 <span class="wish-card-badge"
                                       style="background:var(--purple-light);color:var(--purple);">
                                     <i class="bi bi-tag"></i>
                                     <c:choose>
                                         <c:when test="${courseFee == 0}">Miễn phí</c:when>
                                         <c:otherwise>
-                                            <fmt:formatNumber value="${courseFee}" type="number"/> ₫
+                                            <fmt:formatNumber value="${courseFee}" type="number"
+                                                              maxFractionDigits="0"/> ₫
                                         </c:otherwise>
                                     </c:choose>
                                 </span>
@@ -321,11 +421,10 @@
                                     </a>
                                 </c:when>
                                 <c:otherwise>
-                                    <%-- FIX: truyền courseFee thực sự vào openModal --%>
                                     <button type="button" class="btn-enroll"
                                             onclick="openModal(
                                                 '${w.courseId}',
-                                                'Khóa học #${w.courseId}',
+                                                '${not empty courseNameMap[w.courseId] ? courseNameMap[w.courseId] : "Khóa học #".concat(w.courseId)}',
                                                 '${courseFee}',
                                                 '${sessionScope.user.balance}')">
                                         <i class="bi bi-cart3"></i> Đăng ký học
@@ -333,7 +432,6 @@
                                 </c:otherwise>
                             </c:choose>
 
-                            <%-- FIX: dùng data-href thay vì href để JS kiểm soát navigation --%>
                             <button type="button" class="btn-remove"
                                     data-wishid="${w.wishlistId}"
                                     data-href="wishlistController?action=remove&wishlistId=${w.wishlistId}&userId=${sessionScope.user.userId}&from=wishlist"
@@ -342,16 +440,16 @@
                             </button>
                         </div>
 
-                    </div><%-- end wish-card --%>
+                    </div>
                 </c:forEach>
-            </div><%-- end wishlist-list --%>
+            </div>
 
             <!-- BOTTOM CTA -->
             <div style="text-align:center;margin-top:40px;padding-top:32px;border-top:1px solid var(--border);">
                 <p style="font-size:0.875rem;color:var(--muted);margin-bottom:16px;">
                     Khám phá thêm khóa học mới?
                 </p>
-                <a href="courseController?action=ExploreCourse" class="btn-explore">
+                <a href="mainController?action=ExploreCourse" class="btn-explore">
                     <i class="bi bi-compass"></i> Khám phá khóa học
                 </a>
             </div>
@@ -362,7 +460,7 @@
                 <span class="empty-heart">🤍</span>
                 <div class="empty-title">Chưa có khóa học yêu thích</div>
                 <p class="empty-sub">Hãy thêm những khóa học bạn quan tâm để dễ dàng tìm lại sau này.</p>
-                <a href="courseController?action=ExploreCourse" class="btn-explore">
+                <a href="mainController?action=ExploreCourse" class="btn-explore">
                     <i class="bi bi-compass"></i> Khám phá khóa học ngay
                 </a>
             </div>
@@ -382,7 +480,7 @@
     </div>
 </footer>
 
-<!-- MODAL ĐĂNG KÝ KHÓA HỌC -->
+<!-- MODAL ĐĂNG KÝ -->
 <div class="modal-overlay" id="enrollModal" onclick="closeModalOutside(event)">
     <div class="modal-box">
         <div class="modal-icon">🎓</div>
@@ -427,31 +525,60 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    /* ── DROPDOWN ──────────────────────────────────────────────── */
-    function toggleDropdown() {
-        document.getElementById('userDropdown').classList.toggle('show');
+    /* ── WISHLIST DROPDOWN ── */
+    function toggleWishlistDD(e) {
+        e.stopPropagation();
+        document.getElementById('wishlistDD').classList.toggle('show');
+        const ud = document.getElementById('userDD');
+        if (ud) ud.classList.remove('show');
     }
+    function removeWishItem(e, courseId) {
+        e.stopPropagation();
+        const userId = '${sessionScope.user.userId}';
+        fetch('wishlistController?action=remove&courseId=' + courseId + '&userId=' + userId + '&ajax=1')
+            .then(() => {
+                const item = document.getElementById('wish-item-' + courseId);
+                if (item) item.remove();
+                const el = document.getElementById('wishCount');
+                if (el) el.textContent = Math.max(0, parseInt(el.textContent || '0') - 1);
+                const list = document.getElementById('wishlistDDList');
+                if (list && list.querySelectorAll('.wishlist-dd-item').length === 0)
+                    list.innerHTML = '<div class="wishlist-dd-empty"><i class="bi bi-heart"></i> Chưa có khóa học yêu thích</div>';
+            });
+    }
+
+    /* ── USER DROPDOWN ── */
+    function toggleDD() {
+        document.getElementById('userDD').classList.toggle('show');
+        const wd = document.getElementById('wishlistDD');
+        if (wd) wd.classList.remove('show');
+    }
+
+    /* ── CLICK OUTSIDE ── */
     document.addEventListener('click', function(e) {
-        const ud = document.getElementById('userDropdown');
+        const ud = document.getElementById('userDD');
         const um = document.querySelector('.user-menu');
+        const ww = document.getElementById('wishlistWrap');
+        const wd = document.getElementById('wishlistDD');
         if (ud && um && !um.contains(e.target) && !ud.contains(e.target))
             ud.classList.remove('show');
+        if (wd && ww && !ww.contains(e.target))
+            wd.classList.remove('show');
     });
 
-    /* ── MODAL ─────────────────────────────────────────────────── */
+    /* ── MODAL ── */
     function fmt(val) {
         return Number(val).toLocaleString('vi-VN') + ' ₫';
     }
-
     function openModal(courseId, courseName, fee, balance) {
         const feeNum = parseFloat(fee)     || 0;
         const balNum = parseFloat(balance) || 0;
         const after  = balNum - feeNum;
 
-        document.getElementById('modalCourseId').value       = courseId;
+        document.getElementById('modalCourseId').value         = courseId;
         document.getElementById('modalCourseName').textContent = courseName;
-        document.getElementById('modalFee').textContent      = fmt(feeNum);
-        document.getElementById('modalBalance').textContent  = fmt(balNum);
+        document.getElementById('modalFee').textContent        = fmt(feeNum);
+        document.getElementById('modalBalance').textContent    = fmt(balNum);
 
         const afterEl   = document.getElementById('modalAfter');
         const warnEl    = document.getElementById('modalWarning');
@@ -468,23 +595,19 @@
             warnEl.style.display = 'none';
             confirmEl.disabled   = false;
         }
-
         document.getElementById('enrollModal').classList.add('show');
         document.body.style.overflow = 'hidden';
     }
-
     function closeModal() {
         document.getElementById('enrollModal').classList.remove('show');
         document.body.style.overflow = '';
     }
-
     function closeModalOutside(e) {
         if (e.target === document.getElementById('enrollModal')) closeModal();
     }
-
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    /* ── TOAST ─────────────────────────────────────────────────── */
+    /* ── TOAST ── */
     let toastTimer;
     function showToast(msg) {
         const toast = document.getElementById('toastNoti');
@@ -494,18 +617,14 @@
         toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
     }
 
-    /* ── REMOVE WISHLIST ───────────────────────────────────────── */
-    // FIX: nhận element thay vì event, dùng data-* attribute
+    /* ── REMOVE WISHLIST ── */
     function confirmRemove(btn) {
         const wishlistId = btn.dataset.wishid;
         const href       = btn.dataset.href;
         const card       = document.getElementById('card-' + wishlistId);
         if (!card) return;
 
-        // Vô hiệu hoá nút ngay để tránh double-click
         btn.disabled = true;
-
-        // Animation slide out
         card.style.transition = 'all 0.3s ease';
         card.style.opacity    = '0';
         card.style.transform  = 'translateX(40px)';
@@ -513,24 +632,19 @@
         showToast('Đã xóa khỏi danh sách yêu thích');
 
         setTimeout(() => {
-            // Collapse chiều cao mượt mà
-            card.style.maxHeight    = card.offsetHeight + 'px';
-            card.style.overflow     = 'hidden';
-            card.style.padding      = '0';
-            card.style.margin       = '0';
-            card.style.border       = 'none';
-
+            card.style.maxHeight = card.offsetHeight + 'px';
+            card.style.overflow  = 'hidden';
+            card.style.padding   = '0';
+            card.style.margin    = '0';
+            card.style.border    = 'none';
             requestAnimationFrame(() => {
                 card.style.transition = 'all 0.3s ease';
                 card.style.maxHeight  = '0';
             });
-
-            // FIX: luôn chờ animation xong rồi mới navigate
             setTimeout(() => {
                 card.remove();
                 const remaining = document.querySelectorAll('.wish-card').length;
                 document.getElementById('statNum').textContent = remaining;
-                // Điều hướng sau khi xóa (kể cả còn item, để sync server)
                 window.location.href = href;
             }, 320);
         }, 300);

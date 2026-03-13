@@ -3,11 +3,22 @@ package controller;
 import model.PaymentDAO;
 import model.PaymentDTO;
 import model.UserDTO;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class paymentController extends HttpServlet {
+
+    private static final Map<String, String[]> BANK_MAP = new LinkedHashMap<>();
+    static {
+        BANK_MAP.put("ICB", new String[]{"ICB", "106879806456", "DUK ACADEMY"});
+    }
+    private static final String DEFAULT_BANK = "ICB";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -20,9 +31,9 @@ public class paymentController extends HttpServlet {
         }
         String action = request.getParameter("action");
         if ("createQR".equals(action)) {
-            createQR(request, response, user);
+            handleCreateQR(request, response, user);
         } else if ("confirmPending".equals(action)) {
-            confirmPending(request, response, user);
+            handleConfirmPending(request, response, user);
         } else {
             request.getRequestDispatcher("/payment.jsp").forward(request, response);
         }
@@ -35,71 +46,105 @@ public class paymentController extends HttpServlet {
     }
 
     // ===== TẠO VIETQR =====
-    private void createQR(HttpServletRequest request, HttpServletResponse response, UserDTO user)
-            throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
+    private void handleCreateQR(HttpServletRequest request, HttpServletResponse response, UserDTO user)
+            throws ServletException, IOException {
+
+        String amtStr  = request.getParameter("amount");
+        String bankKey = request.getParameter("bank");
+
+        // Validate amount
+        int amount;
         try {
-            String amtStr = request.getParameter("amount");
-            if (amtStr == null || amtStr.isEmpty()) {
-                response.getWriter().print("{\"status\":\"error\",\"message\":\"Missing amount\"}");
-                return;
-            }
-            int amount = Integer.parseInt(amtStr);
+            if (amtStr == null || amtStr.trim().isEmpty()) throw new NumberFormatException();
+            amount = Integer.parseInt(amtStr.trim());
             if (amount < 10000) {
-                response.getWriter().print("{\"status\":\"error\",\"message\":\"So tien toi thieu 10.000 VND\"}");
+                request.setAttribute("payError", "So tien toi thieu la 10.000 d");
+                request.getRequestDispatcher("/payment.jsp").forward(request, response);
                 return;
             }
-            PaymentDTO p = new PaymentDTO(user.getUserId(), amount, "VIETQR", "PENDING");
+        } catch (NumberFormatException e) {
+            request.setAttribute("payError", "So tien khong hop le");
+            request.getRequestDispatcher("/payment.jsp").forward(request, response);
+            return;
+        }
+
+        if (bankKey == null || !BANK_MAP.containsKey(bankKey)) {
+            bankKey = DEFAULT_BANK;
+        }
+        String[] bankInfo = BANK_MAP.get(bankKey);
+
+        // Bọc toàn bộ DB + QR logic trong try-catch
+        try {
+            PaymentDTO p = new PaymentDTO(0, String.valueOf(user.getUserId()), amount,
+                                          "VIETQR", null, "PENDING", true);
             int paymentId = PaymentDAO.create(p);
             if (paymentId == -1) {
-                response.getWriter().print("{\"status\":\"error\",\"message\":\"Loi database\"}");
+                request.setAttribute("payError", "Loi he thong, vui long thu lai.");
+                request.getRequestDispatcher("/payment.jsp").forward(request, response);
                 return;
             }
+
             String orderId = "QR" + paymentId;
-            response.getWriter().print(
-                "{\"status\":\"success\",\"orderId\":\"" + orderId + "\",\"paymentId\":" + paymentId + "}"
-            );
-        } catch (NumberFormatException e) {
-            response.getWriter().print("{\"status\":\"error\",\"message\":\"So tien khong hop le\"}");
+            String note    = URLEncoder.encode("NAP TIEN DUK " + orderId, StandardCharsets.UTF_8.name());
+            String accName = URLEncoder.encode(bankInfo[2], StandardCharsets.UTF_8.name());
+            String qrUrl   = "https://img.vietqr.io/image/"
+                           + bankInfo[0] + "-" + bankInfo[1] + "-qr_only.png"
+                           + "?amount=" + amount
+                           + "&addInfo=" + note
+                           + "&accountName=" + accName;
+
+            request.setAttribute("qrUrl",    qrUrl);
+            request.setAttribute("orderId",  orderId);
+            request.setAttribute("qrAmount", amount);
+            request.setAttribute("selBank",  bankKey);
+
         } catch (Exception e) {
             e.printStackTrace();
-            String msg = e.getMessage() != null ? e.getMessage().replace("\"", "'") : "Unknown";
-            response.getWriter().print("{\"status\":\"error\",\"message\":\"" + msg + "\"}");
+            request.setAttribute("payError", "Loi he thong: " + e.getMessage());
         }
+
+        request.getRequestDispatcher("/payment.jsp").forward(request, response);
     }
 
     // ===== USER BẤM "ĐÃ THANH TOÁN" =====
-    private void confirmPending(HttpServletRequest request, HttpServletResponse response, UserDTO user)
-            throws IOException {
-        response.setContentType("application/json;charset=UTF-8");
+    private void handleConfirmPending(HttpServletRequest request, HttpServletResponse response, UserDTO user)
+            throws ServletException, IOException {
+
+        String orderIdStr = request.getParameter("orderId");
+
+        if (orderIdStr == null || !orderIdStr.startsWith("QR")) {
+            request.setAttribute("payError", "Ma giao dich khong hop le.");
+            request.getRequestDispatcher("/payment.jsp").forward(request, response);
+            return;
+        }
+
         try {
-            String orderIdStr = request.getParameter("orderId");
-            if (orderIdStr == null || !orderIdStr.startsWith("QR")) {
-                response.getWriter().print("{\"status\":\"error\",\"message\":\"orderId khong hop le\"}");
-                return;
-            }
             int paymentId = Integer.parseInt(orderIdStr.substring(2));
-            PaymentDTO p = PaymentDAO.getById(paymentId);
+            PaymentDTO p  = PaymentDAO.getById(paymentId);
+
             if (p == null) {
-                response.getWriter().print("{\"status\":\"error\",\"message\":\"Khong tim thay giao dich\"}");
+                request.setAttribute("payError", "Khong tim thay giao dich.");
+                request.getRequestDispatcher("/payment.jsp").forward(request, response);
                 return;
             }
-            if (!p.getUserId().equals(user.getUserId())) {
-                response.getWriter().print("{\"status\":\"error\",\"message\":\"Khong co quyen\"}");
+            if (!p.getUserId().equals(String.valueOf(user.getUserId()))) {
+                request.setAttribute("payError", "Ban khong co quyen thuc hien thao tac nay.");
+                request.getRequestDispatcher("/payment.jsp").forward(request, response);
                 return;
             }
-            if (!"PENDING".equals(p.getPaymentStatus())) {
-                response.getWriter().print(
-                    "{\"status\":\"already\",\"currentStatus\":\"" + p.getPaymentStatus() + "\"}"
-                );
-                return;
+
+            if ("PENDING".equals(p.getPaymentStatus())) {
+                PaymentDAO.setPendingConfirm(paymentId);
             }
-            PaymentDAO.setPendingConfirm(paymentId);
-            response.getWriter().print("{\"status\":\"success\"}");
+
+            request.setAttribute("waitingConfirm",   true);
+            request.setAttribute("confirmedOrderId", orderIdStr);
+
         } catch (Exception e) {
             e.printStackTrace();
-            String msg = e.getMessage() != null ? e.getMessage().replace("\"", "'") : "Unknown";
-            response.getWriter().print("{\"status\":\"error\",\"message\":\"" + msg + "\"}");
+            request.setAttribute("payError", "Loi he thong: " + e.getMessage());
         }
+
+        request.getRequestDispatcher("/payment.jsp").forward(request, response);
     }
 }

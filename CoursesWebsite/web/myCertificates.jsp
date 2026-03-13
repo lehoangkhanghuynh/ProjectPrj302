@@ -2,20 +2,8 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%!
-    public String fmtBal(Object bal) {
-        if (bal == null) {
-            return "0";
-        }
-        try {
-            double d = Double.parseDouble(bal.toString().trim());
-            long v = (long) d;
-            return String.format("%,d", v).replace(',', '.');
-        } catch (Exception e) {
-            return "0";
-        }
-    }
-%>
+<fmt:setLocale value="vi_VN" scope="session"/>
+
 <!DOCTYPE html>
 <html lang="vi">
     <head>
@@ -885,9 +873,10 @@
                 <a href="paymentController" class="balance-pill">
                     <i class="bi bi-wallet2"></i>
                     <span class="balance-label">Số dư</span>
-                    <span class="balance-amount">
-                        <%= fmtBal(session.getAttribute("user") != null ? ((model.UserDTO) session.getAttribute("user")).getBalance() : null)%> ₫
-                    </span>
+                      <span class="balance-amount">
+    <fmt:formatNumber value="${sessionScope.user.balance != null ? sessionScope.user.balance : 0}"
+                      type="number" maxFractionDigits="0"/> ₫
+</span>
                 </a>
 
                 <%-- WISHLIST PILL --%>

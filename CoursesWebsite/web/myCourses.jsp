@@ -2,16 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%!
-    public String fmtBal(Object bal) {
-        if (bal == null) return "0";
-        try {
-            double d = Double.parseDouble(bal.toString().trim());
-            long v = (long) d;
-            return String.format("%,d", v).replace(',', '.');
-        } catch (Exception e) { return "0"; }
-    }
-%>
+<fmt:setLocale value="vi_VN" scope="session"/>
+
 <c:if test="${empty sessionScope.user}">
     <c:redirect url="login.jsp"/>
 </c:if>
@@ -225,8 +217,9 @@
             <i class="bi bi-wallet2"></i>
             <span class="balance-label">Số dư</span>
             <span class="balance-amount">
-                <%= fmtBal(((model.UserDTO)session.getAttribute("user")).getBalance()) %> ₫
-            </span>
+    <fmt:formatNumber value="${sessionScope.user.balance != null ? sessionScope.user.balance : 0}"
+                      type="number" maxFractionDigits="0"/> ₫
+</span>
         </a>
 
         <%-- WISHLIST PILL --%>
