@@ -1,10 +1,10 @@
-# 📚 Online Course Platform
+# Online Course Platform
 
 Ứng dụng web bán khóa học trực tuyến được xây dựng theo mô hình MVC2, sử dụng JSP/Servlet và SQL Server.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Thành phần | Công nghệ |
 |---|---|
@@ -16,9 +16,9 @@
 
 ---
 
-## ✨ Tính năng
+## Tính năng
 
-### 👤 Người dùng (Student)
+### Người dùng (Student)
 - Đăng ký / Đăng nhập / Đặt lại mật khẩu
 - Xem danh sách và chi tiết khóa học
 - Mua khóa học & xem lịch sử thanh toán
@@ -38,7 +38,7 @@
 
 ---
 
-## 📁 Cấu trúc thư mục
+## Cấu trúc thư mục
 
 ```
 CoursesWebsite/
@@ -148,10 +148,10 @@ CoursesWebsite/
 
 ---
 
-## ⚙️ Cài đặt & Chạy dự án
+## Cài đặt & Chạy dự án
 
 ### Yêu cầu hệ thống
-- Java JDK 11+
+- Java JDK 8+
 - Apache Tomcat 9+
 - Microsoft SQL Server 2019+
 - Maven 3.6+
@@ -186,30 +186,15 @@ Copy file `target/OnlineCoursePlatform.war` vào thư mục `webapps/` của Tom
 
 ### Bước 6 — Truy cập ứng dụng
 ```
-http://localhost:8080/OnlineCoursePlatform
+http://localhost:8080/CoursesWebsite
 ```
 
 **Tài khoản mặc định:**
 | Role | Username | Password |
 |---|---|---|
-| Admin | admin@admin.com | admin123 |
+| stu1 | stu01@gmail.com | 123456 |
 
 ---
-
-## 🖼️ Ảnh chụp màn hình
-
-> *(Thêm ảnh chụp màn hình tại đây)*
-
-| Trang chủ | Chi tiết khóa học |
-|---|---|
-| ![Home](screenshots/home.png) | ![Course Detail](screenshots/course-detail.png) |
-
-| Thanh toán | Admin Dashboard |
-|---|---|
-| ![Payment](screenshots/payment.png) | ![Admin](screenshots/admin.png) |
-
----
-
 ## 🤝 Đóng góp
 
 Pull request và issues luôn được chào đón!
@@ -217,5 +202,4 @@ Pull request và issues luôn được chào đón!
 ---
 
 ## 📄 License
-
 MIT License
