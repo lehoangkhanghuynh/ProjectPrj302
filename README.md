@@ -171,7 +171,7 @@ database/schema.sql
 ### Bước 3 — Cấu hình kết nối database
 Chỉnh sửa file `src/main/resources/db.properties`:
 ```properties
-db.url=jdbc:sqlserver://localhost:1433;databaseName=OnlineCourse
+db.url=jdbc:sqlserver://localhost:1433;databaseName=CoursesWebsite
 db.username=your_username
 db.password=your_password
 ```
@@ -182,7 +182,7 @@ mvn clean package
 ```
 
 ### Bước 5 — Deploy lên Tomcat
-Copy file `target/OnlineCoursePlatform.war` vào thư mục `webapps/` của Tomcat, sau đó khởi động Tomcat.
+Copy file `target/CoursesWebsite.war` vào thư mục `webapps/` của Tomcat, sau đó khởi động Tomcat.
 
 ### Bước 6 — Truy cập ứng dụng
 ```
