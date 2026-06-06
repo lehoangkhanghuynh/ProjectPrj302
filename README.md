@@ -158,8 +158,8 @@ CoursesWebsite/
 
 ### Bước 1 — Clone repository
 ```bash
-git clone https://github.com/your-username/online-course-platform.git
-cd online-course-platform
+git clone https://github.com/your-username/Courses-Website.git
+cd Courses-Website
 ```
 
 ### Bước 2 — Tạo database
