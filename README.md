@@ -202,4 +202,4 @@ Pull request và issues luôn được chào đón!
 ---
 
 ## 📄 License
-MIT License
+© 2025 Stastu. All rights reserved.
